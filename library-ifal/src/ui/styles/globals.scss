@@ -1,0 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+$primary: #79589F;
+$secondary: #c7b8d8;  
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  color: $primary;
+}
+
+h2, h3, h4, h5, h6 {
+  color: $secondary;
+}
