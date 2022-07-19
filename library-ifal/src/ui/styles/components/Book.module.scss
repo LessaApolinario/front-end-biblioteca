@@ -1,0 +1,21 @@
+.container {
+  $primary: #79589F;
+  $secondary: #c7b8d8;
+
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid $primary;
+  border-radius: 3px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  > td:not(:last-child) {
+    padding: 1rem 1.5rem;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
