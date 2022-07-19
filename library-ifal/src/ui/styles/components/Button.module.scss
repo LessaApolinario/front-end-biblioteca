@@ -1,0 +1,22 @@
+.container {
+  $primary: #79589F;
+  $secondary: #c7b8d8;
+  
+  color: #FFF;
+  background-color: $primary;
+
+  padding: 1rem 1.5rem;
+  
+  border: 1px solid $secondary;
+  border-radius: 3px;
+
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+
+  &:hover {
+    color: $primary;
+    background-color: $secondary;
+    border: 1px solid $primary;
+  }
+
+  cursor: pointer;
+}
