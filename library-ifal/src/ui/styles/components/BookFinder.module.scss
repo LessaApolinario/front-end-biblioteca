@@ -30,6 +30,10 @@
         border: 0;
         outline-color: $primary;
       }
+      
+      &::placeholder {
+        color: $primary;
+      }
     }
 
     .buttons {
