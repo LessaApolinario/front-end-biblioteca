@@ -2,19 +2,19 @@
   $primary:  #664986;
   $secondary: #c7b8d8;
   
-  color: #FFF;
-  background-color: $primary;
+  color: $primary;
 
   padding: 1rem 1.5rem;
   border: 0;
 
   border-radius: 3px;
 
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+  box-shadow: 0 0 1rem $primary;
 
   &:hover {
     opacity: 0.7;
-   background-color: $secondary;
+    background-color: $secondary;
+    box-shadow: 0 0 0;
   }
 
   cursor: pointer;
