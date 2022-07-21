@@ -1,10 +1,6 @@
 import styles from '../styles/components/BookFinder.module.scss'
 import Button from './Button'
 
-interface BookFinderProps {
-
-}
-
 function BookFinder() {
   return (
     <form className={styles.container}>
