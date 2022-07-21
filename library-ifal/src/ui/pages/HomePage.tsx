@@ -2,10 +2,13 @@ import Book from "../components/Book";
 import BookFinder from "../components/BookFinder";
 import BookList from "../components/BookList";
 
+import styles from '../styles/pages/HomePage.module.scss'
+
 function HomePage() {
   return (
-    <div className="container">
-      <h1 style={{ textAlign: 'center', fontSize: 64 }}>Livros</h1>
+    <div className={styles.container}>
+      <h1>Livros</h1>
+
       <BookFinder />
       <BookList>
         <Book
