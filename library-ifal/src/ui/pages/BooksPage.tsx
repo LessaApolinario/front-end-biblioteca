@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Book from "../components/Book";
 import Button from "../components/Button";
+import Header from "../components/Header";
 
 import styles from '../styles/pages/BooksPage.module.scss'
 
@@ -105,12 +107,12 @@ function BooksPage() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
+      <Header>
         <nav className={styles.navbar}>
           <Button type='button' onClick={goBackToHome}>Voltar</Button>
           <h2>Livros</h2>
         </nav>
-      </header>
+      </Header>
       
       <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.search}>
