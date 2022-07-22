@@ -13,8 +13,8 @@ interface BookProps {
 function Book({ title, author, edition, year, localization }: BookProps) {
   const formatAuthorName = (authorName: string) => {
     const [lastName, firstName] = authorName?.trim().split(',')
-
-    return `${firstName} ${lastName}`
+    
+    return firstName ? `${firstName} ${lastName}` : lastName
   }
   
   const formattedAuthor = author ? formatAuthorName(author) : ''
