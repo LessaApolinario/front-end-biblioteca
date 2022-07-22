@@ -7,8 +7,8 @@ function RouteManager() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/books" element={<HomePage />} />
-        <Route path="/" element={<Navigate replace to='/books' />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<Navigate replace to='/home' />} />
         <Route path="/*" element={<Error404Page />} />
       </Routes>
     </BrowserRouter>
