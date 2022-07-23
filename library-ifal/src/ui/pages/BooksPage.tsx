@@ -1,31 +1,41 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import BookDTO from "../../core/dto/BookDTO";
+import api from "../../services/api";
+
 import Book from "../components/Book";
 import Button from "../components/Button";
 import Header from "../components/Header";
 
 import styles from '../styles/pages/BooksPage.module.scss'
 
-type Book = {
-  title: string
-  author: string
-  edition: string
-  year: string
-  localization: string
-}
-
 function BooksPage() {
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
-  const [books, setBooks] = useState<Book[]>([])
+  const [books, setBooks] = useState<BookDTO[]>([])
   const navigate = useNavigate()
 
-  const filterBooks = useCallback((books: Book[], bookTitle: string) => {
-    return books.filter(({ title }) => title === bookTitle)
+  const getBooks = async () => {
+    try {
+      const response = await api.get<BookDTO[]>('/book')
+      console.log('Promise:', response)
+      const { data, status, statusText } = response
+      console.log('Dados:',data)
+
+      if (status === 200 && statusText === 'OK') {
+        return data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const filterBooks = useCallback((books: BookDTO[], bookTitle: string) => {
+    return books.filter(({ title }) => title.toLowerCase() === bookTitle.toLowerCase())
   }, [])
   
-  const insertBooks = useCallback((book: Book, key: number) => {
+  const insertBooks = useCallback((book: BookDTO, key: number) => {
     const { title, author, edition, year, localization } = book
     return <Book
       key={key}
@@ -37,61 +47,21 @@ function BooksPage() {
       />
   }, [])
   
-  const listBooks = useCallback((myInputRef: React.RefObject<HTMLInputElement>, books: Book[]) =>{
+  const listBooks = useCallback((myInputRef: React.RefObject<HTMLInputElement>, books: BookDTO[]) =>{
     const input = myInputRef.current
     const title = input?.value
     return title ? filterBooks(books, title) : []
   }, [filterBooks])
 
-  const searchBooks = useCallback(() => {
-    const booksExample: Book[] = [
-      {
-        title: 'Livro 1',
-        author: 'Autor 1',
-        edition: 'ed. 1',
-        year: '2001',
-        localization: '823 O79m ex.1'
-      },
-      {
-        title: 'Livro 1',
-        author: 'Autor 1',
-        edition: 'ed. 1',
-        year: '2001',
-        localization: '823 O79m ex.1'
-      },
-      {
-        title: 'Livro 1',
-        author: 'Autor 1',
-        edition: 'ed. 1',
-        year: '2001',
-        localization: '823 O79m ex.1'
-      },
-      {
-        title: 'Livro 2',
-        author: 'Autor 2',
-        edition: 'ed. 2',
-        year: '2002',
-        localization: '823 O79m ex.2'
-      },
-      {
-        title: 'Livro 3',
-        author: 'Autor 3',
-        edition: 'ed. 3',
-        year: '2003',
-        localization: '823 O79m ex.3'
-      },
-      {
-        title: 'Livro 4',
-        author: 'Autor 4',
-        edition: 'ed. 4',
-        year: '2004',
-        localization: '823 O79m ex.4'
-      }
-    ]
+  const searchBooks = useCallback(async () => {
+    const books = await getBooks()
 
-    const booksAsArray = listBooks(inputRef, booksExample)
-    setBooks(booksAsArray)
-  }, [listBooks])
+    if (typeof books !== 'undefined') {
+      // const resolveAllBookPromises = await Promise.all(books)
+      console.log(books)
+      setBooks(books)
+    }
+  }, [])
 
   useEffect(() => {
     searchBooks()
