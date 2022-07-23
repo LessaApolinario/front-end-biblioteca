@@ -1,10 +1,29 @@
 .container {
+  $primary:  #5B4B8A;
+  $secondary: #73A9AD;
+
   width: 100%;
   height: 100%;
-  
-  h1 {
-    font-size: 4rem;
-    text-align: center;
-    margin-bottom: 1.5rem;
+
+  > header {
+    > svg {
+      fill: $secondary;
+      font-size: 2.5rem;
+
+      cursor: pointer;
+    }
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: calc(calc(100% - 1.6rem) - 4.5rem);
+
+    > h1 {
+      font-size: 4rem;
+    }
   }
 }

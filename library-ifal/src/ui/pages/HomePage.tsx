@@ -1,34 +1,30 @@
-import Book from "../components/Book";
-import BookFinder from "../components/BookFinder";
-import BookList from "../components/BookList";
+import { useNavigate } from "react-router-dom";
+
+import { GiTreeBranch } from 'react-icons/gi'
+
+import Button from "../components/Button";
+import Header from "../components/Header";
 
 import styles from '../styles/pages/HomePage.module.scss'
 
 function HomePage() {
-  return (
-    <div className={styles.container}>
-      <h1>Livros</h1>
+  const navigate = useNavigate()
 
-      <BookFinder />
-      <BookList>
-        <Book
-          title='1984'
-          author='Orwell,
-          George'
-          year='2009'
-          localization='823
-          O79m
-          ex.1'
-        />
-        <Book
-          title='1984'
-          year='2009'
-          localization='823
-          O79m
-          ex.2'
-        />
-      </BookList>
-    </div>
+  function redirectToBooks() {
+    navigate('/books')
+  }
+
+  return (
+    <main className={styles.container}>
+      <Header>
+        <GiTreeBranch />
+        <Button type='button' onClick={redirectToBooks}>Acessar livros</Button>
+      </Header>
+      
+      <section className={styles.content}>
+        <h1>Bem-vindo</h1>
+      </section>
+    </main>
   )
 }
 

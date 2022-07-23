@@ -13,7 +13,7 @@ function Error404Page() {
 
   return (
     <section className={styles.container}>
-      <h2>Error 404</h2>
+      <h2>Page Not Found</h2>
 
       <Button onClick={redirectToHome}>
         Voltar para a página inicial
