@@ -15,49 +15,17 @@ function BooksPage() {
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const navigate = useNavigate()
-  const { data: books } = useFetch<BookDTO[]>('/book')
-  const [foundedBooks, setFoundedBooks] = useState<BookDTO[]>([])
-
-  // TODO:: see if this function is really necessary
-  const insertBooks = (foundedBooks?: BookDTO[]) => {
-    return foundedBooks?.map(book => {
-      const { titulo, autor, edicao, ano, localizacao } = book
-      return <Book
-        key={titulo}
-        title={titulo}
-        author={autor}
-        edition={edicao}
-        year={ano}
-        localization={localizacao}
-        />
-    })
-  }
+  const { data: booksAsList } = useFetch<BookDTO[]>('/books')
+  const { data: booksOnSearch } = useFetch<BookDTO[]>(`/books/search?s=${inputRef.current?.value}`)
+  const [books, setBooks] = useState<BookDTO[]>([])
   
-  const loadBooksOnSearch = useCallback((inputRef: React.RefObject<HTMLInputElement>) => {
-      const query = inputRef.current?.value
-  
-      if (query) {
-        const booksByTitle = books
-          ?.filter(({ titulo }) => titulo?.toUpperCase() === query.toUpperCase())
-        // const booksByAuthor = books
-        //   ?.filter(({ author }) => author.toUpperCase() === query.toUpperCase())
-        // const booksByEdition = books
-        //   ?.filter(({ edition })=> edition.toUpperCase() === query.toUpperCase())
-        // const booksByYear = books
-        //   ?.filter(({ year }) => year.toLowerCase() === query.toUpperCase())
-        
-        // const foundedBooks = booksByTitle || booksByAuthor || booksByEdition || booksByYear
-        // return foundedBooks
-        if (booksByTitle) {
-          setFoundedBooks(booksByTitle)
-        }
-      }
-    
-  }, [books])
+  const handleListBooks = useCallback(() => {
+    const isEmpty = !booksAsList?.length
 
-  useEffect(() => {
-    loadBooksOnSearch(inputRef)
-  }, [loadBooksOnSearch])
+    if (booksAsList && !isEmpty) {
+      setBooks(booksAsList)
+    }
+  }, [booksAsList])
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -87,7 +55,7 @@ function BooksPage() {
 
           <div className={styles.buttons}>
             <Button type='submit' onClick={() => loadBooksOnSearch(inputRef)}>Pesquisar livros</Button>
-            <Button type='submit' onClick={() => console.log('listAll')}>Listar livros</Button>
+            <Button type='submit' onClick={handleListBooks}>Listar livros</Button>
           </div>
         </div>
       </form>
@@ -103,15 +71,15 @@ function BooksPage() {
           </tr>
         </thead>
         <tbody>
-          {/* {insertBooks(foundedBooks)} */}
-          {foundedBooks?.map(book => {
+          {books?.map((book, index) => {
+            const { titulo, autor, edicao, ano, localizacao } = book
             return <Book
-              key={Math.random() * 9}
-              title={book.titulo}
-              author={book.autor}
-              edition={book.edicao}
-              year={book.ano}
-              localization={book.localizacao}
+              key={index}
+              title={titulo}
+              author={autor}
+              edition={edicao}
+              year={ano}
+              localization={localizacao}
             />
           })}
         </tbody>
