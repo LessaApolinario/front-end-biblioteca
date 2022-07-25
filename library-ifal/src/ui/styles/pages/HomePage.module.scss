@@ -6,9 +6,34 @@
   height: 100%;
 
   > header {
+    > ul {
+      list-style: none;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      li {
+        font-weight: bold;
+        font-size: 1.05rem;
+        
+        color: $secondary;
+        padding: 0.5rem 1rem;
+
+        cursor: pointer;
+        
+        border: 1px solid transparent;
+
+        &:hover {
+          color: #fff;
+          border-top: 1px solid $secondary;
+          border-bottom: 1px solid $secondary;
+        }
+      }
+    }
     > svg {
       fill: $secondary;
-      font-size: 2.5rem;
+      font-size: 2rem;
 
       cursor: pointer;
     }
@@ -18,12 +43,53 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     width: 100%;
-    height: calc(calc(100% - 1.6rem) - 4.5rem);
+
+    .carrousel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+
+      // > p {
+      //   font-weight: bold;
+      //   font-size: 1.25rem;
+
+      //   color: $primary;
+      //   transform: rotate(-90deg);
+      // }
+      overflow: hidden;
+      width: 100%;
+
+      .images {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        padding: 1rem;
+        width: 100%;
+
+        pointer-events: none;
+        user-select: none;
+
+        img {
+          width: 183px;
+          height: 265px;
+        }
+
+        img:not(:last-child) {
+          margin-right: 1.5rem;
+        }
+      }
+    }
 
     > h1 {
       font-size: 4rem;
+
+      margin-top: 0.8rem;
+      margin-bottom: 2.5rem;
     }
   }
 }
