@@ -65,6 +65,23 @@
         overflow-x: auto;
         padding: 0.8rem 0rem;
 
+        &::-webkit-scrollbar-track {
+          background-color: transparent;
+        }
+        
+        &::-webkit-scrollbar {
+            width: 6px;
+            background: transparent;
+        }
+  
+        &::-webkit-scrollbar-thumb {
+            background: transparent;
+        }
+  
+        &::-webkit-scrollbar-thumb:active {
+            background: transparent;
+        }
+        
         .item {
           flex: none;
           
