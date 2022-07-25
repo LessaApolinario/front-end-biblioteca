@@ -26,7 +26,7 @@ function HomePage() {
         event.target instanceof HTMLDivElement || 
         event.target instanceof HTMLImageElement
       
-        if (isDivOrImg) {
+      if (isDivOrImg) {
         if (event.deltaY > 0) {
           items.scrollBy(300, 0)
         } else if (event.deltaY < 0) {
