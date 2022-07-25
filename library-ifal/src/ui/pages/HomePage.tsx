@@ -30,7 +30,7 @@ function HomePage() {
         if (event.deltaY > 0) {
           items.scrollBy(300, 0)
         } else if (event.deltaY < 0) {
-            items.scrollBy(-300, 0)
+          items.scrollBy(-300, 0)
         }
       }
     }
