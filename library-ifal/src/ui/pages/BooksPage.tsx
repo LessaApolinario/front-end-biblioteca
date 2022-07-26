@@ -27,6 +27,16 @@ function BooksPage() {
     }
   }, [booksAsList])
 
+  const handleSearchBook = useCallback((inputRef: React.RefObject<HTMLInputElement>) => {
+    const query = inputRef.current?.value
+    const isQueryEmpty = !query?.length
+    const isArrayEmpty = !booksOnSearch?.length
+
+    if (!isQueryEmpty && !isArrayEmpty) {
+      setBooks(booksOnSearch)
+    }
+  }, [booksOnSearch])
+
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
   }
@@ -34,6 +44,10 @@ function BooksPage() {
   function goBackToHome() {
     navigate('/home')
   }
+
+  useEffect(() => {
+    handleSearchBook(inputRef)
+  }, [handleSearchBook])
 
   return (
     <div className={styles.container}>
@@ -54,7 +68,7 @@ function BooksPage() {
           />
 
           <div className={styles.buttons}>
-            <Button type='submit' onClick={() => loadBooksOnSearch(inputRef)}>Pesquisar livros</Button>
+            <Button type='submit' onClick={() => handleSearchBook(inputRef)}>Pesquisar livros</Button>
             <Button type='submit' onClick={handleListBooks}>Listar livros</Button>
           </div>
         </div>
