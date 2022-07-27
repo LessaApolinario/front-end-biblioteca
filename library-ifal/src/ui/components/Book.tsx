@@ -23,7 +23,9 @@ function Book({ title, author, edition, year, localization }: BookProps) {
     edition = ''
   }
 
-  year = year.replace('.', '')
+  if (year) {
+    year = year.replace('.', '')
+  }
 
   return (
     <tr className={styles.container}>
