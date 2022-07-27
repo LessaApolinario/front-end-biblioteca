@@ -73,6 +73,7 @@
 
   .table {
     width: 100%;
+    height: calc(calc(calc(calc(calc(100% - 3.5rem) - 0.6rem) - 1.5rem) - 3rem) - 1.5rem);
     
     display: flex;
     flex-direction: column;
@@ -100,9 +101,16 @@
       }
     }
   
+    overflow: hidden;
+
     tbody {
       width: 80%;
-      padding-bottom: 1.5rem;
+
+      overflow-y: auto;
+
+      padding: 0 0.8rem;
+
+      height: calc(calc(100% - 3.9rem) - 2rem);
     }
   }
 }
