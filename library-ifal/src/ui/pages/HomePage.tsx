@@ -14,10 +14,6 @@ function HomePage() {
   const navigate = useNavigate()
   const itemsRef = useRef<HTMLDivElement>(null)
 
-  function redirectToBooks() {
-    navigate('/books')
-  }
-
   const scroll = (event: React.WheelEvent<HTMLDivElement>) => {
     const items = itemsRef.current
     
@@ -42,16 +38,28 @@ function HomePage() {
         <GiTreeBranch />
         <ul>
           <li onClick={() => navigate('/')}>Home</li>
+          <li onClick={() => navigate('/genres')}>Gêneros</li>
+          <li onClick={() => navigate('/books')}>Livros</li>
           <li onClick={() => navigate('/hints')}>Dicas</li>
           <li onClick={() => navigate('/contact')}>Contato</li>
         </ul>
-        <Button
-          type='button'
-          btnType='secondary'
-          onClick={redirectToBooks}
-        >
-          Acessar livros
-        </Button>
+
+        <div className={styles.buttons}>
+          <Button
+            type='button'
+            btnType='secondary'
+            onClick={() => navigate('/login')}
+          >
+            Entrar
+          </Button>
+          <Button
+            type='button'
+            btnType='secondary'
+            onClick={() => navigate('/register')}
+          >
+            Cadastrar-se
+          </Button>
+        </div>
       </Header>
 
       <section className={styles.content}>
