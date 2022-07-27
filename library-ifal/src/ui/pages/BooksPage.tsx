@@ -51,8 +51,14 @@ function BooksPage() {
     <div className={styles.container}>
       <Header>
         <nav className={styles.navbar}>
-          <Button type='button' onClick={goBackToHome}>Voltar</Button>
-          <h2>Livros</h2>
+          <Button
+            type='button'
+            btnType="secondary"
+            onClick={goBackToHome}
+          >
+            Voltar
+          </Button>
+          <h2>Leaf book</h2>
         </nav>
       </Header>
       
@@ -66,8 +72,20 @@ function BooksPage() {
           />
 
           <div className={styles.buttons}>
-            <Button type='submit' onClick={handleSearchBook}>Pesquisar livros</Button>
-            <Button type='submit' onClick={handleListBooks}>Listar livros</Button>
+            <Button
+              type='submit'
+              btnType='primary'
+              onClick={handleSearchBook}
+            >
+              Pesquisar livros
+            </Button>
+            <Button
+              type='submit'
+              btnType='primary'
+              onClick={handleListBooks}
+            >
+              Listar livros
+            </Button>
           </div>
         </div>
       </form>

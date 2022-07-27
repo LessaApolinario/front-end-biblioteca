@@ -45,7 +45,13 @@ function HomePage() {
           <li onClick={() => navigate('/hints')}>Dicas</li>
           <li onClick={() => navigate('/contact')}>Contato</li>
         </ul>
-        <Button type='button' onClick={redirectToBooks}>Acessar livros</Button>
+        <Button
+          type='button'
+          btnType='secondary'
+          onClick={redirectToBooks}
+        >
+          Acessar livros
+        </Button>
       </Header>
 
       <section className={styles.content}>

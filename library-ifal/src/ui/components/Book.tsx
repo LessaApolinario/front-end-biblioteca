@@ -35,6 +35,7 @@ function Book({ title, author, edition, year, localization }: BookProps) {
         <Button
           title='Informações sobre a localização dos livros'
           type='button'
+          btnType="primary"
           onClick={
             () => console.log('redirecionando')
           }
