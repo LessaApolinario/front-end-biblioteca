@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BookDTO from "../../core/dto/BookDTO";
 
 import { useFetch } from "../../hooks/useFetch";
+
+import api from "../../services/api";
 
 import Book from "../components/Book";
 import Button from "../components/Button";
@@ -16,7 +18,6 @@ function BooksPage() {
   const formRef = useRef<HTMLFormElement>(null)
   const navigate = useNavigate()
   const { data: booksAsList } = useFetch<BookDTO[]>('/books')
-  const { data: booksOnSearch } = useFetch<BookDTO[]>(`/books/search?s=${inputRef.current?.value}`)
   const [books, setBooks] = useState<BookDTO[]>([])
   
   const handleListBooks = useCallback(() => {
@@ -27,15 +28,16 @@ function BooksPage() {
     }
   }, [booksAsList])
 
-  const handleSearchBook = useCallback((inputRef: React.RefObject<HTMLInputElement>) => {
+  const handleSearchBook = useCallback(async () => {
+    const { data } = await api.get<BookDTO[]>(`/books/search?s=${inputRef.current?.value}`)
     const query = inputRef.current?.value
     const isQueryEmpty = !query?.length
-    const isArrayEmpty = !booksOnSearch?.length
+    const isArrayEmpty = !data?.length
 
     if (!isQueryEmpty && !isArrayEmpty) {
-      setBooks(booksOnSearch)
+      setBooks(data)
     }
-  }, [booksOnSearch])
+  }, [])
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -44,10 +46,6 @@ function BooksPage() {
   function goBackToHome() {
     navigate('/home')
   }
-
-  useEffect(() => {
-    handleSearchBook(inputRef)
-  }, [handleSearchBook])
 
   return (
     <div className={styles.container}>
@@ -68,7 +66,7 @@ function BooksPage() {
           />
 
           <div className={styles.buttons}>
-            <Button type='submit' onClick={() => handleSearchBook(inputRef)}>Pesquisar livros</Button>
+            <Button type='submit' onClick={handleSearchBook}>Pesquisar livros</Button>
             <Button type='submit' onClick={handleListBooks}>Listar livros</Button>
           </div>
         </div>
