@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BookDTO from "../../core/dto/BookDTO";
+
+import { useFetch } from "../../hooks/useFetch";
+
 import api from "../../services/api";
 
 import Book from "../components/Book";
@@ -13,59 +16,28 @@ import styles from '../styles/pages/BooksPage.module.scss'
 function BooksPage() {
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
-  const [books, setBooks] = useState<BookDTO[]>([])
   const navigate = useNavigate()
+  const { data: booksAsList } = useFetch<BookDTO[]>('/books')
+  const [books, setBooks] = useState<BookDTO[]>([])
+  
+  const handleListBooks = useCallback(() => {
+    const isEmpty = !booksAsList?.length
 
-  const getBooks = async () => {
-    try {
-      const response = await api.get<BookDTO[]>('/book')
-      console.log('Promise:', response)
-      const { data, status, statusText } = response
-      console.log('Dados:',data)
-
-      if (status === 200 && statusText === 'OK') {
-        return data
-      }
-    } catch (error) {
-      console.log(error)
+    if (booksAsList && !isEmpty) {
+      setBooks(booksAsList)
     }
-  }
+  }, [booksAsList])
 
-  const filterBooks = useCallback((books: BookDTO[], bookTitle: string) => {
-    return books.filter(({ title }) => title.toLowerCase() === bookTitle.toLowerCase())
-  }, [])
-  
-  const insertBooks = useCallback((book: BookDTO, key: number) => {
-    const { title, author, edition, year, localization } = book
-    return <Book
-      key={key}
-      title={title}
-      author={author}
-      edition={edition}
-      year={year}
-      localization={localization}
-      />
-  }, [])
-  
-  const listBooks = useCallback((myInputRef: React.RefObject<HTMLInputElement>, books: BookDTO[]) =>{
-    const input = myInputRef.current
-    const title = input?.value
-    return title ? filterBooks(books, title) : []
-  }, [filterBooks])
+  const handleSearchBook = useCallback(async () => {
+    const { data } = await api.get<BookDTO[]>(`/books/search?s=${inputRef.current?.value}`)
+    const query = inputRef.current?.value
+    const isQueryEmpty = !query?.length
+    const isArrayEmpty = !data?.length
 
-  const searchBooks = useCallback(async () => {
-    const books = await getBooks()
-
-    if (typeof books !== 'undefined') {
-      // const resolveAllBookPromises = await Promise.all(books)
-      console.log(books)
-      setBooks(books)
+    if (!isQueryEmpty && !isArrayEmpty) {
+      setBooks(data)
     }
   }, [])
-
-  useEffect(() => {
-    searchBooks()
-  }, [searchBooks])
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -79,8 +51,14 @@ function BooksPage() {
     <div className={styles.container}>
       <Header>
         <nav className={styles.navbar}>
-          <Button type='button' onClick={goBackToHome}>Voltar</Button>
-          <h2>Livros</h2>
+          <Button
+            type='button'
+            btnType="secondary"
+            onClick={goBackToHome}
+          >
+            Voltar
+          </Button>
+          <h2>Leaf book</h2>
         </nav>
       </Header>
       
@@ -94,8 +72,20 @@ function BooksPage() {
           />
 
           <div className={styles.buttons}>
-            <Button type='submit' onClick={() => searchBooks()}>Pesquisar livros</Button>
-            <Button type='submit' onClick={() => console.log('listAll')}>Listar livros</Button>
+            <Button
+              type='submit'
+              btnType='primary'
+              onClick={handleSearchBook}
+            >
+              Pesquisar livros
+            </Button>
+            <Button
+              type='submit'
+              btnType='primary'
+              onClick={handleListBooks}
+            >
+              Listar livros
+            </Button>
           </div>
         </div>
       </form>
@@ -111,7 +101,17 @@ function BooksPage() {
           </tr>
         </thead>
         <tbody>
-          {books?.map((book, index) => insertBooks(book, index))}
+          {books?.map((book, index) => {
+            const { titulo, autor, edicao, ano, localizacao } = book
+            return <Book
+              key={index}
+              title={titulo}
+              author={autor}
+              edition={edicao}
+              year={ano}
+              localization={localizacao}
+            />
+          })}
         </tbody>
       </table>
     </div>

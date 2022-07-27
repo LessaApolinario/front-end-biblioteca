@@ -1,21 +1,39 @@
 .container {
   $primary:  #5B4B8A;
-  $secondary: #73A9AD;
+  $secondary: #FFF;
   
-  color: $primary;
-
-  padding: 0.8rem 1rem;
-  border: 0;
-
+  
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  
   border-radius: 3px;
-
-  box-shadow: 0 0 0.5rem $primary;
-
-  &:hover {
-    opacity: 0.7;
+  
+  &.primary {
+    color: $primary;
     background-color: $secondary;
-    box-shadow: 0 0 0;
+
+    box-shadow: 0 0 0.5rem $primary;
+    
+    &:hover {
+      opacity: 0.7;
+      box-shadow: 0 0 0;
+      border: 1px solid $primary;
+    }
   }
 
+
   cursor: pointer;
+
+  &.secondary {
+    color: $secondary;
+    box-shadow: 0 0 0;
+    background-color: $primary;
+    border: 1px solid $secondary;
+
+    &:hover {
+      color: $primary;
+      border: 1px solid $primary;
+      background-color: $secondary;
+    }
+  }
 }

@@ -23,6 +23,8 @@ function Book({ title, author, edition, year, localization }: BookProps) {
     edition = ''
   }
 
+  year = year.replace('.', '')
+
   return (
     <tr className={styles.container}>
       <td>{title}</td>
@@ -33,6 +35,7 @@ function Book({ title, author, edition, year, localization }: BookProps) {
         <Button
           title='Informações sobre a localização dos livros'
           type='button'
+          btnType="primary"
           onClick={
             () => console.log('redirecionando')
           }
