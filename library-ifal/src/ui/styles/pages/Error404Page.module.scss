@@ -1,6 +1,6 @@
 .container {
   $primary:  #5B4B8A;
-  $secondary: #73A9AD;
+  $secondary: #FFF;
 
   display: flex;
   flex-direction: column;
@@ -14,6 +14,7 @@
 
   > h2 {
     font-size: 4rem;
+    color: $secondary;
 
     margin-bottom: 1rem;
   }
