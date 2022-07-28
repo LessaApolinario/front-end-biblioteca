@@ -23,16 +23,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
     background-color: $secondary;
     color: $primary;
     
     width: 25rem;
-    height: 20rem;
+    height: 22rem;
 
     border-radius: 3px;
-
+    padding: 1rem;
 
     > h2 {
       font-size: 2.5rem;
@@ -61,16 +61,30 @@
           outline-color: $primary;
           border: 0;
         }
-      }
-    }
 
-    .password {
-      display: flex;
-      flex-direction: column;
+        color: $primary;
+      }
     }
 
     > button {
       width: 16rem;
+      margin-bottom: 1rem;
+    }
+
+    > .link {
+      font-size: 1.05rem;
+      text-align: center;
+
+      > span {
+        cursor: pointer;
+        margin-left: 0.2rem;
+
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
     }
   }
 }
