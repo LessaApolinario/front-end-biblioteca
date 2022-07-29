@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ForwardedRef, forwardRef, ReactNode } from "react";
 
 import styles from '../styles/components/Button.module.scss'
 
@@ -7,10 +7,10 @@ interface ButtonProps {
   title?: string
   type?: 'button' | 'submit' | 'reset'
   btnType: 'primary' | 'secondary'
-  onClick?(): void 
+  onClick?(): void
 }
 
-function Button({ children, title, type, btnType, onClick }: ButtonProps) {
+function Button({ children, title, type, btnType, onClick }: ButtonProps, ref: ForwardedRef<HTMLButtonElement>) {
   const className = `${styles.container} ${styles[btnType]}`
 
   return (
@@ -19,10 +19,11 @@ function Button({ children, title, type, btnType, onClick }: ButtonProps) {
       className={className}
       type={type}
       onClick={onClick}
+      ref={ref}
     >
       {children}
     </button>
   )
 }
 
-export default Button
+export default forwardRef(Button)
