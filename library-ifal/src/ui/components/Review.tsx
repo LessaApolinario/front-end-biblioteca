@@ -1,16 +1,14 @@
 import BookDTO from '../../core/dto/BookDTO'
-import User from '../../core/models/User'
 
 import styles from '../styles/components/Review.module.scss'
 
 interface ReviewProps {
-  user: User
+  username: string
   book: BookDTO
   review: string
 }
 
-function Review({ user, book, review }: ReviewProps) {
-  const { username } = user
+function Review({ username, book, review }: ReviewProps) {
   const { titulo, autor } = book
 
   return (
