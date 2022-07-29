@@ -1,9 +1,7 @@
-import User from "../models/User"
-
 import BookDTO from "./BookDTO"
 
 interface ReviewDTO  {
-  user: User
+  username: string
   book: BookDTO
   review: string
 }
