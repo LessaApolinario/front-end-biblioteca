@@ -1,0 +1,29 @@
+.container {
+  $primary:  #5B4B8A;
+  $secondary: #FFF;
+  
+  width: 25rem;
+  height: max-content;
+
+  background-color: $secondary;
+
+  border-radius: 3px;
+
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+
+  padding: 0.8rem;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  > h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .review {
+    color: $primary;
+    font-size: 1.05rem;
+  }
+}
