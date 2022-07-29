@@ -169,7 +169,7 @@ function ReviewPage() {
       <div className={styles.reviews}>
         {reviews?.map(({ username, bookTitle, authorName, review }) => (
           <Review
-            key={Math.random() * 6}
+            key={Math.random().toString()}
             username={username}
             bookTitle={bookTitle}
             authorName={authorName}
