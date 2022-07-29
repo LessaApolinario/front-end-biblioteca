@@ -1,8 +1,7 @@
-import BookDTO from "./BookDTO"
-
 interface ReviewDTO  {
   username: string
-  book: BookDTO
+  bookTitle: string
+  authorName: string
   review: string
 }
 
