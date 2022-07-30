@@ -30,7 +30,12 @@ function Review({ username, bookTitle, authorName, review, onClick }: ReviewProp
     <article className={styles.container}>
       <h3>{username} sobre {bookTitle} de {authorName}:</h3>
 
-      <p className={styles.review} ref={paragraphRef} onClick={onClick}>
+      <p
+        className={styles.review}
+        title='Clique para ver detalhes da resenha'
+        ref={paragraphRef}
+        onClick={onClick}
+      >
         {review}
       </p>
     </article>
