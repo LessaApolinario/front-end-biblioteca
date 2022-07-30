@@ -179,6 +179,40 @@ function ReviewPage() {
     }
   }
 
+  const renderForm = () => {
+    if (isVisible) {
+      return (
+        <form action="#" method='POST' className={styles.form}>
+          <h3>Escreva sua resenha</h3>
+
+          <div className={styles.book}>
+            <label>Livro</label>
+            <input type="text" ref={bookTitleRef} />
+          </div>
+
+          <div className={styles.author}>
+            <label>Autor</label>
+            <input type="text" ref={authorNameRef} />
+          </div>
+          
+          <div className={styles.review}>
+            <label>Resenha</label>
+            <textarea cols={30} rows={5} ref={reviewTextareaRef}></textarea>
+          </div>
+
+          <Button 
+            ref={buttonRef} 
+            type='button' 
+            btnType='secondary' 
+            onClick={handleAddReview}
+          >
+            Escrever
+          </Button>
+        </form>
+      )
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Header>
@@ -207,35 +241,7 @@ function ReviewPage() {
 
     <h2>Resenhas</h2>
 
-    {isVisible &&
-      <form action="#" method='POST' className={styles.form}>
-        <h3>Escreva sua resenha</h3>
-
-        <div className={styles.book}>
-          <label>Livro</label>
-          <input type="text" ref={bookTitleRef} />
-        </div>
-
-        <div className={styles.author}>
-          <label>Autor</label>
-          <input type="text" ref={authorNameRef} />
-        </div>
-        
-        <div className={styles.review}>
-          <label>Resenha</label>
-          <textarea cols={30} rows={5} ref={reviewTextareaRef}></textarea>
-        </div>
-
-        <Button 
-          ref={buttonRef} 
-          type='button' 
-          btnType='secondary' 
-          onClick={handleAddReview}
-        >
-          Escrever
-        </Button>
-      </form>
-    }
+      {renderForm()}
 
       <div className={styles.reviews}>
         {reviews?.map(({ username, bookTitle, authorName, review }) => (
