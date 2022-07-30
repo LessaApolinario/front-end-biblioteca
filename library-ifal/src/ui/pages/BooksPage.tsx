@@ -43,10 +43,6 @@ function BooksPage() {
     event.preventDefault()
   }
 
-  function goBackToHome() {
-    navigate('/home')
-  }
-
   return (
     <div className={styles.container}>
       <Header>
@@ -54,7 +50,7 @@ function BooksPage() {
           <Button
             type='button'
             btnType="secondary"
-            onClick={goBackToHome}
+            onClick={() => navigate(-1)}
           >
             Voltar
           </Button>
