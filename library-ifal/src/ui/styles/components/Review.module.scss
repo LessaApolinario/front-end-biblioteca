@@ -22,6 +22,10 @@
     margin-bottom: 0.8rem;
   }
 
+  > p {
+    text-align: justify;
+  }
+
   .review {
     color: $primary;
     font-size: 1.05rem;

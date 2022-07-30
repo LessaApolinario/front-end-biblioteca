@@ -32,6 +32,10 @@
       font-size: 3.5rem;
     }
 
+    > p {
+      text-align: justify;
+    }
+
     > *:not(:last-child) {
       margin-bottom: 0.8rem;
     }
