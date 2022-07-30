@@ -17,7 +17,7 @@ function ReviewDetailsPage() {
       <Header>
         <Button
           type='button'
-          btnType='primary'
+          btnType='secondary'
           onClick={() => navigate(-1)}
         >
           Voltar
