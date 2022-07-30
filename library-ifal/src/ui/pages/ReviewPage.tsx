@@ -227,6 +227,7 @@ function ReviewPage() {
             bookTitle={bookTitle}
             authorName={authorName}
             review={review}
+            onClick={() => navigate(`/reviews/${username}`)}
           />
         ))}
       </div>
