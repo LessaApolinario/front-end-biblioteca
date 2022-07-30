@@ -9,6 +9,7 @@ import Header from '../components/Header'
 
 import { BsPlusCircleFill } from 'react-icons/bs'
 import { GiTreeBranch } from 'react-icons/gi'
+import { RiCloseCircleFill } from 'react-icons/ri'
 
 import styles from '../styles/pages/ReviewPage.module.scss'
 
@@ -156,6 +157,28 @@ function ReviewPage() {
     }
   }
 
+  const renderOpenOrCloseIcon = () => {
+    if (isVisible) {
+      return (
+        <RiCloseCircleFill
+          onClick={
+            () => setIsVisible(!isVisible)
+          }
+          title='Fechar'
+        />
+      )
+    } else {
+      return (
+        <BsPlusCircleFill
+          onClick={
+            () => setIsVisible(!isVisible)
+          }
+          title='Adicionar resenha'
+        />
+      )
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Header>
@@ -179,12 +202,7 @@ function ReviewPage() {
       </Header>
 
     <div className={styles.plusIcon}>
-      <BsPlusCircleFill
-        onClick={
-          () => setIsVisible(!isVisible)
-        }
-        title='Adicionar resenha'
-      />
+      {renderOpenOrCloseIcon()}
     </div>
 
     <h2>Resenhas</h2>
