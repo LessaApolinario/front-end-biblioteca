@@ -7,9 +7,10 @@ interface ReviewProps {
   bookTitle: string
   authorName: string
   review: string
+  onClick?(): void
 }
 
-function Review({ username, bookTitle, authorName, review }: ReviewProps) {
+function Review({ username, bookTitle, authorName, review, onClick }: ReviewProps) {
   const paragraphRef = useRef<HTMLParagraphElement>(null)
  
   useEffect(() => {
@@ -29,7 +30,7 @@ function Review({ username, bookTitle, authorName, review }: ReviewProps) {
     <article className={styles.container}>
       <h3>{username} sobre {bookTitle} de {authorName}:</h3>
 
-      <p className={styles.review} ref={paragraphRef}>
+      <p className={styles.review} ref={paragraphRef} onClick={onClick}>
         {review}
       </p>
     </article>
