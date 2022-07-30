@@ -1,0 +1,39 @@
+.container {
+  $primary:  #5B4B8A;
+  $secondary: #FFF;
+  
+  width: 100%;
+  height: 100%;
+
+  background-color: $primary;
+
+  > header {
+    background-color: $secondary;
+    color: $primary;
+
+    padding: 0.3rem 2rem;
+  }
+
+  .content {
+    background-color: $secondary;
+    padding: 2rem;
+    margin: 2rem;
+
+    border-radius: 3px;
+
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+    color: $primary;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+    
+    > h3 {
+      font-size: 3.5rem;
+    }
+
+    > *:not(:last-child) {
+      margin-bottom: 0.8rem;
+    }
+  }
+}
