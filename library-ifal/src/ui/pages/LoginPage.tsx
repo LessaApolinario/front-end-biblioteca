@@ -16,8 +16,8 @@ function LoginPage() {
       <form className={styles.login}>
         <h2>Fazer login</h2>
 
-        <div className={styles.username}>
-          <label>Nome de usuário</label>
+        <div className={styles.email}>
+          <label>Email</label>
           <input type="text" />
         </div>
 
