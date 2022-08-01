@@ -1,0 +1,88 @@
+.container {
+  $primary:  #5B4B8A;
+  $secondary: #FFF;
+  
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  
+  background-color: $primary;
+
+  > svg {
+    font-size: 4rem;
+    fill: $secondary;
+    margin-bottom: 1rem;
+    cursor: pointer;
+  }
+
+  .register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: $secondary;
+    color: $primary;
+    
+    width: 25rem;
+
+    border-radius: 3px;
+    padding: 1rem;
+
+    > h2 {
+      font-size: 2.5rem;
+      margin: 1rem 0;
+    }
+
+    .name, .username, .password, .confirmPassword {
+      display: flex;
+      flex-direction: column;
+
+      margin-bottom: 1rem;
+
+      > label {
+        margin-bottom: 0.5rem;
+        font-size: 1.05rem;
+      }
+
+      > input {
+        padding: 0.5rem 1rem;
+        width: 16rem;
+
+        border: 1px solid $primary;
+        border-radius: 3px;
+        
+        &:focus {
+          outline-color: $primary;
+        }
+
+        color: $primary;
+      }
+    }
+
+    > button {
+      width: 16rem;
+      margin-bottom: 1rem;
+    }
+
+    > .link {
+      font-size: 1.05rem;
+      text-align: center;
+
+      > span {
+        cursor: pointer;
+        margin-left: 0.2rem;
+
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
