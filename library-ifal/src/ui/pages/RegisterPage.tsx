@@ -48,10 +48,15 @@ function RegisterPage() {
         email,
         password
       }
+      
+      await api.post<User>('/api/auth/register', JSON.stringify(user), {
+          headers: {
+            'Content-type': 'application/json'
+          }
+        }
+      )
 
-      const response = await api.post('/api/auth/register', user)
-      const { data } = response
-      console.log(data)
+      navigate('/')
     }
   }
 
