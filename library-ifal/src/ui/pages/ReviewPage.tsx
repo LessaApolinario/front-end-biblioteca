@@ -12,100 +12,14 @@ import { GiTreeBranch } from 'react-icons/gi'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
 import styles from '../styles/pages/ReviewPage.module.scss'
+import { useFetch } from '../../hooks/useFetch'
 
 function ReviewPage() {
-  const username = 'Lessa'
-  const bookTitle = 'Core Java'
-  const authorName = 'Algum autor'
+  const name = 'Lessa'
 
-  const initialReviews: ReviewDTO[] = [
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus nihil maiores dolorum. Cupiditate, labore? Accusamus voluptatibus temporibus quam quae in illo praesentium mollitia, fuga pariatur ea nulla nihil tempore culpa. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab iusto repudiandae neque repellendus. Mollitia blanditiis quasi eaque vitae iure ab, autem commodi earum, dignissimos saepe quam incidunt repellat fuga sunt! Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis fugiat, laborum rerum qui exercitationem, molestias harum dolores culpa fuga, ex officia sapiente alias modi fugit voluptas quia voluptatem facilis doloribus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos iusto eius nostrum maiores molestias voluptas rem ducimus eos, hic nulla enim fuga magni alias ipsum in quia ratione delectus adipisci.'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus nihil maiores dolorum. Cupiditate, labore? Accusamus voluptatibus temporibus quam quae in illo praesentium mollitia, fuga pariatur ea nulla nihil tempore culpa. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab iusto repudiandae neque repellendus. Mollitia blanditiis quasi eaque vitae iure ab, autem commodi earum, dignissimos saepe quam incidunt repellat fuga sunt! Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis fugiat, laborum rerum qui exercitationem, molestias harum dolores culpa fuga, ex officia sapiente alias modi fugit voluptas quia voluptatem facilis doloribus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos iusto eius nostrum maiores molestias voluptas rem ducimus eos, hic nulla enim fuga magni alias ipsum in quia ratione delectus adipisci.'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    },
-    {
-      username,
-      bookTitle,
-      authorName,
-      review: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, esse magnam earum maxime fugiat voluptates, perspiciatis cupiditate, quos dolores reiciendis ipsa facere nam aspernatur fuga omnis molestias neque debitis sint!'
-    }
-  ]
+  const { data: initialReviews } = useFetch<ReviewDTO[]>('/api/reviews')
 
-  const [reviews, setReviews] = useState<ReviewDTO[]>(initialReviews)
+  const [reviews, setReviews] = useState<ReviewDTO[]>([])
   const [isVisible, setIsVisible] = useState(false)
   const navigate = useNavigate()
   const buttonRef = createRef<HTMLButtonElement>()
@@ -119,13 +33,13 @@ function ReviewPage() {
     const reviewTextarea = reviewTextareaRef.current
 
     if (bookInput && authorInput && reviewTextarea) {
-      const bookTitle = bookInput.value
-      const authorName = authorInput.value
+      const title_book = bookInput.value
+      const writer = authorInput.value
       const review = reviewTextarea.value
 
       return {
-        bookTitle,
-        authorName,
+        title_book,
+        writer,
         review
       }
     }
@@ -138,15 +52,15 @@ function ReviewPage() {
       const newReview = handleFields()
 
       if (newReview) {
-        const { bookTitle, authorName, review } = newReview
+        const { title_book, review, writer } = newReview
 
-        if (bookTitle !== '' && authorName !== '' && review !== '') {
+        if (title_book !== '' && review !== '') {
           setReviews((previousReviews) => [
             {
-              username,
-              bookTitle,
-              authorName,
-              review
+              name,
+              title_book,
+              writer,
+              review,
             },
             ...previousReviews
           ])
@@ -156,6 +70,12 @@ function ReviewPage() {
       }
     }
   }
+
+  useEffect(() => {
+    if (initialReviews) {
+      setReviews(initialReviews)
+    }
+  }, [initialReviews])
 
   const renderOpenOrCloseIcon = () => {
     if (isVisible) {
@@ -244,14 +164,15 @@ function ReviewPage() {
       {renderForm()}
 
       <div className={styles.reviews}>
-        {reviews?.map(({ username, bookTitle, authorName, review }) => (
+        {initialReviews?.map(({ user_id, name, title_book, writer, review, created_at }) => (
           <Review
             key={Math.random().toString()}
-            username={username}
-            bookTitle={bookTitle}
-            authorName={authorName}
+            name={name}
+            title_book={title_book}
+            writer={writer}
             review={review}
-            onClick={() => navigate(`/reviews/review/${username}`)}
+            created_at={created_at}
+            onClick={() => navigate(`/reviews/review/${user_id}`)}
           />
         ))}
       </div>
