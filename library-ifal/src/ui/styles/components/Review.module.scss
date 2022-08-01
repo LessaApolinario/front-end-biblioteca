@@ -22,6 +22,10 @@
     margin-bottom: 0.8rem;
   }
 
+  > p {
+    text-align: justify;
+  }
+
   .review {
     color: $primary;
     font-size: 1.05rem;
@@ -32,8 +36,15 @@
       -webkit-line-clamp: 10;
       -webkit-box-orient: vertical;
 
-      cursor: pointer;
     }
+
+    cursor: pointer;
+
+    margin-bottom: 1rem;
   }
 
+  .date {
+    color: $primary;
+    font-size: 1.25rem;
+  }
 }
