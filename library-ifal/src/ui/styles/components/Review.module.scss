@@ -39,5 +39,12 @@
     }
 
     cursor: pointer;
+
+    margin-bottom: 1rem;
+  }
+
+  .date {
+    color: $primary;
+    font-size: 1.25rem;
   }
 }
