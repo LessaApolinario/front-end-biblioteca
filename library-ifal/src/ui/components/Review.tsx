@@ -28,7 +28,7 @@ function Review({ name, title_book, writer, review, created_at, onClick }: Revie
     }
   }, [])
 
-  const  abbreviateMonth = (month: string) => {
+  const abbreviateMonth = (month: string) => {
     const abbreviatedMonths: Record<string, string> = {
       '01': "Ja",
       '02': "Fev",
