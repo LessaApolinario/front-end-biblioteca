@@ -44,7 +44,7 @@ function LoginPage() {
 
         <div className={styles.password}>
           <label>Senha</label>
-          <input type="text" ref={passwordRef} />
+          <input type="password" ref={passwordRef} />
         </div>
 
         <Button type='submit' btnType='secondary'>Entrar</Button>
