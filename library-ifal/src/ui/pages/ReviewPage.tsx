@@ -14,8 +14,7 @@ import { RiCloseCircleFill } from 'react-icons/ri'
 import styles from '../styles/pages/ReviewPage.module.scss'
 
 import { AuthCTX } from '../contexts/AuthCTX'
-
-import api from '../../services/api'
+import { ReviewsCTX } from '../contexts/ReviewsCTX'
 
 function ReviewPage() {
   const [reviews, setReviews] = useState<ReviewDTO[]>([])
@@ -25,16 +24,17 @@ function ReviewPage() {
   const bookTitleRef = useRef<HTMLInputElement>(null)
   const authorNameRef = useRef<HTMLInputElement>(null)
   const reviewTextareaRef = useRef<HTMLTextAreaElement>(null)
-  const { user, logout } = useContext(AuthCTX)
+  const authCTX = useContext(AuthCTX)
+  const reviewsCTX = useContext(ReviewsCTX)
 
   useEffect(() => {
     const getReviews = async () => {
-      const { data } = await api.get<ReviewDTO[]>('/api/reviews')
-  
-      setReviews(data)
+      const reviews = await reviewsCTX.fetch()
+      setReviews(reviews)
     }
 
     getReviews()
+    // eslint-disable-next-line
   }, [])
 
   const handleFields = () => {
@@ -68,7 +68,9 @@ function ReviewPage() {
           && localStorage.getItem('token'))
 
         if (title_book !== '' && review !== '' && 
-          isLoggedIn && typeof user !== 'undefined') {
+          isLoggedIn && typeof authCTX.user !== 'undefined') {
+            // TODO:: resolver erro no CORS
+          const user = authCTX.user
           const _review: ReviewDTO = {
             user_id: user?._id,
             name: user?.name,
@@ -77,30 +79,13 @@ function ReviewPage() {
             review,
           }
 
-          setReviews((previousReviews) => [
-            _review,
-            ...previousReviews
-          ])
-
-          const response = await api.post('/api/reviews/', JSON.stringify(_review), {
-            headers: {
-              'Content-type': 'application/json'
-            }
-          })
-
-          console.log('O que foi enviado: ', response.data)
+          reviewsCTX.add(_review)
 
           setIsVisible(false)
         }
       }
     }
   }
-
-  // useEffect(() => {
-  //   if (initialReviews) {
-  //     setReviews(initialReviews)
-  //   }
-  // }, [initialReviews])
 
   const renderOpenOrCloseIcon = () => {
     if (isVisible) {
