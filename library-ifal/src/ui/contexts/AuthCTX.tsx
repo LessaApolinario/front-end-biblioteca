@@ -34,7 +34,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     if (user) {
       const { data, status, statusText } = await api.post<LoginResponseDto>(
         '/api/auth/login', 
-        user, {
+        JSON.stringify(user), {
           headers: {
             'Content-type': 'application/json'
           }
