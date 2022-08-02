@@ -1,4 +1,4 @@
-import { createRef, useEffect, useRef, useState } from 'react'
+import { createRef, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import ReviewDTO from '../../core/dto/ReviewDTO'
@@ -12,13 +12,12 @@ import { GiTreeBranch } from 'react-icons/gi'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
 import styles from '../styles/pages/ReviewPage.module.scss'
-import { useFetch } from '../../hooks/useFetch'
+
+import { AuthCTX } from '../contexts/AuthCTX'
+
+import api from '../../services/api'
 
 function ReviewPage() {
-  const name = 'Lessa'
-
-  const { data: initialReviews } = useFetch<ReviewDTO[]>('/api/reviews')
-
   const [reviews, setReviews] = useState<ReviewDTO[]>([])
   const [isVisible, setIsVisible] = useState(false)
   const navigate = useNavigate()
@@ -26,6 +25,17 @@ function ReviewPage() {
   const bookTitleRef = useRef<HTMLInputElement>(null)
   const authorNameRef = useRef<HTMLInputElement>(null)
   const reviewTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const { user, logout } = useContext(AuthCTX)
+
+  useEffect(() => {
+    const getReviews = async () => {
+      const { data } = await api.get<ReviewDTO[]>('/api/reviews')
+  
+      setReviews(data)
+    }
+
+    getReviews()
+  }, [])
 
   const handleFields = () => {
     const bookInput = bookTitleRef.current
@@ -45,7 +55,7 @@ function ReviewPage() {
     }
   }
 
-  const handleAddReview = () => {
+  const handleAddReview = async () => {
     const button = buttonRef.current
 
     if (button) {
@@ -54,16 +64,31 @@ function ReviewPage() {
       if (newReview) {
         const { title_book, review, writer } = newReview
 
-        if (title_book !== '' && review !== '') {
+        const isLoggedIn = Boolean(localStorage.getItem('user') 
+          && localStorage.getItem('token'))
+
+        if (title_book !== '' && review !== '' && 
+          isLoggedIn && typeof user !== 'undefined') {
+          const _review: ReviewDTO = {
+            user_id: user?._id,
+            name: user?.name,
+            title_book,
+            writer,
+            review,
+          }
+
           setReviews((previousReviews) => [
-            {
-              name,
-              title_book,
-              writer,
-              review,
-            },
+            _review,
             ...previousReviews
           ])
+
+          const response = await api.post('/api/reviews/', JSON.stringify(_review), {
+            headers: {
+              'Content-type': 'application/json'
+            }
+          })
+
+          console.log('O que foi enviado: ', response.data)
 
           setIsVisible(false)
         }
@@ -71,11 +96,11 @@ function ReviewPage() {
     }
   }
 
-  useEffect(() => {
-    if (initialReviews) {
-      setReviews(initialReviews)
-    }
-  }, [initialReviews])
+  // useEffect(() => {
+  //   if (initialReviews) {
+  //     setReviews(initialReviews)
+  //   }
+  // }, [initialReviews])
 
   const renderOpenOrCloseIcon = () => {
     if (isVisible) {
@@ -164,7 +189,7 @@ function ReviewPage() {
       {renderForm()}
 
       <div className={styles.reviews}>
-        {initialReviews?.map(({ user_id, name, title_book, writer, review, created_at }) => (
+        {reviews?.map(({ user_id, name, title_book, writer, review, created_at }) => (
           <Review
             key={Math.random().toString()}
             name={name}
