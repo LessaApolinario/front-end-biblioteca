@@ -1,22 +1,20 @@
-import { useRef } from 'react'
+import { useContext, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
 
-
-import LoginResponseDto from '../../core/dto/LoginResponseDTO'
 import User from '../../core/models/User'
-
-import api from '../../services/api'
 
 import Button from '../components/Button'
 
 import styles from '../styles/pages/LoginPage.module.scss'
+import { AuthCTX } from '../contexts/AuthCTX'
 
 function LoginPage() {
   const navigate = useNavigate()
   const usernameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+  const authCTX = useContext(AuthCTX)
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -29,22 +27,7 @@ function LoginPage() {
       password
     }
 
-    const { data, status, statusText } = await api.post<LoginResponseDto>(
-      '/api/auth/login', 
-      user, {
-        headers: {
-          'Content-type': 'application/json'
-        }
-      }
-    )
-    
-    if (data && status === 200 && statusText === 'OK') {
-      const { access_token } = data
-      localStorage.setItem('user', JSON.stringify(user))
-      localStorage.setItem('token', access_token)
-      
-      navigate('/')
-    }
+    authCTX.login(user)
   }
 
   return (
