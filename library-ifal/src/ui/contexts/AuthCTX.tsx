@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import LoginResponseDto from '../../core/dto/LoginResponseDTO'
 import User from '../../core/models/User'
+import { useFetch } from '../../hooks/useFetch'
 
 import api from '../../services/api'
 
@@ -21,6 +22,7 @@ export const AuthCTX = createContext({} as AuthCTXProps)
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>()
   const navigate = useNavigate()
+  const { data: users } = useFetch<User[]>('api/users')
 
   useEffect(() => {
     if (user) {
@@ -40,16 +42,21 @@ function AuthProvider({ children }: AuthProviderProps) {
           }
         }
       )
-      
+
       if (data && status === 200 && statusText === 'OK') {
         const { access_token } = data
         localStorage.setItem('user', JSON.stringify(user))
         localStorage.setItem('token', access_token)
         
+        user._id = data.id
+
+        const foundUser = users?.find(({ _id }) => _id === user._id)
+        user.name = foundUser?.name
+        
         setUser(user)
       }
 
-      return 'Success'
+      return 'Sucesso ao logar'
     }
     
     return 'Fail'
