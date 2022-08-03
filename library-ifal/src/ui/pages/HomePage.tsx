@@ -46,7 +46,7 @@ function HomePage() {
         <GiTreeBranch />
         <ul>
           <li onClick={() => navigate('/')}>Home</li>
-          <li onClick={() => navigate('/genres')}>Gêneros</li>
+          <li onClick={() => navigate('/synopsis')}>Sinopses</li>
           <li onClick={() => navigate('/books')}>Livros</li>
           <li onClick={() => navigate('/reviews')}>Resenhas</li>
           <li onClick={() => navigate('/hints')}>Dicas</li>
