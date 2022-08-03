@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import styles from '../styles/components/Review.module.scss'
 
 interface ReviewProps {
-  name: string
+  name?: string
   title_book: string
   writer: string
   review: string

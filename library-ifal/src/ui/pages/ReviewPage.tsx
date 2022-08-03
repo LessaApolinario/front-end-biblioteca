@@ -1,4 +1,4 @@
-import { createRef, useEffect, useRef, useState } from 'react'
+import { createRef, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import ReviewDTO from '../../core/dto/ReviewDTO'
@@ -12,13 +12,11 @@ import { GiTreeBranch } from 'react-icons/gi'
 import { RiCloseCircleFill } from 'react-icons/ri'
 
 import styles from '../styles/pages/ReviewPage.module.scss'
-import { useFetch } from '../../hooks/useFetch'
+
+import { AuthCTX } from '../contexts/AuthCTX'
+import { ReviewsCTX } from '../contexts/ReviewsCTX'
 
 function ReviewPage() {
-  const name = 'Lessa'
-
-  const { data: initialReviews } = useFetch<ReviewDTO[]>('/api/reviews')
-
   const [reviews, setReviews] = useState<ReviewDTO[]>([])
   const [isVisible, setIsVisible] = useState(false)
   const navigate = useNavigate()
@@ -26,6 +24,18 @@ function ReviewPage() {
   const bookTitleRef = useRef<HTMLInputElement>(null)
   const authorNameRef = useRef<HTMLInputElement>(null)
   const reviewTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const authCTX = useContext(AuthCTX)
+  const reviewsCTX = useContext(ReviewsCTX)
+
+  useEffect(() => {
+    const getReviews = async () => {
+      const reviews = await reviewsCTX.fetch()
+      setReviews(reviews)
+    }
+
+    getReviews()
+    // eslint-disable-next-line
+  }, [])
 
   const handleFields = () => {
     const bookInput = bookTitleRef.current
@@ -45,7 +55,7 @@ function ReviewPage() {
     }
   }
 
-  const handleAddReview = () => {
+  const handleAddReview = async () => {
     const button = buttonRef.current
 
     if (button) {
@@ -54,28 +64,28 @@ function ReviewPage() {
       if (newReview) {
         const { title_book, review, writer } = newReview
 
-        if (title_book !== '' && review !== '') {
-          setReviews((previousReviews) => [
-            {
-              name,
-              title_book,
-              writer,
-              review,
-            },
-            ...previousReviews
-          ])
+        const isLoggedIn = Boolean(localStorage.getItem('user') 
+          && localStorage.getItem('token'))
+
+        if (title_book !== '' && review !== '' && 
+          isLoggedIn && typeof authCTX.user !== 'undefined') {
+          const user = authCTX.user
+          const _review: ReviewDTO = {
+            user_id: user._id,
+            name: user.name,
+            title_book,
+            writer,
+            review,
+            available: true
+          }
+
+          await reviewsCTX.add(_review)
 
           setIsVisible(false)
         }
       }
     }
   }
-
-  useEffect(() => {
-    if (initialReviews) {
-      setReviews(initialReviews)
-    }
-  }, [initialReviews])
 
   const renderOpenOrCloseIcon = () => {
     if (isVisible) {
@@ -133,6 +143,15 @@ function ReviewPage() {
     }
   }
 
+  const logout = () => {
+    authCTX.logout()
+    navigate(-1)
+  }
+
+  const redirectToReviewsDetails = (item: ReviewDTO) => {
+    navigate(`/reviews/review/${item._id}`, { state: item })
+  }
+
   return (
     <div className={styles.container}>
       <Header>
@@ -149,7 +168,7 @@ function ReviewPage() {
         <Button
           type='button'
           btnType='secondary'
-          onClick={() => navigate('/')}
+          onClick={logout}
         >
           Sair
         </Button>
@@ -164,16 +183,16 @@ function ReviewPage() {
       {renderForm()}
 
       <div className={styles.reviews}>
-        {initialReviews?.map(({ user_id, name, title_book, writer, review, created_at }) => (
+        {reviews?.map(item => (
           <Review
             key={Math.random().toString()}
-            name={name}
-            title_book={title_book}
-            writer={writer}
-            review={review}
-            created_at={created_at}
-            onClick={() => navigate(`/reviews/review/${user_id}`)}
-          />
+            name={item.name}
+            title_book={item.title_book}
+            writer={item.writer}
+            review={item.review}
+            created_at={item.created_at}
+            onClick={() => redirectToReviewsDetails(item)}
+        />
         ))}
       </div>
     </div>

@@ -1,4 +1,4 @@
-interface ReviewDTO {
+interface Review {
   _id?: string
   user_id?: string
   name?: string
@@ -10,4 +10,4 @@ interface ReviewDTO {
   created_at?: string
 }
 
-export default ReviewDTO
+export default Review
