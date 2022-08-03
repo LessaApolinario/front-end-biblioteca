@@ -79,7 +79,12 @@ function ReviewPage() {
             available: true
           }
 
-          await reviewsCTX.add(_review)
+          const r = await reviewsCTX.add(_review)
+
+          setReviews((previousState) => [
+            r,
+            ...previousState
+          ])
 
           setIsVisible(false)
         }

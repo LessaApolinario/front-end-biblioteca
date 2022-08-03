@@ -8,7 +8,7 @@ import api from "../../services/api";
 interface ReviewsCTXProps {
   data: undefined | Review[]
   fetch(): Promise<ReviewDTO[]>
-  add(review: Review): Promise<void>
+  add(review: Review): Promise<Review>
 }
 
 interface ReviewsProviderProps {
@@ -39,6 +39,8 @@ function ReviewsProvider({ children }: ReviewsProviderProps) {
       review,
       ...previousState as Review[]
     ])
+
+    return review
   }
 
   return (
