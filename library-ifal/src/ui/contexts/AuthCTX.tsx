@@ -66,10 +66,6 @@ function AuthProvider({ children }: AuthProviderProps) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     setUser(undefined)
-
-    await api.post('/api/auth/logout', {}, { headers: {
-      'Content-type': 'application/json'
-    }})
   }
 
   return (
