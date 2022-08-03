@@ -30,6 +30,7 @@ function ReviewPage() {
   useEffect(() => {
     const getReviews = async () => {
       const reviews = await reviewsCTX.fetch()
+      reviews.reverse()
       setReviews(reviews)
     }
 
