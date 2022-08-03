@@ -69,17 +69,17 @@ function ReviewPage() {
 
         if (title_book !== '' && review !== '' && 
           isLoggedIn && typeof authCTX.user !== 'undefined') {
-            // TODO:: resolver erro no CORS
           const user = authCTX.user
           const _review: ReviewDTO = {
-            user_id: user?._id,
-            name: user?.name,
+            user_id: user._id,
+            name: user.name,
             title_book,
             writer,
             review,
+            available: true
           }
 
-          reviewsCTX.add(_review)
+          await reviewsCTX.add(_review)
 
           setIsVisible(false)
         }
@@ -143,6 +143,11 @@ function ReviewPage() {
     }
   }
 
+  const logout = () => {
+    authCTX.logout()
+    navigate(-1)
+  }
+
   return (
     <div className={styles.container}>
       <Header>
@@ -159,7 +164,7 @@ function ReviewPage() {
         <Button
           type='button'
           btnType='secondary'
-          onClick={() => navigate('/')}
+          onClick={logout}
         >
           Sair
         </Button>
@@ -174,7 +179,7 @@ function ReviewPage() {
       {renderForm()}
 
       <div className={styles.reviews}>
-        {reviews?.map(({ user_id, name, title_book, writer, review, created_at }) => (
+        {reviews?.map(({ _id, name, title_book, writer, review, created_at }) => (
           <Review
             key={Math.random().toString()}
             name={name}
@@ -182,7 +187,7 @@ function ReviewPage() {
             writer={writer}
             review={review}
             created_at={created_at}
-            onClick={() => navigate(`/reviews/review/${user_id}`)}
+            onClick={() => navigate(`/reviews/review/${_id}`)}
           />
         ))}
       </div>
