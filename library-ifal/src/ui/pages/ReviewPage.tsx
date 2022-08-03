@@ -148,6 +148,10 @@ function ReviewPage() {
     navigate(-1)
   }
 
+  const redirectToReviewsDetails = (item: ReviewDTO) => {
+    navigate(`/reviews/review/${item._id}`, { state: item })
+  }
+
   return (
     <div className={styles.container}>
       <Header>
@@ -179,16 +183,16 @@ function ReviewPage() {
       {renderForm()}
 
       <div className={styles.reviews}>
-        {reviews?.map(({ _id, name, title_book, writer, review, created_at }) => (
+        {reviews?.map(item => (
           <Review
             key={Math.random().toString()}
-            name={name}
-            title_book={title_book}
-            writer={writer}
-            review={review}
-            created_at={created_at}
-            onClick={() => navigate(`/reviews/review/${_id}`)}
-          />
+            name={item.name}
+            title_book={item.title_book}
+            writer={item.writer}
+            review={item.review}
+            created_at={item.created_at}
+            onClick={() => redirectToReviewsDetails(item)}
+        />
         ))}
       </div>
     </div>
