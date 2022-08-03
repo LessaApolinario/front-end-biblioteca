@@ -9,6 +9,14 @@ import Header from "../components/Header";
 import styles from '../styles/pages/HomePage.module.scss'
 
 import harry from '../../assets/img/harry.jpg'
+import Microcontrolador8051ComLinguagemC from '../../assets/img/Microcontrolador8051ComLinguagemC.jpg' 
+import padroesdeprojeto from '../../assets/img/padroesdeprojeto.jpg'
+import AHoraDaEstrela from '../../assets/img/AHoraDaEstrela.jpg'
+import funcoes from '../../assets/img/funcoes.jpg'
+import _1984 from '../../assets/img/_1984.jpg'
+import OAlienista from '../../assets/img/OAlienista.jpeg'
+import PHP from '../../assets/img/PHP.jpg'
+import Python from '../../assets/img/Python.jpg'
 
 function HomePage() {
   const navigate = useNavigate()
@@ -72,34 +80,28 @@ function HomePage() {
               <img onClick={() => navigate('/books')} src={harry} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={Microcontrolador8051ComLinguagemC} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={padroesdeprojeto} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={AHoraDaEstrela} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={funcoes} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={_1984} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={OAlienista} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={PHP} alt="" />
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
-            </div>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
-            </div>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={Python} alt="" />
             </div>
           </div>
         </div>
