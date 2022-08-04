@@ -78,30 +78,39 @@ function HomePage() {
           <div className={styles.images} ref={itemsRef} onWheel={event => scroll(event)}>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <p>Harry Potter e o cálice de fogo</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={Microcontrolador8051ComLinguagemC} alt="" />
+              <p>Microcontrolador 8051 com Linguagem C</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={padroesdeprojeto} alt="" />
+              <p>Use a cabeça!: padrões de projetos</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={AHoraDaEstrela} alt="" />
+              <p>A hora da estrela</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={funcoes} alt="" />
+              <p>Fundamentos de matemática elementar: Conjuntos e funções</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={_1984} alt="" />
+              <p>1984</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={OAlienista} alt="" />
+              <p>O alienista</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={PHP} alt="" />
+              <p>Desenvolvendo Websites com PHP</p>
             </div>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={Python} alt="" />
+              <p>Introdução à prgramação com Python</p>
             </div>
           </div>
         </div>
