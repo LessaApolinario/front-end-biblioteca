@@ -24,6 +24,7 @@ function ReviewPage() {
   const bookTitleRef = useRef<HTMLInputElement>(null)
   const authorNameRef = useRef<HTMLInputElement>(null)
   const reviewTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const searchRef = useRef<HTMLInputElement>(null)
   const authCTX = useContext(AuthCTX)
   const reviewsCTX = useContext(ReviewsCTX)
 
@@ -158,6 +159,12 @@ function ReviewPage() {
     navigate(`/reviews/review/${item._id}`, { state: item })
   }
 
+  const handleSearchReview = () => {
+    const name = searchRef.current?.value
+    const filteredReviews = reviews.filter((review) => review.name === name)
+    setReviews(filteredReviews)
+  }
+
   return (
     <div className={styles.container}>
       <Header>
@@ -182,6 +189,17 @@ function ReviewPage() {
 
     <div className={styles.plusIcon}>
       {renderOpenOrCloseIcon()}
+    </div>
+
+    <div className={styles.search}>
+      <input type='text' ref={searchRef} />
+      <Button
+        type='button'
+        btnType='secondary'
+        onClick={handleSearchReview}
+      >
+        Pesquisar
+      </Button>
     </div>
 
     <h2>Resenhas</h2>
