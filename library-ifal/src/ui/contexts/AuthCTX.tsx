@@ -1,9 +1,10 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import LoginResponseDto from '../../core/dto/LoginResponseDTO'
+import LoginResponseDTO from '../../core/dto/LoginResponseDTO'
+import LogoutResponseDTO from '../../core/dto/LogoutResponseDTO'
+
 import User from '../../core/models/User'
-import { useFetch } from '../../hooks/useFetch'
 
 import api from '../../services/api'
 
@@ -22,7 +23,6 @@ export const AuthCTX = createContext({} as AuthCTXProps)
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>()
   const navigate = useNavigate()
-  const { data: users } = useFetch<User[]>('api/users')
 
   useEffect(() => {
     if (user) {
@@ -34,7 +34,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   const login = async (user: User) => {
     if (user) {
-      const { data, status, statusText } = await api.post<LoginResponseDto>(
+      const { data, status, statusText } = await api.post<LoginResponseDTO>(
         '/api/auth/login', 
         JSON.stringify(user), {
           headers: {
@@ -44,15 +44,13 @@ function AuthProvider({ children }: AuthProviderProps) {
       )
 
       if (data && status === 200 && statusText === 'OK') {
-        const { access_token } = data
+        const { id, name, access_token } = data
         localStorage.setItem('user', JSON.stringify(user))
         localStorage.setItem('token', access_token)
+        localStorage.setItem('id', id)
         
-        user._id = data.id
-
-        const foundUser = users?.find(({ _id }) => _id === user._id)
-        user.name = foundUser?.name
-        
+        user._id = id
+        user.name = name
         setUser(user)
       }
 
@@ -63,7 +61,23 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const logout = async () => {
+    const id = localStorage.getItem('id')
+    const token = localStorage.getItem('token')
+
+    try {
+      await api.post<LogoutResponseDTO>(
+        'api/auth/logout', 
+        JSON.stringify({ id, token }), {
+          headers: {
+            'Content-type': 'application/json'
+          }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+    
     localStorage.removeItem('user')
+    localStorage.removeItem('id')
     localStorage.removeItem('token')
     setUser(undefined)
   }
