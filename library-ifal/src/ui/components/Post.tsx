@@ -1,0 +1,25 @@
+import styles from '../styles/components/Post.module.scss'
+
+interface PostProps {
+    name?: string
+    title: string
+    content: string
+    user_id?: string
+    created_at?: string
+    updated_at?: string
+}
+
+function Post() {
+    return (
+        <article className={styles.container}>
+            <h3>{name}</h3>
+            <h4 className={styles.postTitle}>{title}</h4>
+
+            <p className={styles.content}>{content}</p>
+
+            <span className={styles.date}>{created_at}</span>
+        </article>
+    )
+}
+
+export default Post
