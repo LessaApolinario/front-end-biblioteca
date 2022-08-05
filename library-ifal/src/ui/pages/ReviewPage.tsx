@@ -15,6 +15,7 @@ import styles from '../styles/pages/ReviewPage.module.scss'
 
 import { AuthCTX } from '../contexts/AuthCTX'
 import { ReviewsCTX } from '../contexts/ReviewsCTX'
+import api from '../../services/api'
 
 function ReviewPage() {
   const [reviews, setReviews] = useState<ReviewDTO[]>([])
@@ -159,10 +160,14 @@ function ReviewPage() {
     navigate(`/reviews/review/${item._id}`, { state: item })
   }
 
-  const handleSearchReview = () => {
-    const name = searchRef.current?.value
-    const filteredReviews = reviews.filter((review) => review.name === name)
-    setReviews(filteredReviews)
+  const handleSearchReview = async () => {
+    const query = searchRef.current?.value
+    const { data } = await api.get<ReviewDTO[]>(`/api/review/search?s=${query}`)
+    const isEmpty = !data.length
+
+    if (!isEmpty) {
+      setReviews(data)
+    }
   }
 
   return (
