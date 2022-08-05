@@ -1,9 +1,11 @@
 import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import { GiTreeBranch } from 'react-icons/gi'
 
 import api from "../../services/api";
 
+import Button from '../components/Button';
 import Header from "../components/Header";
 
 import styles from '../styles/pages/CommentsPage.module.scss'
@@ -19,14 +21,16 @@ function CommentsPage() {
   const nameRef = useRef<HTMLInputElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
   const commentRef = useRef<HTMLTextAreaElement>(null)
+  const navigate = useNavigate()
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     const name = nameRef.current?.value
     const email = emailRef.current?.value
-    const comment = commentRef.curren?.value
+    const comment = commentRef.current?.value
     
-    if (name !== '' && email !== '' && comment !== '') {
+    if (name !== '' && email !== '' && comment !== '' 
+      && name && email && comment) {
       const _comment: Comment = {
         name,
         email,
@@ -86,7 +90,7 @@ function CommentsPage() {
         </p>
       </div>
 
-      <form action="#" className={styles.form} ref={formRef}>
+      <form action="#" className={styles.form} onSubmit={handleSubmit} ref={formRef}>
         <div className={styles.name}>
           <label>Seu nome <span>*</span></label>
           <input type="text" ref={nameRef} />
@@ -99,7 +103,7 @@ function CommentsPage() {
 
         <div className={styles.comment}>
           <label>Comentário <span>*</span></label>
-          <textarea cols="30" rows="10" ref={commentRef}></textarea>
+          <textarea cols={30} rows={10} ref={commentRef}></textarea>
         </div>
 
         <Button type='submit' btnType='secondary'>Enviar</Button>
