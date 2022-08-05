@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -20,6 +21,13 @@ import Python from '../../assets/img/Python.jpg'
 
 function HomePage() {
   const navigate = useNavigate()
+  const formRef = useRef<HTMLFormElement>(null)
+  const titleRef = useRef<HTMLInputElement>(null)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
+
+  const handleCreatePost = () => {
+    console.log('post created')
+  }
 
   return (
     <main className={styles.container}>
@@ -99,10 +107,40 @@ function HomePage() {
         <h3>Área de posts</h3>
         
         <div className={styles.posts}>
+          <div className={styles.search}>
+            <Button
+              type='button'
+              btnType='secondary'
+              onClick={handleCreatePost}
+            >
+              Escreva um post
+            </Button>
+          </div>
+
+          <form action="#" ref={formRef} className={styles.form}>
+            <div className={styles.postTitle}>
+              <label>Título do post</label>
+              <input type="text" ref={titleRef} />
+            </div>
+
+            <div className={styles.postContent}>
+              <label>Conteúdo do post</label>
+              <textarea cols={30} rows={10} ref={contentRef}></textarea>
+            </div>
+
+            <Button type='button' btnType='secondary'>Publicar post</Button>
+          </form>
+
           <Post
             name='Lessa Apolinario'
             title='Sobre o atendimento'
             content='Muito bom o atendimento, sem demora e com agilidade'
+            created_at='05/08/2022'
+          />
+          <Post
+            name='Miguel Márcio'
+            title='Sobre os livros'
+            content='Nunca tinha encontrado um acervo tão rico e organizado'
             created_at='05/08/2022'
           />
         </div>
