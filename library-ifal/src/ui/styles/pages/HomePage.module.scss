@@ -53,14 +53,13 @@
     flex-direction: column;
 
     width: 100%;
-    height: calc(calc(100% - 1rem) - 3rem);
 
     .carrousel {
       display: flex;
       align-items: center;
       justify-content: center;
 
-      width: 100vw;
+      width: 100%;
 
       .images {
         display: flex;
@@ -71,29 +70,11 @@
 
         overflow-x: auto;
         padding: 0.8rem 0rem;
-
-        &::-webkit-scrollbar-track {
-          background-color: transparent;
-        }
-        
-        &::-webkit-scrollbar {
-          width: 6px;
-          background: transparent;
-        }
-  
-        &::-webkit-scrollbar-thumb {
-          background: transparent;
-        }
-  
-        &::-webkit-scrollbar-thumb:active {
-          background: transparent;
-        }
         
         .item {
           flex: none;
           
           width: 183px;
-          height: 350px;
 
           cursor: pointer;
 
@@ -122,6 +103,16 @@
 
       margin-top: 0.8rem;
       margin-bottom: 2.5rem;
+    }
+
+    > .posts {
+      padding: 1rem 1.5rem;
+      width: 100%;
+    }
+
+    > h3 {
+      margin: 1rem 0;
+      font-size: 3.5rem;
     }
   }
 }
