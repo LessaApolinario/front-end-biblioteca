@@ -16,8 +16,6 @@ function Post({ name, title, content, created_at }: PostProps) {
       <h4 className={styles.postTitle}>{title}</h4>
       
       <p className={styles.content}>{content}</p>
-
-      
     </article>
   )
 }
