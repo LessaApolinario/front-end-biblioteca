@@ -12,12 +12,12 @@ interface PostProps {
 function Post({ name, title, content, created_at }: PostProps) {
   return (
     <article className={styles.container}>
-      <h3>{name}</h3>
+      <h3>{name} <span className={styles.date}>{created_at}</span></h3>
       <h4 className={styles.postTitle}>{title}</h4>
       
       <p className={styles.content}>{content}</p>
 
-      <span className={styles.date}>{created_at}</span>
+      
     </article>
   )
 }
