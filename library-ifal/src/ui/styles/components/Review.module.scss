@@ -29,14 +29,11 @@
   .review {
     color: $primary;
     font-size: 1.05rem;
-
-    &.hiddenText {
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 10;
-      -webkit-box-orient: vertical;
-
-    }
+    
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
 
     cursor: pointer;
 
