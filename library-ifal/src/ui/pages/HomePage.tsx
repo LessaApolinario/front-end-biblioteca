@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -24,9 +24,38 @@ function HomePage() {
   const formRef = useRef<HTMLFormElement>(null)
   const titleRef = useRef<HTMLInputElement>(null)
   const contentRef = useRef<HTMLTextAreaElement>(null)
-
+  const [isVisible, setIsVisible] = useState(false)
+  const [text, setText] = useState<string>('Escreva um post')
+  
   const handleCreatePost = () => {
-    console.log('post created')
+    if (!isVisible && text === 'Escreva um post') {
+      setText('Fechar')
+    } else if (isVisible && text === 'Fechar') {
+      setText('Escreva um post')
+    }
+
+    setIsVisible(!isVisible)
+    
+  }
+
+  const renderForm = () => {
+    if (isVisible) {
+      return (
+        <form action="#" ref={formRef} className={styles.form}>
+          <div className={styles.postTitle}>
+            <label>Título do post</label>
+            <input type="text" ref={titleRef} />
+          </div>
+
+          <div className={styles.postContent}>
+            <label>Conteúdo do post</label>
+            <textarea cols={30} rows={10} ref={contentRef}></textarea>
+          </div>
+
+          <Button type='button' btnType='secondary'>Publicar post</Button>
+        </form>
+      )
+    }
   }
 
   return (
@@ -113,23 +142,11 @@ function HomePage() {
               btnType='secondary'
               onClick={handleCreatePost}
             >
-              Escreva um post
+              {text}
             </Button>
           </div>
 
-          <form action="#" ref={formRef} className={styles.form}>
-            <div className={styles.postTitle}>
-              <label>Título do post</label>
-              <input type="text" ref={titleRef} />
-            </div>
-
-            <div className={styles.postContent}>
-              <label>Conteúdo do post</label>
-              <textarea cols={30} rows={10} ref={contentRef}></textarea>
-            </div>
-
-            <Button type='button' btnType='secondary'>Publicar post</Button>
-          </form>
+          {renderForm()}
 
           <Post
             name='Lessa Apolinario'
