@@ -9,7 +9,7 @@ interface PostProps {
   updated_at?: string
 }
 
-function Post() {
+function Post({ name, title, content, created_at }: PostProps) {
   return (
     <article className={styles.container}>
       <h3>{name}</h3>
