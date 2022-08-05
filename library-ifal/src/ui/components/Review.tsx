@@ -1,5 +1,3 @@
-import { useEffect, useRef } from 'react'
-
 import styles from '../styles/components/Review.module.scss'
 
 interface ReviewProps {
@@ -12,22 +10,6 @@ interface ReviewProps {
 }
 
 function Review({ name, title_book, writer, review, created_at, onClick }: ReviewProps) {
-  const paragraphRef = useRef<HTMLParagraphElement>(null)
- 
-  useEffect(() => {
-    const paragraph = paragraphRef.current
-
-    if (paragraph) {
-      if (
-        (paragraph.textContent?.length && 
-        paragraph.textContent?.length >= 500) || 
-        !paragraph.textContent?.includes(' ')
-      ) {
-        paragraph.classList.add(`${styles['hiddenText']}`)
-      }
-    }
-  }, [])
-
   const abbreviateMonth = (month: string) => {
     const abbreviatedMonths: Record<string, string> = {
       '01': "Ja",
@@ -69,7 +51,6 @@ function Review({ name, title_book, writer, review, created_at, onClick }: Revie
       <p
         className={styles.review}
         title='Clique para ver detalhes da resenha'
-        ref={paragraphRef}
         onClick={onClick}
       >
         {review}
