@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
 
 import { GiTreeBranch } from 'react-icons/gi'
 
 import Button from "../components/Button";
 import Header from "../components/Header";
+import Post from "../components/Post";
 
 import styles from '../styles/pages/HomePage.module.scss'
 
@@ -20,25 +20,6 @@ import Python from '../../assets/img/Python.jpg'
 
 function HomePage() {
   const navigate = useNavigate()
-  const itemsRef = useRef<HTMLDivElement>(null)
-
-  const scroll = (event: React.WheelEvent<HTMLDivElement>) => {
-    const items = itemsRef.current
-    
-    if (items) {
-      const isDivOrImg = 
-        event.target instanceof HTMLDivElement || 
-        event.target instanceof HTMLImageElement
-      
-      if (isDivOrImg) {
-        if (event.deltaY > 0) {
-          items.scrollBy(300, 0)
-        } else if (event.deltaY < 0) {
-          items.scrollBy(-300, 0)
-        }
-      }
-    }
-  }
 
   return (
     <main className={styles.container}>
@@ -75,7 +56,7 @@ function HomePage() {
         <h1>Bem-vindo</h1>
 
         <div className={styles.carrousel}>
-          <div className={styles.images} ref={itemsRef} onWheel={event => scroll(event)}>
+          <div className={styles.images}>
             <div className={styles.item}>
               <img onClick={() => navigate('/books')} src={harry} alt="" />
               <p>Harry Potter e o cálice de fogo</p>
@@ -113,6 +94,17 @@ function HomePage() {
               <p>Introdução à prgramação com Python</p>
             </div>
           </div>
+        </div>
+
+        <h3>Área de posts</h3>
+        
+        <div className={styles.posts}>
+          <Post
+            name='Lessa Apolinario'
+            title='Sobre o atendimento'
+            content='Muito bom o atendimento, sem demora e com agilidade'
+            created_at='05/08/2022'
+          />
         </div>
       </section>
     </main>
