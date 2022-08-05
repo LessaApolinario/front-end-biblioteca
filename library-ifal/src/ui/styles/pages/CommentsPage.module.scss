@@ -1,0 +1,121 @@
+.container {
+  $primary: #5B4B8A;
+  $secondary: #FFF;
+
+  width: 100%;
+  height: 100%;
+
+  > header {
+    > svg {
+      fill: $secondary;
+      font-size: 2rem;
+
+      cursor: pointer;
+    }
+
+    > ul {
+      list-style: none;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      li {
+        font-weight: bold;
+        font-size: 1.05rem;
+
+        color: $secondary;
+        padding: 0.5rem 1rem;
+
+        cursor: pointer;
+
+        border: 1px solid transparent;
+
+        &:hover {
+          border-top: 1px solid $secondary;
+          border-bottom: 1px solid $secondary;
+        }
+      }
+    }
+
+    > .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+  }
+
+  .flexWrapper {
+    width: 100%;
+    height: calc(calc(100% - 3.6rem) - 0.6rem);
+    
+    padding: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .presentation {
+      width: 30rem;
+
+      padding: 1rem 1.5rem;
+
+      border: 1px solid $primary;
+      border-radius: 3px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+
+        margin-bottom: 1rem;
+      }
+
+      .form {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        > div > input, > div > textarea {
+          padding: 0.5rem 1rem;
+          width: 100%;
+
+          border: 1px solid $primary;
+          border-radius: 3px;
+
+          &:focus {
+            outline-color: $primary;
+          }
+        }
+
+        .name, .email, .comment {
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+
+          > label > span {
+            color: red;
+          }
+        }
+
+        .comment > textarea {
+          resize: none;
+        }
+
+        > button {
+          width: max-content;
+        }
+      }
+    }
+  }
+}
