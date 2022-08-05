@@ -25,9 +25,9 @@ function CommentsPage() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    const name = nameRef.current?.value
-    const email = emailRef.current?.value
-    const comment = commentRef.current?.value
+    let name = nameRef.current?.value
+    let email = emailRef.current?.value
+    let comment = commentRef.current?.value
     
     if (name !== '' && email !== '' && comment !== '' 
       && name && email && comment) {
@@ -38,11 +38,20 @@ function CommentsPage() {
       }
 
       try {
-        await api.post('/api/comments', JSON.stringify(_comment), {
+        const response = await api.post('/api/comments', JSON.stringify(_comment), {
           headers: {
             'Content-type': 'application/json'
           }
         })
+
+        const { result } = response.data
+
+        if (result === 'ok' && nameRef.current && 
+          emailRef.current && commentRef.current) {
+          nameRef.current.value = ''
+          emailRef.current.value = ''
+          commentRef.current.value = ''
+        }
       } catch (error) {
         console.log(error)
       }
@@ -80,34 +89,38 @@ function CommentsPage() {
         </div>
       </Header>
       
-      <div className={styles.presentation}>
-        <h2>Contato</h2>
-        <h3>Olá, querido visitante</h3>
+      <div className={styles.flexWrapper}>
+        <div className={styles.presentation}>
+          <div className={styles.box}>
+            <h2>Contato</h2>
+            <h3>Olá, querido visitante</h3>
 
-        <p>
-          Sinta-se livre para deixar uma mensagem sobre: dicas de como melhorar o site, ou mande seu livro, poema, 
-          ou qualquer outra razão.
-        </p>
+            <p>
+              Sinta-se livre para deixar uma mensagem sobre: dicas de como melhorar o site, ou mande seu livro, poema, 
+              ou qualquer outra razão.
+            </p>
+          </div>
+
+          <form action="#" className={styles.form} onSubmit={handleSubmit} ref={formRef}>
+            <div className={styles.name}>
+              <label>Seu nome <span>*</span></label>
+              <input type="text" ref={nameRef} />
+            </div>
+
+            <div className={styles.email}>
+              <label>Seu melhor email <span>*</span></label>
+              <input type="email" ref={emailRef} />
+            </div>
+
+            <div className={styles.comment}>
+              <label>Comentário <span>*</span></label>
+              <textarea cols={30} rows={10} ref={commentRef}></textarea>
+            </div>
+
+            <Button type='submit' btnType='secondary'>Enviar</Button>
+          </form>
+        </div>
       </div>
-
-      <form action="#" className={styles.form} onSubmit={handleSubmit} ref={formRef}>
-        <div className={styles.name}>
-          <label>Seu nome <span>*</span></label>
-          <input type="text" ref={nameRef} />
-        </div>
-
-        <div className={styles.email}>
-          <label>Seu melhor email <span>*</span></label>
-          <input type="email" ref={emailRef} />
-        </div>
-
-        <div className={styles.comment}>
-          <label>Comentário <span>*</span></label>
-          <textarea cols={30} rows={10} ref={commentRef}></textarea>
-        </div>
-
-        <Button type='submit' btnType='secondary'>Enviar</Button>
-      </form>
     </div>
   )
 }
