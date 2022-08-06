@@ -73,19 +73,24 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const logout = async () => {
-    const id = localStorage.getItem('id')
-    const token = localStorage.getItem('token')
+    const storagedId = localStorage.getItem('id')
+    const storagedToken = localStorage.getItem('token')
 
     try {
-      await api.post<LogoutResponseDTO>(
-        'api/auth/logout', 
-        JSON.stringify({ id, token }), {
-          headers: {
-            'Content-type': 'application/json'
-          }
-      })
-
-      api.defaults.headers.common['Authorization'] = ''
+      if (storagedId && storagedToken) {
+        const id: string = JSON.parse(storagedId)
+        const token: string = JSON.parse(storagedToken)
+        
+        await api.post<LogoutResponseDTO>(
+          'api/auth/logout', 
+          JSON.stringify({ id, token }), {
+            headers: {
+              'Content-type': 'application/json'
+            }
+        })
+  
+        api.defaults.headers.common['Authorization'] = ''
+      }
     } catch (error) {
       console.log(error)
     }
