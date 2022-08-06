@@ -21,7 +21,7 @@ interface AuthProviderProps {
 export const AuthCTX = createContext({} as AuthCTXProps)
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<LoginResponseDTO | User>()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -31,6 +31,14 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     // eslint-disable-next-line
   }, [user])
+
+  useEffect(() => {
+    const cachedUser = localStorage.getItem('user')
+
+    if (cachedUser !== null) {
+      JSON.parse(cachedUser)
+    }
+  }, [])
 
   const login = async (user: User) => {
     if (user) {
@@ -46,12 +54,14 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (data && status === 200 && statusText === 'OK') {
         const { id, name, access_token } = data
         localStorage.setItem('user', JSON.stringify(user))
-        localStorage.setItem('token', access_token)
-        localStorage.setItem('id', id)
+        localStorage.setItem('token', JSON.stringify(access_token))
+        localStorage.setItem('id', JSON.stringify(id))
         
         user._id = id
         user.name = name
-        setUser(user)
+
+        sessionStorage.setItem('token', JSON.stringify(access_token))
+        setUser(data)
       }
 
       return 'Sucesso ao logar'
