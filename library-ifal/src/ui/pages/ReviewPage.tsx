@@ -67,14 +67,13 @@ function ReviewPage() {
       if (newReview) {
         const { title_book, review, writer } = newReview
 
-        const isLoggedIn = Boolean(localStorage.getItem('user') 
-          && localStorage.getItem('token'))
+        const isLoggedIn = Boolean(sessionStorage.getItem('user'))
 
         if (title_book !== '' && review !== '' && 
           isLoggedIn && typeof authCTX.user !== 'undefined') {
           const user = authCTX.user
           const _review: ReviewDTO = {
-            user_id: user._id,
+            user_id: user.id,
             name: user.name,
             title_book,
             writer,

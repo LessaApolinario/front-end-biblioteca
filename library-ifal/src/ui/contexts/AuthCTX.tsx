@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import LoginResponseDTO from '../../core/dto/LoginResponseDTO'
+import AuthCredentialsDTO from '../../core/dto/AuthCredentialsDTO'
 import LogoutResponseDTO from '../../core/dto/LogoutResponseDTO'
 
 import User from '../../core/models/User'
@@ -10,7 +10,7 @@ import api from '../../services/api'
 
 interface AuthCTXProps {
   user: User | undefined
-  login(user: User): Promise<string>
+  login(user: AuthCredentialsDTO): Promise<string>
   logout(): void
 }
 
@@ -21,7 +21,7 @@ interface AuthProviderProps {
 export const AuthCTX = createContext({} as AuthCTXProps)
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<LoginResponseDTO | User>()
+  const [user, setUser] = useState<User>()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,31 +40,27 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [])
 
-  const login = async (user: User) => {
-    if (user) {
-      const { data, status, statusText } = await api.post<LoginResponseDTO>(
+  const login = async (credentials: AuthCredentialsDTO) => {
+    if (credentials.username !== '' && credentials.password !== '') {
+      const response = await api.post<User>(
         '/api/auth/login', 
-        JSON.stringify(user), {
+        JSON.stringify(credentials), {
           headers: {
             'Content-type': 'application/json'
           }
         }
       )
 
-      if (data && status === 200 && statusText === 'OK') {
-        const { id, name, access_token } = data
-        localStorage.setItem('user', JSON.stringify(user))
-        localStorage.setItem('token', JSON.stringify(access_token))
-        localStorage.setItem('id', JSON.stringify(id))
-        
-        user._id = id
-        user.name = name
+      const { access_token, id } = response.data
 
-        sessionStorage.setItem('token', JSON.stringify(access_token))
-        setUser(data)
-      }
+      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('token', JSON.stringify(access_token))
+      localStorage.setItem('id', JSON.stringify(id))
+      
+      sessionStorage.setItem('token', JSON.stringify(access_token))
+      setUser(response.data)
 
-      return 'Sucesso ao logar'
+      return 'Success'
     }
     
     return 'Fail'
@@ -89,6 +85,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     localStorage.removeItem('user')
     localStorage.removeItem('id')
     localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
     setUser(undefined)
   }
 

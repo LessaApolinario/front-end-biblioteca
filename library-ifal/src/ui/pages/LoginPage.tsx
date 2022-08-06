@@ -9,6 +9,7 @@ import Button from '../components/Button'
 
 import styles from '../styles/pages/LoginPage.module.scss'
 import { AuthCTX } from '../contexts/AuthCTX'
+import AuthCredentialsDTO from '../../core/dto/AuthCredentialsDTO'
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -22,12 +23,13 @@ function LoginPage() {
     const username = usernameRef.current?.value
     const password = passwordRef.current?.value
 
-    const user: User = {
-      username,
-      password
+    try {
+      if (username && password) {
+        authCTX.login({ username, password })
+      }
+    } catch(error) {
+      console.log(`Erro ao fazer login: ${error}`)
     }
-
-    authCTX.login(user)
   }
 
   return (
