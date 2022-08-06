@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -6,6 +6,12 @@ import { GiTreeBranch } from 'react-icons/gi'
 import Button from "../components/Button";
 import Header from "../components/Header";
 import Post from "../components/Post";
+
+import PostDTO from "../../core/dto/PostDTO";
+
+import { AuthCTX } from "../contexts/AuthCTX";
+
+import api from "../../services/api";
 
 import styles from '../styles/pages/HomePage.module.scss'
 
@@ -26,22 +32,62 @@ function HomePage() {
   const contentRef = useRef<HTMLTextAreaElement>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [text, setText] = useState<string>('Escreva um post')
+  const [posts, setPosts] = useState<PostDTO[]>([])
+  const authCTX = useContext(AuthCTX)
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const { data } = await api.get<PostDTO[]>('/api/posts')
+      const posts = data.reverse()
+      setPosts(posts)
+    }
+
+    getPosts()
+  }, [])
   
-  const handleCreatePost = () => {
-    if (!isVisible && text === 'Escreva um post') {
-      setText('Fechar')
-    } else if (isVisible && text === 'Fechar') {
-      setText('Escreva um post')
+  const handleCreatePost = async (event: React.FormEvent) => {
+    event.preventDefault()
+    const title = titleRef.current?.value
+    const content = contentRef.current?.value
+
+    const isLoggedUser = localStorage.getItem('token')
+    const user = authCTX.user
+
+    if (title && title !== '' && content && 
+      content !== '' && isLoggedUser && user) {
+      const { name, id } = user
+      const post: PostDTO = {
+        name,
+        title,
+        content,
+        user_id: id
+      }
+
+      try {
+        await api.post('/api/posts', JSON.stringify(post), {
+          headers: {
+            'Content-type': 'application/json'
+          }
+        })
+
+        setPosts((previousState) => [
+          post,
+          ...previousState
+        ])
+      } catch (error) {
+        console.log(`Erro ao criar publicação: ${error}`)
+      }
     }
 
     setIsVisible(!isVisible)
-    
+    setText('Escreva um post')
   }
 
   const renderForm = () => {
     if (isVisible) {
       return (
-        <form action="#" ref={formRef} className={styles.form}>
+        <form action="#" ref={formRef} 
+          onSubmit={handleCreatePost} className={styles.form}>
           <div className={styles.postTitle}>
             <label>Título do post</label>
             <input type="text" ref={titleRef} />
@@ -52,10 +98,25 @@ function HomePage() {
             <textarea cols={30} rows={10} ref={contentRef}></textarea>
           </div>
 
-          <Button type='button' btnType='secondary'>Publicar post</Button>
+          <Button
+            type='submit'
+            btnType='secondary'
+          >
+            Publicar post
+          </Button>
         </form>
       )
     }
+  }
+
+  const changeButtonText = () => {
+    if (!isVisible && text === 'Escreva um post') {
+      setText('Fechar')
+    } else if (isVisible && text === 'Fechar') {
+      setText('Escreva um post')
+    }
+
+    setIsVisible(!isVisible)
   }
 
   return (
@@ -140,7 +201,7 @@ function HomePage() {
             <Button
               type='button'
               btnType='secondary'
-              onClick={handleCreatePost}
+              onClick={changeButtonText}
             >
               {text}
             </Button>
@@ -148,18 +209,15 @@ function HomePage() {
 
           {renderForm()}
 
-          <Post
-            name='Lessa Apolinario'
-            title='Sobre o atendimento'
-            content='Muito bom o atendimento, sem demora e com agilidade'
-            created_at='05/08/2022'
-          />
-          <Post
-            name='Miguel Márcio'
-            title='Sobre os livros'
-            content='Nunca tinha encontrado um acervo tão rico e organizado'
-            created_at='05/08/2022'
-          />
+          {posts.map(({ name, title, content, created_at }) => (
+            <Post
+              key={Math.random() * 6}
+              name={name}
+              title={title}
+              content={content}
+              created_at={created_at}
+            />
+          ))}
         </div>
       </section>
     </main>

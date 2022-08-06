@@ -9,8 +9,9 @@ import User from '../../core/models/User'
 import api from '../../services/api'
 
 interface AuthCTXProps {
+  signed: boolean
   user: User | undefined
-  login(user: AuthCredentialsDTO): Promise<string>
+  login(user: AuthCredentialsDTO): Promise<boolean>
   logout(): void
 }
 
@@ -33,10 +34,12 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, [user])
 
   useEffect(() => {
-    const cachedUser = localStorage.getItem('user')
+    const storagedUser = localStorage.getItem('user')
+    const storagedToken = localStorage.getItem('token')
 
-    if (cachedUser !== null) {
-      JSON.parse(cachedUser)
+    if (storagedToken && storagedUser) {
+      setUser(JSON.parse(storagedUser))
+      api.defaults.headers.common['Authorization'] = `Bearer ${storagedToken}`
     }
   }, [])
 
@@ -53,17 +56,20 @@ function AuthProvider({ children }: AuthProviderProps) {
 
       const { access_token, id } = response.data
 
-      localStorage.setItem('user', JSON.stringify(user))
+      api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
+
+      const newUser: User = response.data
+
+      setUser(newUser)
+
+      localStorage.setItem('user', JSON.stringify(newUser))
       localStorage.setItem('token', JSON.stringify(access_token))
       localStorage.setItem('id', JSON.stringify(id))
-      
-      sessionStorage.setItem('token', JSON.stringify(access_token))
-      setUser(response.data)
 
-      return 'Success'
+      return true
     }
     
-    return 'Fail'
+    return false
   }
 
   const logout = async () => {
@@ -78,6 +84,8 @@ function AuthProvider({ children }: AuthProviderProps) {
             'Content-type': 'application/json'
           }
       })
+
+      api.defaults.headers.common['Authorization'] = ''
     } catch (error) {
       console.log(error)
     }
@@ -85,12 +93,11 @@ function AuthProvider({ children }: AuthProviderProps) {
     localStorage.removeItem('user')
     localStorage.removeItem('id')
     localStorage.removeItem('token')
-    sessionStorage.removeItem('token')
     setUser(undefined)
   }
 
   return (
-    <AuthCTX.Provider value={{ user, login, logout }}>
+    <AuthCTX.Provider value={{ signed: Boolean(user), user, login, logout }}>
       {children}
     </AuthCTX.Provider>
   )
