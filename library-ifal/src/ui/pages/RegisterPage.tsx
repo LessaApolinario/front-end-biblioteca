@@ -4,8 +4,6 @@ import { GiTreeBranch } from 'react-icons/gi'
 
 import { useNavigate } from 'react-router-dom'
 
-import User from '../../core/models/User'
-
 import api from '../../services/api'
 
 import Button from '../components/Button'
@@ -42,14 +40,14 @@ function RegisterPage() {
       confirmedPassword !== '' && 
       password === confirmedPassword
     ) {
-      const user: User = {
+      const user = {
         name,
         username,
         email,
         password
       }
       
-      await api.post<User>('/api/auth/register', JSON.stringify(user), {
+      await api.post('/api/auth/register', JSON.stringify(user), {
           headers: {
             'Content-type': 'application/json'
           }
