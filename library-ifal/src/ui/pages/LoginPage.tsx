@@ -3,13 +3,10 @@ import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
 
-import User from '../../core/models/User'
-
 import Button from '../components/Button'
 
 import styles from '../styles/pages/LoginPage.module.scss'
 import { AuthCTX } from '../contexts/AuthCTX'
-import AuthCredentialsDTO from '../../core/dto/AuthCredentialsDTO'
 
 function LoginPage() {
   const navigate = useNavigate()
