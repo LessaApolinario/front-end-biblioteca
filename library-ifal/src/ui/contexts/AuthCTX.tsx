@@ -26,19 +26,12 @@ function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (user) {
-      navigate('/')
-    }
-
-    // eslint-disable-next-line
-  }, [user])
-
-  useEffect(() => {
     const storagedUser = localStorage.getItem('user')
     const storagedToken = localStorage.getItem('token')
 
     if (storagedToken && storagedUser) {
-      setUser(JSON.parse(storagedUser))
+      const _user = JSON.parse(storagedUser) as User
+      setUser(_user)
       api.defaults.headers.common['Authorization'] = `Bearer ${storagedToken}`
     }
   }, [])
