@@ -22,7 +22,11 @@ function LoginPage() {
 
     try {
       if (username && password) {
-        authCTX.login({ username, password })
+        const success = await authCTX.login({ username, password })
+        
+        if (success) {
+          navigate('/')
+        }
       }
     } catch(error) {
       console.log(`Erro ao fazer login: ${error}`)
