@@ -67,7 +67,7 @@ function ReviewPage() {
       if (newReview) {
         const { title_book, review, writer } = newReview
 
-        const isLoggedUser = sessionStorage.getItem('token')
+        const isLoggedUser = localStorage.getItem('token')
         const user = authCTX.user
 
         if (title_book !== '' && review !== '' && isLoggedUser && user) {
