@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { createRef, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -30,7 +30,9 @@ function HomePage() {
   const formRef = useRef<HTMLFormElement>(null)
   const titleRef = useRef<HTMLInputElement>(null)
   const contentRef = useRef<HTMLTextAreaElement>(null)
+  const createPostRef = createRef<HTMLButtonElement>()
   const [isVisible, setIsVisible] = useState(false)
+  const [warning, setWarning] = useState(true)
   const [text, setText] = useState<string>('Escreva um post')
   const [posts, setPosts] = useState<PostDTO[]>([])
   const authCTX = useContext(AuthCTX)
@@ -44,7 +46,29 @@ function HomePage() {
 
     getPosts()
   }, [])
-  
+
+  useEffect(() => {
+    const storagedUser = localStorage.getItem('user')
+    const storagedToken = localStorage.getItem('token')
+
+    if (!storagedUser && !storagedToken) {
+      createPostRef.current?.setAttribute('disabled', 'true')
+    } else {
+      createPostRef.current?.removeAttribute('disabled')
+    }
+  }, [createPostRef])
+
+  useEffect(() => {
+    const storagedUser = localStorage.getItem('user')
+    const storagedToken = localStorage.getItem('token')
+
+    if (!storagedUser && !storagedToken) {
+      setWarning(true)
+    } else {
+      setWarning(false)
+    }
+  }, [])
+
   const handleCreatePost = async (event: React.FormEvent) => {
     event.preventDefault()
     const title = titleRef.current?.value
@@ -101,9 +125,15 @@ function HomePage() {
           <Button
             type='submit'
             btnType='secondary'
+            ref={createPostRef}
           >
             Publicar post
           </Button>
+          {
+            warning
+            &&
+            <p className={styles.warning}>Faça login para criar um post</p>
+          }
         </form>
       )
     }
@@ -147,7 +177,10 @@ function HomePage() {
         <Button
           type='button'
           btnType='secondary'
-          onClick={() => authCTX.logout()}
+          onClick={() => {
+            authCTX.logout()
+            setWarning(true)
+          }}
         >
           Sair
         </Button>
