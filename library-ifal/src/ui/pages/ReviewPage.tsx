@@ -169,19 +169,12 @@ function ReviewPage() {
     }
   }
 
-  return (
-    <div className={styles.container}>
-      <Header>
-        <GiTreeBranch />
-        
-        <ul>
-          <li onClick={() => navigate('/')}>Home</li>
-          <li onClick={() => navigate('/synopsis')}>Sinopses</li>
-          <li onClick={() => navigate('/books')}>Livros</li>
-          <li onClick={() => navigate('/hints')}>Dicas</li>
-          <li onClick={() => navigate('/contact')}>Contato</li>
-        </ul>
+  const renderButtons = () => {
+    const storagedUser = localStorage.getItem('user')
+    const storagedToken = localStorage.getItem('token')
 
+    if (storagedUser !== null && storagedToken !== null) {
+      return (
         <Button
           type='button'
           btnType='secondary'
@@ -189,6 +182,36 @@ function ReviewPage() {
         >
           Sair
         </Button>
+      )
+    } else {
+      return (
+        <Button
+          type='button'
+          btnType='secondary'
+          onClick={() => navigate(-1)}
+        >
+          Voltar
+        </Button>
+      )
+    }
+  }
+
+  return (
+    <div className={styles.container}>
+      <Header>
+        <>
+          <GiTreeBranch />
+          
+          <ul>
+            <li onClick={() => navigate('/')}>Home</li>
+            <li onClick={() => navigate('/synopsis')}>Sinopses</li>
+            <li onClick={() => navigate('/books')}>Livros</li>
+            <li onClick={() => navigate('/hints')}>Dicas</li>
+            <li onClick={() => navigate('/contact')}>Contato</li>
+          </ul>
+
+          {renderButtons()}
+        </>
       </Header>
 
     <div className={styles.plusIcon}>

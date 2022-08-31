@@ -119,20 +119,13 @@ function HomePage() {
     setIsVisible(!isVisible)
   }
 
-  return (
-    <main className={styles.container}>
-      <Header>
-        <GiTreeBranch />
-        <ul>
-          <li onClick={() => navigate('/')}>Home</li>
-          <li onClick={() => navigate('/synopsis')}>Sinopses</li>
-          <li onClick={() => navigate('/books')}>Livros</li>
-          <li onClick={() => navigate('/reviews')}>Resenhas</li>
-          <li onClick={() => navigate('/hints')}>Dicas</li>
-          <li onClick={() => navigate('/contact')}>Contato</li>
-        </ul>
+  const renderButtons = () => {
+    const storagedUser = localStorage.getItem('user')
+    const storagedToken = localStorage.getItem('token')
 
-        <div className={styles.buttons}>
+    if (!storagedUser && !storagedToken) {
+      return (
+        <>
           <Button
             type='button'
             btnType='secondary'
@@ -147,6 +140,36 @@ function HomePage() {
           >
             Cadastrar-se
           </Button>
+        </>
+      )
+    } else {
+      return (
+        <Button
+          type='button'
+          btnType='secondary'
+          onClick={() => authCTX.logout()}
+        >
+          Sair
+        </Button>
+      )
+    }
+  }
+
+  return (
+    <main className={styles.container}>
+      <Header>
+        <GiTreeBranch />
+        <ul>
+          <li onClick={() => navigate('/')}>Home</li>
+          <li onClick={() => navigate('/synopsis')}>Sinopses</li>
+          <li onClick={() => navigate('/books')}>Livros</li>
+          <li onClick={() => navigate('/reviews')}>Resenhas</li>
+          <li onClick={() => navigate('/hints')}>Dicas</li>
+          <li onClick={() => navigate('/contact')}>Contato</li>
+        </ul>
+
+        <div className={styles.buttons}>
+          {renderButtons()}
         </div>
       </Header>
 
