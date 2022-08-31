@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import AuthCredentialsDTO from '../../core/dto/AuthCredentialsDTO'
 import LogoutResponseDTO from '../../core/dto/LogoutResponseDTO'
@@ -23,7 +22,6 @@ export const AuthCTX = createContext({} as AuthCTXProps)
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>()
-  const navigate = useNavigate()
 
   useEffect(() => {
     const storagedUser = localStorage.getItem('user')
