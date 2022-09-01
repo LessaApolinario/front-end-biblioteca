@@ -232,7 +232,6 @@ function ReviewPage() {
           
           <ul>
             <li onClick={() => navigate('/')}>Home</li>
-            <li onClick={() => navigate('/synopsis')}>Sinopses</li>
             <li onClick={() => navigate('/books')}>Livros</li>
             <li onClick={() => navigate('/hints')}>Dicas</li>
             <li onClick={() => navigate('/contact')}>Contato</li>
