@@ -5,6 +5,7 @@ import BooksPage from "../pages/BooksPage"
 import CommentsPage from "../pages/CommentsPage"
 
 import Error404Page from "../pages/Error404Page"
+import HintsPage from "../pages/HintsPage"
 import HomePage from "../pages/HomePage"
 import LoginPage from "../pages/LoginPage"
 import RegisterPage from "../pages/RegisterPage"
@@ -24,6 +25,7 @@ function RouteManager() {
             <Route path="/reviews" element={<ReviewPage />} />
             <Route path="/reviews/review/:id" element={<ReviewDetailsPage />} />
             <Route path="/contact" element={<CommentsPage />} />
+            <Route path="/hints" element={<HintsPage />} />
             <Route path="/" element={<Navigate replace to='/home' />} />
             <Route path="/*" element={<Error404Page />} />
           </Routes>
