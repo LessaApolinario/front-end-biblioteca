@@ -3,6 +3,10 @@
   $secondary: #FFF;
 
   width: 100%;
+  min-height: 100%;
+  height: auto;
+  max-height: max-content;
+
   padding: 0 1.5rem;
   padding-bottom: 1rem;
 
