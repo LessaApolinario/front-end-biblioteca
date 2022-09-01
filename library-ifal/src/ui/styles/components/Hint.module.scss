@@ -1,0 +1,29 @@
+.container {
+  $primary:  #5B4B8A;
+  $secondary: #FFF;
+  
+  width: 25rem;
+  height: 20rem;
+
+  padding: 0.8rem;
+  border-radius: 3px;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+
+  background-color: $secondary;
+
+  > h2 {
+    color: $primary;
+    font-size: 1.25rem;
+
+    margin-bottom: 0.8rem;
+  }
+
+  > p {
+    color: $primary;
+    font-size: 1.05rem;
+  }
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
