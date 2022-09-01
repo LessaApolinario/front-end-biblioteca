@@ -11,6 +11,8 @@
 
   background-color: $secondary;
 
+  cursor: pointer;
+
   > h2 {
     color: $primary;
     font-size: 1.25rem;
@@ -18,9 +20,20 @@
     margin-bottom: 0.8rem;
   }
 
+  > h3 {
+    color: $primary;
+    font-size: 1.15rem;
+
+    margin-bottom: 0.8rem;
+  }
+
   > p {
     color: $primary;
     font-size: 1.05rem;
+
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
   }
 
   &:hover {
