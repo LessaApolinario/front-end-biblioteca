@@ -54,7 +54,7 @@ function BooksPage() {
           >
             Voltar
           </Button>
-          <h2>Leaf book</h2>
+          <h2>SIB</h2>
         </nav>
       </Header>
       
