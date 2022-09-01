@@ -20,6 +20,7 @@ import api from '../../services/api'
 function ReviewPage() {
   const [reviews, setReviews] = useState<ReviewDTO[]>([])
   const [isVisible, setIsVisible] = useState(false)
+  const [warning, setWarning] = useState(false)
   const navigate = useNavigate()
   const buttonRef = createRef<HTMLButtonElement>()
   const bookTitleRef = useRef<HTMLInputElement>(null)
@@ -116,6 +117,28 @@ function ReviewPage() {
     }
   }
 
+  useEffect(() => {
+    const storagedUser = localStorage.getItem('user')
+    const storagedToken = localStorage.getItem('token')
+
+    if (!storagedUser && !storagedToken) {
+      buttonRef.current?.setAttribute('disabled', 'true')
+    } else {
+      buttonRef.current?.removeAttribute('disabled')
+    }
+  }, [buttonRef])
+
+  useEffect(() => {
+    const storagedUser = localStorage.getItem('user')
+    const storagedToken = localStorage.getItem('token')
+
+    if (!storagedUser && !storagedToken) {
+      setWarning(true)
+    } else {
+      setWarning(false)
+    }
+  }, [])
+
   const renderForm = () => {
     if (isVisible) {
       return (
@@ -145,6 +168,11 @@ function ReviewPage() {
           >
             Escrever
           </Button>
+          {
+            warning
+            &&
+            <p className={styles.warning}>Faça login para criar resenhas</p>
+          }
         </form>
       )
     }
