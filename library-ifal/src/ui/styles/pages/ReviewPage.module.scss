@@ -177,6 +177,12 @@
     > button {
       width: max-content;
     }
+
+    > .warning {
+      color: #F00;
+      font-size: 1.05rem;
+      margin-top: 0.5rem;
+    }
   }
 
   .reviews {
