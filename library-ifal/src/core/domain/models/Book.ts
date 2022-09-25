@@ -1,27 +1,28 @@
 class Book {
-  title?: string
-  author?: string
-  edition?: string
-  year?: string
-  localization?: string
+  //titulo: titulo, autor: autor, edicao: edicao, ano: ano, localizacao: localizacao
+  titulo?: string
+  autor?: string
+  edicao?: string
+  ano?: string
+  localizacao?: string
 
   static fromJSON(json: Record<string, unknown>): Book {
     const book = new Book()
-    book.title = String(json["title"])
-    book.author = String(json["author"])
-    book.edition = String(json["edition"])
-    book.year = String(json["year"])
-    book.localization = String(json["localization"])
+    book.titulo = String(json["titulo"])
+    book.autor = String(json["autor"])
+    book.edicao = String(json["edicao"])
+    book.ano = String(json["ano"])
+    book.localizacao = String(json["localizacao"])
     return book
   }
 
   toJSON(): Record<string, unknown> {
     const json: Record<string, unknown> = {}
-    json["title"] = this.title
-    json["author"] = this.author
-    json["edition"] = this.edition
-    json["year"] = this.year
-    json["localization"] = this.localization
+    json["titulo"] = this.titulo
+    json["autor"] = this.autor
+    json["edicao"] = this.edicao
+    json["ano"] = this.ano
+    json["localizacao"] = this.localizacao
     return json
   }
 }
