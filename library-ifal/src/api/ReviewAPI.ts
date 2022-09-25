@@ -19,16 +19,8 @@ class ReviewAPI extends IReviewAPI {
     review: string,
     available: boolean
   ): Promise<Review> {
-    const reviewJSON: Record<string, unknown> = {
-      user_id,
-      name,
-      title_book,
-      writer,
-      review,
-      available,
-    }
-    const newReview = Review.fromJSON(reviewJSON)
-    const response = await this.client.post('/api/reviews', JSON.stringify(newReview), {
+    const response = await this.client.post('/api/reviews',
+      JSON.stringify({ user_id, name, title_book, writer, review, available }), {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -36,7 +28,7 @@ class ReviewAPI extends IReviewAPI {
 
     return response.data
   }
-  
+
   async search(query: string): Promise<Review[]> {
     const response = await this.client.get(`/api/review/search?s=${query}`)
     return response.data
