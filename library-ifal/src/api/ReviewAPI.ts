@@ -4,9 +4,25 @@ import IReviewAPI from '../core/interfaces/api/IReviewAPI'
 class ReviewAPI extends IReviewAPI {
   async fetch(): Promise<Review[]> {
     const response = await this.client.get('/api/reviews')
-    const reviews: Review[] = response.data.map((item: Record<string, unknown>) =>
-      Review.fromJSON(item)
-    )
+    const reviews: Review[] = response.data.map((item: Record<string, unknown>) => {
+      if (!item["name"]) {
+        item["name"] = ''
+      }
+
+      if (!item["title_book"]) {
+        item["title_book"] = ''
+      }
+
+      if (!item["writer"]) {
+        item["writer"] = ''
+      }
+
+      if (!item["review"]) {
+        item["review"] = ''
+      }
+      
+      return Review.fromJSON(item)
+    })
 
     return reviews
   }

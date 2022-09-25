@@ -7,7 +7,7 @@ abstract class IPostService {
     content: string,
     name: string,
     user_id: string
-  ): Promise<Post>
+  ): Promise<void>
 }
 
 export default IPostService

@@ -7,7 +7,6 @@ import Button from "../components/Button"
 import Header from "../components/Header"
 import PostItem from "../components/PostItem"
 
-
 import { AuthCTX } from "../contexts/AuthCTX"
 
 import styles from '../styles/pages/HomePage.module.scss'
@@ -87,11 +86,16 @@ function HomePage() {
     }
 
     const postService = new PostService()
-    const post = await postService.create(title, content, name, id)
+    await postService.create(title, content, name, id)
 
+    const post = {
+      title,
+      content,
+      name
+    }
 
     setPosts((previousState) => [
-      post,
+      post as Post,
       ...previousState
     ])
 

@@ -8,7 +8,7 @@ abstract class IPostAPI extends IAPI {
     content: string,
     name: string,
     user_id: string
-  ): Promise<Post>
+  ): Promise<void>
 }
 
 export default IPostAPI
