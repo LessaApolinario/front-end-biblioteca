@@ -30,6 +30,10 @@ class UserAPI extends IUserAPI {
       }
     })
   }
+
+  refreshSession(storagedToken: string): void {
+    this.client.defaults.headers.common['Authorization'] = `Bearer ${storagedToken}`
+  }
 }
 
 export default UserAPI
