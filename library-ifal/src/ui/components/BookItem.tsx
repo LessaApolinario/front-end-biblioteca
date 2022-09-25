@@ -2,7 +2,7 @@ import Button from "./Button"
 
 import styles from '../styles/components/Book.module.scss'
 
-interface BookProps {
+interface BookItemProps {
   title: string
   author?: string
   edition?: string
@@ -10,7 +10,7 @@ interface BookProps {
   localization: string
 }
 
-function Book({ title, author, edition, year, localization }: BookProps) {
+function BookItem({ title, author, edition, year, localization }: BookItemProps) {
   const formatAuthorName = (authorName: string) => {
     const [lastName, firstName] = authorName?.trim().split(',')
     
@@ -49,4 +49,4 @@ function Book({ title, author, edition, year, localization }: BookProps) {
   )
 }
 
-export default Book
+export default BookItem
