@@ -34,15 +34,13 @@ class ReviewAPI extends IReviewAPI {
     writer: string,
     review: string,
     available: boolean
-  ): Promise<Review> {
-    const response = await this.client.post('/api/reviews',
+  ): Promise<void> {
+    await this.client.post('/api/reviews',
       JSON.stringify({ user_id, name, title_book, writer, review, available }), {
       headers: {
         'Content-Type': 'application/json',
       }
     })
-
-    return response.data
   }
 
   async search(query: string): Promise<Review[]> {

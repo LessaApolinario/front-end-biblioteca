@@ -9,7 +9,7 @@ abstract class IReviewService {
     writer: string,
     review: string,
     available: boolean
-  ): Promise<Review>
+  ): Promise<void>
   abstract search(query: string): Promise<Review[]>
 }
 
