@@ -64,15 +64,15 @@ function ReviewPage() {
       return
     }
 
-    if (!bookInput.value.length) {
+    if (bookInput.value.length === 0) {
       return
     }
 
-    if (!authorInput.value.length) {
+    if (authorInput.value.length === 0) {
       return
     }
 
-    if (!reviewTextarea.value.length) {
+    if (reviewTextarea.value.length === 0) {
       return
     }
 
@@ -210,7 +210,7 @@ function ReviewPage() {
     if (!query) {
       return
     }
-    
+
     const reviewService = new ReviewService()
     const data = await reviewService.search(query)
     const isEmpty = !data.length
