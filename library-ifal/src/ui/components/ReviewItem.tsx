@@ -1,6 +1,6 @@
 import styles from '../styles/components/Review.module.scss'
 
-interface ReviewProps {
+interface ReviewItemProps {
   name?: string
   title_book: string
   writer: string
@@ -9,7 +9,7 @@ interface ReviewProps {
   onClick?(): void
 }
 
-function Review({ name, title_book, writer, review, created_at, onClick }: ReviewProps) {
+function ReviewItem({ name, title_book, writer, review, created_at, onClick }: ReviewItemProps) {
   const abbreviateMonth = (month: string) => {
     const abbreviatedMonths: Record<string, string> = {
       '01': "Ja",
@@ -63,4 +63,4 @@ function Review({ name, title_book, writer, review, created_at, onClick }: Revie
   )
 }
 
-export default Review
+export default ReviewItem
