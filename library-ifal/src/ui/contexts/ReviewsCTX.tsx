@@ -1,13 +1,11 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState } from "react"
 
-import ReviewDTO from "../../core/dto/ReviewDTO";
-import Review from "../../core/models/Review";
-
-import api from "../../services/api";
+import Review from "../../core/domain/models/Review"
+import ReviewService from "../../services/ReviewService"
 
 interface ReviewsCTXProps {
   data: undefined | Review[]
-  fetch(): Promise<ReviewDTO[]>
+  fetch(): Promise<Review[]>
   add(review: Review): Promise<Review>
 }
 
@@ -21,11 +19,12 @@ function ReviewsProvider({ children }: ReviewsProviderProps) {
   const [data, setData] = useState<Review[]>()
 
   const fetch = async () => {
-    const { data } = await api.get<ReviewDTO[]>('/api/reviews')
+    const reviewService = new ReviewService()
+    const reviews = await reviewService.fetch()
     
-    setData(data)
+    setData(reviews)
     
-    return data
+    return reviews
   }
 
   const add = async (review: Review) => {
