@@ -106,12 +106,12 @@ function BooksPage() {
         </thead>
         <tbody>
           {books?.map((book, index) => {
-            const { title: titulo, author: autor, edition: edicao, year: ano, localization: localizacao } = book
+            const { titulo, autor, edicao, ano, localizacao } = book
             return <BookItem
               key={index}
               title={titulo ?? ''}
-              author={autor}
-              edition={edicao}
+              author={autor ?? ''}
+              edition={edicao ?? ''}
               year={ano ?? ''}
               localization={localizacao ?? ''}
             />
