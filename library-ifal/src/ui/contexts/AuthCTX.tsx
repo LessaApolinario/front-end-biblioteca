@@ -1,11 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 
+import User from '../../core/domain/models/User'
 import AuthCredentialsDTO from '../../core/dto/AuthCredentialsDTO'
-import LogoutResponseDTO from '../../core/dto/LogoutResponseDTO'
-
-import User from '../../core/models/User'
-
-import api from '../../services/api'
+import UserService from '../../services/UserService'
 
 interface AuthCTXProps {
   signed: boolean
@@ -30,37 +27,38 @@ function AuthProvider({ children }: AuthProviderProps) {
     if (storagedToken && storagedUser) {
       const _user = JSON.parse(storagedUser) as User
       setUser(_user)
-      api.defaults.headers.common['Authorization'] = `Bearer ${storagedToken}`
+      const userService = new UserService()
+      userService.refreshSession(storagedToken)
     }
   }, [])
 
   const login = async (credentials: AuthCredentialsDTO) => {
-    if (credentials.username !== '' && credentials.password !== '') {
-      const response = await api.post<User>(
-        '/api/auth/login', 
-        JSON.stringify(credentials), {
-          headers: {
-            'Content-type': 'application/json'
-          }
-        }
-      )
-
-      const { access_token, id } = response.data
-
-      api.defaults.headers.common['Authorization'] = `Bearer ${access_token}`
-
-      const newUser: User = response.data
-
-      setUser(newUser)
-
-      localStorage.setItem('user', JSON.stringify(newUser))
-      localStorage.setItem('token', JSON.stringify(access_token))
-      localStorage.setItem('id', JSON.stringify(id))
-
-      return true
+    if (!credentials.username && !credentials.password) {
+      return false
     }
-    
-    return false
+
+    const userService = new UserService()
+    const data = await userService.login(credentials)
+    const { access_token, id } = data
+
+    if (!access_token) {
+      return
+    }
+
+    if (!id) {
+      return
+    }
+
+    userService.refreshSession(access_token)
+
+    const newUser: User = data
+    setUser(newUser)
+
+    localStorage.setItem('user', JSON.stringify(newUser))
+    localStorage.setItem('token', JSON.stringify(access_token))
+    localStorage.setItem('id', JSON.stringify(id))
+
+    return true
   }
 
   const logout = async () => {
@@ -71,21 +69,21 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (storagedId && storagedToken) {
         const id: string = JSON.parse(storagedId)
         const token: string = JSON.parse(storagedToken)
-        
+
         await api.post<LogoutResponseDTO>(
-          'api/auth/logout', 
+          'api/auth/logout',
           JSON.stringify({ id, token }), {
-            headers: {
-              'Content-type': 'application/json'
-            }
+          headers: {
+            'Content-type': 'application/json'
+          }
         })
-  
+
         api.defaults.headers.common['Authorization'] = ''
       }
     } catch (error) {
       console.log(error)
     }
-    
+
     localStorage.removeItem('user')
     localStorage.removeItem('id')
     localStorage.removeItem('token')
