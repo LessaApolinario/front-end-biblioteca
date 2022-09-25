@@ -33,7 +33,7 @@ function BooksPage() {
       return
     }
 
-    if (!query?.length) {
+    if (query.length === 0) {
       return
     }
 
