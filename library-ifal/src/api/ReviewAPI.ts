@@ -36,6 +36,11 @@ class ReviewAPI extends IReviewAPI {
 
     return response.data
   }
+  
+  async search(query: string): Promise<Review[]> {
+    const response = await this.client.get(`/api/review/search?s=${query}`)
+    return response.data
+  }
 }
 
 export default ReviewAPI

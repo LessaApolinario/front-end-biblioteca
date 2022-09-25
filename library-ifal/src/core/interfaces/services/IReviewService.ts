@@ -10,6 +10,7 @@ abstract class IReviewService {
     review: string,
     available: boolean
   ): Promise<Review>
+  abstract search(query: string): Promise<Review[]>
 }
 
 export default IReviewService

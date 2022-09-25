@@ -206,7 +206,13 @@ function ReviewPage() {
 
   const handleSearchReview = async () => {
     const query = searchRef.current?.value
-    const { data } = await api.get<ReviewDTO[]>(`/api/review/search?s=${query}`)
+
+    if (!query) {
+      return
+    }
+    
+    const reviewService = new ReviewService()
+    const data = await reviewService.search(query)
     const isEmpty = !data.length
 
     if (!isEmpty) {

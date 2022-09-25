@@ -11,6 +11,7 @@ abstract class IReviewAPI extends IAPI {
     review: string,
     available: boolean
   ): Promise<Review>
+  abstract search(query: string): Promise<Review[]>
 }
 
 export default IReviewAPI

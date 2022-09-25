@@ -17,6 +17,10 @@ class ReviewService extends IReviewService {
   ): Promise<Review> {
     return await new ReviewAPI().create(user_id, name, title_book, writer, review, available)
   }
+
+  async search(query: string): Promise<Review[]> {
+    return await new ReviewAPI().search(query)
+  }
 }
 
 export default ReviewService
