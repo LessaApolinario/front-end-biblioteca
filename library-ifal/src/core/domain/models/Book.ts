@@ -1,5 +1,4 @@
 class Book {
-  //titulo: titulo, autor: autor, edicao: edicao, ano: ano, localizacao: localizacao
   titulo?: string
   autor?: string
   edicao?: string
