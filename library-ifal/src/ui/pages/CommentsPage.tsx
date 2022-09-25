@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { GiTreeBranch } from 'react-icons/gi'
 
-import api from "../../services/api";
-
 import Button from '../components/Button';
 import Header from "../components/Header";
 
@@ -12,11 +10,8 @@ import { AuthCTX } from '../contexts/AuthCTX';
 
 import styles from '../styles/pages/CommentsPage.module.scss'
 
-type Comment = {
-  name: string
-  email: string
-  comment: string
-}
+import CommentService from '../../services/CommentService';
+
 
 function CommentsPage() {
   const formRef = useRef<HTMLFormElement>(null)
@@ -31,34 +26,17 @@ function CommentsPage() {
     let name = nameRef.current?.value
     let email = emailRef.current?.value
     let comment = commentRef.current?.value
-    
-    if (name !== '' && email !== '' && comment !== '' 
-      && name && email && comment) {
-      const _comment: Comment = {
-        name,
-        email,
-        comment
-      }
 
-      try {
-        const response = await api.post('/api/comments', JSON.stringify(_comment), {
-          headers: {
-            'Content-type': 'application/json'
-          }
-        })
-
-        const { result } = response.data
-
-        if (result === 'ok' && nameRef.current && 
-          emailRef.current && commentRef.current) {
-          nameRef.current.value = ''
-          emailRef.current.value = ''
-          commentRef.current.value = ''
-        }
-      } catch (error) {
-        console.log(error)
-      }
+    if (!name || !email || !comment) {
+      return
     }
+
+    const commentService = new CommentService()
+    await commentService.create(name, email, comment)
+
+    name = ''
+    email = ''
+    comment = ''
   }
 
   const renderButtons = () => {
@@ -116,7 +94,7 @@ function CommentsPage() {
           {renderButtons()}
         </div>
       </Header>
-      
+
       <div className={styles.flexWrapper}>
         <div className={styles.presentation}>
           <div className={styles.box}>
@@ -124,7 +102,7 @@ function CommentsPage() {
             <h3>Olá, querido visitante</h3>
 
             <p>
-              Sinta-se livre para deixar uma mensagem sobre: dicas de como melhorar o site, ou mande seu livro, poema, 
+              Sinta-se livre para deixar uma mensagem sobre: dicas de como melhorar o site, ou mande seu livro, poema,
               ou qualquer outra razão.
             </p>
           </div>
