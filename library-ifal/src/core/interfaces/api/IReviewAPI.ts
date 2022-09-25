@@ -1,11 +1,9 @@
 import Review from '../../domain/models/Review'
-import PostDTO from '../../dto/PostDTO'
 import IAPI from './IAPI'
 
 abstract class IReviewAPI extends IAPI {
   abstract fetch(): Promise<Review[]>
-  abstract create(post: PostDTO): Promise<void>
-
+  abstract create(review: Review): Promise<void>
 }
 
 export default IReviewAPI
