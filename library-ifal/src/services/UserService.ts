@@ -19,6 +19,10 @@ class UserService extends IUserService {
   refreshSession(storagedToken: string): void {
     new UserAPI().refreshSession(storagedToken)
   }
+
+  destroySession(): void {
+    new UserAPI().destroySession()
+  }
 }
 
 export default UserService
