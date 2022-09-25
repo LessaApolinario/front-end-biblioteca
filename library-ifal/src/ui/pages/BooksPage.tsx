@@ -1,15 +1,12 @@
-import React, { useCallback, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useCallback, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-import BookDTO from "../../core/dto/BookDTO";
+import Book from "../../core/domain/models/Book"
+import BookService from "../../services/BookService"
 
-import { useFetch } from "../../hooks/useFetch";
-
-import api from "../../services/api";
-
-import Book from "../components/Book";
-import Button from "../components/Button";
-import Header from "../components/Header";
+import BookItem from "../components/BookItem"
+import Button from "../components/Button"
+import Header from "../components/Header"
 
 import styles from '../styles/pages/BooksPage.module.scss'
 
@@ -17,26 +14,37 @@ function BooksPage() {
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const navigate = useNavigate()
-  const { data: booksAsList } = useFetch<BookDTO[]>('/books')
-  const [books, setBooks] = useState<BookDTO[]>([])
-  
-  const handleListBooks = useCallback(() => {
-    const isEmpty = !booksAsList?.length
+  const [books, setBooks] = useState<Book[]>([])
 
-    if (booksAsList && !isEmpty) {
-      setBooks(booksAsList)
+  const handleListBooks = useCallback(async () => {
+    const bookService = new BookService()
+    const booksList = await bookService.fetch()
+    const isEmpty = !booksList?.length
+
+    if (booksList && !isEmpty) {
+      setBooks(booksList)
     }
-  }, [booksAsList])
+  }, [])
 
   const handleSearchBook = useCallback(async () => {
-    const { data } = await api.get<BookDTO[]>(`/books/search?s=${inputRef.current?.value}`)
     const query = inputRef.current?.value
-    const isQueryEmpty = !query?.length
-    const isArrayEmpty = !data?.length
 
-    if (!isQueryEmpty && !isArrayEmpty) {
-      setBooks(data)
+    if (!query) {
+      return
     }
+
+    if (!query?.length) {
+      return
+    }
+
+    const bookService = new BookService()
+    const data = await bookService.search(query)
+
+    if (!data.length) {
+      return
+    }
+
+    setBooks(data)
   }, [])
 
   function handleSubmit(event: React.FormEvent) {
@@ -57,7 +65,7 @@ function BooksPage() {
           <h2>SIB</h2>
         </nav>
       </Header>
-      
+
       <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.search}>
           <input
@@ -85,7 +93,7 @@ function BooksPage() {
           </div>
         </div>
       </form>
-      
+
       <table className={styles.table}>
         <thead>
           <tr>
@@ -98,14 +106,14 @@ function BooksPage() {
         </thead>
         <tbody>
           {books?.map((book, index) => {
-            const { titulo, autor, edicao, ano, localizacao } = book
-            return <Book
+            const { title: titulo, author: autor, edition: edicao, year: ano, localization: localizacao } = book
+            return <BookItem
               key={index}
-              title={titulo}
+              title={titulo ?? ''}
               author={autor}
               edition={edicao}
-              year={ano}
-              localization={localizacao}
+              year={ano ?? ''}
+              localization={localizacao ?? ''}
             />
           })}
         </tbody>
