@@ -6,7 +6,7 @@ import ReviewService from "../../services/ReviewService"
 interface ReviewsCTXProps {
   data: undefined | Review[]
   fetch(): Promise<Review[]>
-  add(review: Review): Promise<Review>
+  create(review: Review): Promise<Review>
 }
 
 interface ReviewsProviderProps {
@@ -27,12 +27,9 @@ function ReviewsProvider({ children }: ReviewsProviderProps) {
     return reviews
   }
 
-  const add = async (review: Review) => {
-    await api.post('/api/reviews', JSON.stringify(review), {
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
+  const create = async (review: Review) => {
+    const reviewService = new ReviewService()
+    await reviewService.create(review)
 
     setData((previousState) => [
       review,
@@ -43,7 +40,7 @@ function ReviewsProvider({ children }: ReviewsProviderProps) {
   }
 
   return (
-    <ReviewsCTX.Provider value={{ data, fetch, add }}>
+    <ReviewsCTX.Provider value={{ data, fetch, create }}>
       {children}
     </ReviewsCTX.Provider>
   )
