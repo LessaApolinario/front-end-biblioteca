@@ -11,12 +11,30 @@ class ReviewAPI extends IReviewAPI {
     return reviews
   }
 
-  async create(review: Review): Promise<void> {
-    await this.client.post('/api/reviews', JSON.stringify(review), {
+  async create(
+    user_id: string,
+    name: string,
+    title_book: string,
+    writer: string,
+    review: string,
+    available: boolean
+  ): Promise<Review> {
+    const reviewJSON: Record<string, unknown> = {
+      user_id,
+      name,
+      title_book,
+      writer,
+      review,
+      available,
+    }
+    const newReview = Review.fromJSON(reviewJSON)
+    const response = await this.client.post('/api/reviews', JSON.stringify(newReview), {
       headers: {
         'Content-Type': 'application/json',
       }
     })
+
+    return response.data
   }
 }
 

@@ -3,7 +3,14 @@ import IAPI from './IAPI'
 
 abstract class IReviewAPI extends IAPI {
   abstract fetch(): Promise<Review[]>
-  abstract create(review: Review): Promise<void>
+  abstract create(
+    user_id: string,
+    name: string,
+    title_book: string,
+    writer: string,
+    review: string,
+    available: boolean
+  ): Promise<Review>
 }
 
 export default IReviewAPI

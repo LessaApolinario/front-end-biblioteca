@@ -1,10 +1,8 @@
 import { createRef, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import ReviewDTO from '../../core/dto/ReviewDTO'
-
 import Button from '../components/Button'
-import Review from '../components/Review'
+import ReviewItem from '../components/ReviewItem'
 import Header from '../components/Header'
 
 import { BsPlusCircleFill } from 'react-icons/bs'
@@ -15,10 +13,12 @@ import styles from '../styles/pages/ReviewPage.module.scss'
 
 import { AuthCTX } from '../contexts/AuthCTX'
 import { ReviewsCTX } from '../contexts/ReviewsCTX'
-import api from '../../services/api'
+
+import Review from '../../core/domain/models/Review'
+import ReviewService from '../../services/ReviewService'
 
 function ReviewPage() {
-  const [reviews, setReviews] = useState<ReviewDTO[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
   const [isVisible, setIsVisible] = useState(false)
   const [warning, setWarning] = useState(false)
   const navigate = useNavigate()
@@ -41,58 +41,75 @@ function ReviewPage() {
     // eslint-disable-next-line
   }, [])
 
-  const handleFields = () => {
+  const handleAddReview = async () => {
+    const button = buttonRef.current
     const bookInput = bookTitleRef.current
     const authorInput = authorNameRef.current
     const reviewTextarea = reviewTextareaRef.current
+    const user = authCTX.user
 
-    if (bookInput && authorInput && reviewTextarea) {
-      const title_book = bookInput.value
-      const writer = authorInput.value
-      const review = reviewTextarea.value
-
-      return {
-        title_book,
-        writer,
-        review
-      }
+    if (!button) {
+      return
     }
-  }
 
-  const handleAddReview = async () => {
-    const button = buttonRef.current
-
-    if (button) {
-      const newReview = handleFields()
-
-      if (newReview) {
-        const { title_book, review, writer } = newReview
-
-        const isLoggedUser = localStorage.getItem('token')
-        const user = authCTX.user
-
-        if (title_book !== '' && review !== '' && isLoggedUser && user) {
-          const { id, name } = user
-          const _review: ReviewDTO = {
-            user_id: id,
-            name,
-            title_book,
-            writer,
-            review,
-            available: true
-          }
-
-          const r = await reviewsCTX.add(_review)
-
-          setReviews((previousState) => [
-            r,
-            ...previousState
-          ])
-
-          setIsVisible(false)
-        }
-      }
+    if (!bookInput) {
+      return
     }
+
+    if (!authorInput) {
+      return
+    }
+
+    if (!reviewTextarea) {
+      return
+    }
+
+    if (!bookInput.value.length) {
+      return
+    }
+
+    if (!authorInput.value.length) {
+      return
+    }
+
+    if (!reviewTextarea.value.length) {
+      return
+    }
+
+    if (!user) {
+      return
+    }
+
+    const isLoggedUser = localStorage.getItem('token')
+
+    if (isLoggedUser != null) {
+      return
+    }
+
+    const { id, name } = user
+
+    if (!id) {
+      return
+    }
+
+    if (!name) {
+      return
+    }
+
+    const user_id = id
+    const title_book = bookTitleRef.current.value
+    const writer = authorNameRef.current.value
+    const review = reviewTextareaRef.current.value
+
+    const r = await reviewsCTX.create(user_id, name, title_book, writer, review, true)
+
+    setReviews((previousState) => [
+      r,
+      ...previousState
+    ])
+
+    setIsVisible(false)
+
   }
 
   const renderOpenOrCloseIcon = () => {
@@ -154,16 +171,16 @@ function ReviewPage() {
             <label>Autor</label>
             <input type="text" ref={authorNameRef} />
           </div>
-          
+
           <div className={styles.review}>
             <label>Resenha</label>
             <textarea cols={30} rows={5} ref={reviewTextareaRef}></textarea>
           </div>
 
-          <Button 
-            ref={buttonRef} 
-            type='button' 
-            btnType='secondary' 
+          <Button
+            ref={buttonRef}
+            type='button'
+            btnType='secondary'
             onClick={handleAddReview}
           >
             Escrever
@@ -183,7 +200,7 @@ function ReviewPage() {
     navigate(-1)
   }
 
-  const redirectToReviewsDetails = (item: ReviewDTO) => {
+  const redirectToReviewsDetails = (item: Review) => {
     navigate(`/reviews/review/${item._id}`, { state: item })
   }
 
@@ -229,7 +246,7 @@ function ReviewPage() {
       <Header>
         <>
           <GiTreeBranch />
-          
+
           <ul>
             <li onClick={() => navigate('/')}>Home</li>
             <li onClick={() => navigate('/books')}>Livros</li>
@@ -242,36 +259,36 @@ function ReviewPage() {
         </>
       </Header>
 
-    <div className={styles.plusIcon}>
-      {renderOpenOrCloseIcon()}
-    </div>
+      <div className={styles.plusIcon}>
+        {renderOpenOrCloseIcon()}
+      </div>
 
-    <div className={styles.search}>
-      <input type='text' ref={searchRef} />
-      <Button
-        type='button'
-        btnType='secondary'
-        onClick={handleSearchReview}
-      >
-        Pesquisar
-      </Button>
-    </div>
+      <div className={styles.search}>
+        <input type='text' ref={searchRef} />
+        <Button
+          type='button'
+          btnType='secondary'
+          onClick={handleSearchReview}
+        >
+          Pesquisar
+        </Button>
+      </div>
 
-    <h2>Resenhas</h2>
+      <h2>Resenhas</h2>
 
       {renderForm()}
 
       <div className={styles.reviews}>
         {reviews?.map(item => (
-          <Review
+          <ReviewItem
             key={Math.random().toString()}
             name={item.name}
-            title_book={item.title_book}
-            writer={item.writer}
-            review={item.review}
+            title_book={item.title_book ?? ''}
+            writer={item.writer ?? ''}
+            review={item.review ?? ''}
             created_at={item.created_at}
             onClick={() => redirectToReviewsDetails(item)}
-        />
+          />
         ))}
       </div>
     </div>
