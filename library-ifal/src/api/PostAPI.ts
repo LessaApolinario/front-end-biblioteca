@@ -11,12 +11,14 @@ class PostAPI extends IPostAPI {
     return posts
   }
 
-  async create(post: Post): Promise<void> {
-    await this.client.post('/api/posts', JSON.stringify(post), {
+  async create(title: string, content: string): Promise<Post> {
+    const response = await this.client.post('/api/posts', JSON.stringify({ title, content }), {
       headers: {
         'Content-Type': 'application/json',
       }
     })
+
+    return response.data
   }
 }
 

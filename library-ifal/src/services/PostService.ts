@@ -7,8 +7,8 @@ class PostService extends IPostService {
     return new PostAPI().fetch()
   }
 
-  async create(post: Post): Promise<void> {
-    await new PostAPI().create(post)
+  async create(title: string, content: string): Promise<Post> {
+    return await new PostAPI().create(title, content)
   }
 }
 
