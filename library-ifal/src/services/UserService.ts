@@ -7,13 +7,17 @@ class UserService extends IUserService {
   login(credentials: AuthCredentialsDTO): Promise<User> {
     return new UserAPI().login(credentials)
   }
-
+  
   async logout(id: string, token: string): Promise<void> {
     await new UserAPI().logout(id, token)
   }
-
+  
   async register(user: User): Promise<void> {
     await new UserAPI().register(user)
+  }
+  
+  refreshSession(storagedToken: string): void {
+    new UserAPI().refreshSession(storagedToken)
   }
 }
 
