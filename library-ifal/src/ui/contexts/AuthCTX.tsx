@@ -33,7 +33,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   const login = async (credentials: AuthCredentialsDTO) => {
-    if (!credentials.username && !credentials.password) {
+    if (!credentials.username || !credentials.password) {
       return false
     }
 
@@ -42,11 +42,11 @@ function AuthProvider({ children }: AuthProviderProps) {
     const { access_token, id } = data
 
     if (!access_token) {
-      return
+      return false
     }
 
     if (!id) {
-      return
+      return false
     }
 
     userService.refreshSession(access_token)
