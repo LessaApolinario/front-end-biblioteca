@@ -12,8 +12,8 @@ class UserService extends IUserService {
     await new UserAPI().logout(id, token)
   }
   
-  async register(user: User): Promise<void> {
-    await new UserAPI().register(user)
+  async register(name: string, username: string, email: string, password: string): Promise<void> {
+    await new UserAPI().register(name, username, email, password)
   }
   
   refreshSession(storagedToken: string): void {

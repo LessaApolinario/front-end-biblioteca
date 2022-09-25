@@ -9,6 +9,7 @@ interface AuthCTXProps {
   user: User | undefined
   login(user: AuthCredentialsDTO): Promise<boolean>
   logout(): void
+  register(name: string, username: string, email: string, password: string): Promise<void>
 }
 
 interface AuthProviderProps {
@@ -82,8 +83,13 @@ function AuthProvider({ children }: AuthProviderProps) {
     setUser(undefined)
   }
 
+  const register = async (name: string, username: string, email: string, password: string) => {
+    const userService = new UserService()
+    await userService.register(name, username, email, password)
+  }
+
   return (
-    <AuthCTX.Provider value={{ signed: Boolean(user), user, login, logout }}>
+    <AuthCTX.Provider value={{ signed: Boolean(user), user, login, logout, register }}>
       {children}
     </AuthCTX.Provider>
   )
