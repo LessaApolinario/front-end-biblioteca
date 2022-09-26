@@ -34,9 +34,21 @@ function CommentsPage() {
     const commentService = new CommentService()
     await commentService.create(name, email, comment)
 
-    name = ''
-    email = ''
-    comment = ''
+    if (!nameRef.current) {
+      return
+    }
+
+    if (!emailRef.current) {
+      return
+    }
+
+    if (!commentRef.current) {
+      return
+    }
+
+    nameRef.current.value = ''
+    emailRef.current.value = ''
+    commentRef.current.value = ''
   }
 
   const renderButtons = () => {
