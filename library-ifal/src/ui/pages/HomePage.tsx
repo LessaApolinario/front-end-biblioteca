@@ -91,7 +91,7 @@ function HomePage() {
     const post = {
       title,
       content,
-      name
+      user_name: name
     }
 
     setPosts((previousState) => [
@@ -260,10 +260,10 @@ function HomePage() {
 
           {renderForm()}
 
-          {posts.map(({ name, title, content, created_at }) => (
+          {posts.map(({ user_name, title, content, created_at }) => (
             <PostItem
               key={Math.random() * 6}
-              name={name}
+              name={user_name}
               title={title ?? ''}
               content={content ?? ''}
               created_at={created_at}

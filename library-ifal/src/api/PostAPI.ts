@@ -5,8 +5,8 @@ class PostAPI extends IPostAPI {
   async fetch(): Promise<Post[]> {
     const response = await this.client.get('/api/posts')
     const posts: Post[] = response.data.map((item: Record<string, unknown>) => {
-      if (!item["name"]) {
-        item["name"] = ''
+      if (!item["user_name"]) {
+        item["user_name"] = ''
       }
 
       if (!item["title"]) {
@@ -28,9 +28,9 @@ class PostAPI extends IPostAPI {
     return posts
   }
 
-  async create(title: string, content: string, name: string, user_id: string): Promise<void> {
+  async create(title: string, content: string, user_name: string, user_id: string): Promise<void> {
     await this.client.post('/api/posts',
-      JSON.stringify({ title, content, name, user_id }), {
+      JSON.stringify({ title, content, user_name, user_id }), {
       headers: {
         'Content-Type': 'application/json',
       }

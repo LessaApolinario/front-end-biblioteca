@@ -1,5 +1,5 @@
 class Post {
-  name?: string
+  user_name?: string
   title?: string
   content?: string
   user_id?: string
@@ -8,7 +8,7 @@ class Post {
 
   static fromJSON(json: Record<string, unknown>): Post {
     const post = new Post()
-    post.name = String(json["name"])
+    post.user_name = String(json["user_name"])
     post.title = String(json["title"])
     post.content = String(json["content"])
     post.user_id = String(json["user_id"])
@@ -19,7 +19,7 @@ class Post {
 
   toJSON(): Record<string, unknown> {
     const json: Record<string, unknown> = {}
-    json["name"] = this.name
+    json["user_name"] = this.user_name
     json["title"] = this.title
     json["content"] = this.content
     json["user_id"] = this.user_id

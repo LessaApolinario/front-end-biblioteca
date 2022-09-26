@@ -6,7 +6,7 @@ abstract class IPostAPI extends IAPI {
   abstract create(
     title: string,
     content: string,
-    name: string,
+    user_name: string,
     user_id: string
   ): Promise<void>
 }
