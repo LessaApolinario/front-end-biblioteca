@@ -1,12 +1,12 @@
-import { useRef } from 'react'
+import { useContext, useRef } from 'react'
 
 import { GiTreeBranch } from 'react-icons/gi'
 
 import { useNavigate } from 'react-router-dom'
 
-import api from '../../services/api'
-
 import Button from '../components/Button'
+
+import { AuthCTX } from '../contexts/AuthCTX'
 
 import styles from '../styles/pages/RegisterPage.module.scss'
 
@@ -17,6 +17,7 @@ function RegisterPage() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const confirmPasswordRef = useRef<HTMLInputElement>(null)
+  const authCTX = useContext(AuthCTX)
 
   const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -25,37 +26,40 @@ function RegisterPage() {
     const emailInput = emailRef.current
     const passwordInput = passwordRef.current
     const confirmPasswordInput = confirmPasswordRef.current
-    
+
     const name = nameInput?.value
     const username = usernameInput?.value
     const email = emailInput?.value
     const password = passwordInput?.value
     const confirmedPassword = confirmPasswordInput?.value
 
-    if (
-      name !== '' && 
-      username !== '' && 
-      email !== '' && 
-      password !== '' && 
-      confirmedPassword !== '' && 
-      password === confirmedPassword
-    ) {
-      const user = {
-        name,
-        username,
-        email,
-        password
-      }
-      
-      await api.post('/api/auth/register', JSON.stringify(user), {
-          headers: {
-            'Content-type': 'application/json'
-          }
-        }
-      )
-
-      navigate('/')
+    if (!name) {
+      return
     }
+
+    if (!username) {
+      return
+    }
+
+    if (!email) {
+      return
+    }
+
+    if (!password) {
+      return
+    }
+
+    if (!confirmedPassword) {
+      return
+    }
+
+    if (password !== confirmedPassword) {
+      return
+    }
+
+    await authCTX.register(name, username, email, password)
+
+    navigate('/')
   }
 
   return (
@@ -99,7 +103,7 @@ function RegisterPage() {
         </div>
 
         <p className={styles.link}>
-          Já tem conta? Entre 
+          Já tem conta? Entre
           <span onClick={() => navigate('/login')}>aqui</span>
         </p>
       </form>

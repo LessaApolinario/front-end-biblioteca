@@ -1,6 +1,6 @@
 import styles from '../styles/components/Post.module.scss'
 
-interface PostProps {
+interface PostItemProps {
   name?: string
   title: string
   content: string
@@ -9,7 +9,7 @@ interface PostProps {
   updated_at?: string
 }
 
-function Post({ name, title, content, created_at }: PostProps) {
+function PostItem({ name, title, content, created_at }: PostItemProps) {
   const abbreviateMonth = (month: string) => {
     const abbreviatedMonths: Record<string, string> = {
       '01': "Ja",
@@ -54,4 +54,4 @@ function Post({ name, title, content, created_at }: PostProps) {
   )
 }
 
-export default Post
+export default PostItem

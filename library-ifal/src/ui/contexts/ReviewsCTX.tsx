@@ -1,14 +1,19 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useState } from "react"
 
-import ReviewDTO from "../../core/dto/ReviewDTO";
-import Review from "../../core/models/Review";
-
-import api from "../../services/api";
+import Review from "../../core/domain/models/Review"
+import ReviewService from "../../services/ReviewService"
 
 interface ReviewsCTXProps {
   data: undefined | Review[]
-  fetch(): Promise<ReviewDTO[]>
-  add(review: Review): Promise<Review>
+  fetch(): Promise<Review[]>
+  create(
+    user_id: string,
+    name: string,
+    title_book: string,
+    writer: string,
+    review: string,
+    available: boolean
+  ): Promise<Review>
 }
 
 interface ReviewsProviderProps {
@@ -21,30 +26,44 @@ function ReviewsProvider({ children }: ReviewsProviderProps) {
   const [data, setData] = useState<Review[]>()
 
   const fetch = async () => {
-    const { data } = await api.get<ReviewDTO[]>('/api/reviews')
-    
-    setData(data)
-    
-    return data
+    const reviewService = new ReviewService()
+    const reviews = await reviewService.fetch()
+
+    setData(reviews)
+
+    return reviews
   }
 
-  const add = async (review: Review) => {
-    await api.post('/api/reviews', JSON.stringify(review), {
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
+  const create = async (
+    user_id: string,
+    name: string,
+    title_book: string,
+    writer: string,
+    review: string,
+    available: boolean
+  ) => {
+    const reviewService = new ReviewService()
+    await reviewService.create(user_id, name, title_book, writer, review, available)
+    
+    const data = {
+      user_id,
+      name,
+      title_book,
+      writer,
+      review,
+      available
+    } as Review
 
     setData((previousState) => [
-      review,
+      data,
       ...previousState as Review[]
     ])
 
-    return review
+    return data
   }
 
   return (
-    <ReviewsCTX.Provider value={{ data, fetch, add }}>
+    <ReviewsCTX.Provider value={{ data, fetch, create }}>
       {children}
     </ReviewsCTX.Provider>
   )

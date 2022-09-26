@@ -56,8 +56,13 @@
     align-items: center;
     justify-content: center;
 
+    height: calc(100% - 4rem);
+
     .presentation {
       width: 30rem;
+      height: 100%;
+
+      overflow: hidden;
 
       padding: 1rem 1.5rem;
 
@@ -84,6 +89,8 @@
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
+
+        overflow-y: auto;
 
         > div > input, > div > textarea {
           padding: 0.5rem 1rem;

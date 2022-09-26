@@ -1,22 +1,18 @@
-import { createRef, useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createRef, useContext, useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 import { GiTreeBranch } from 'react-icons/gi'
 
-import Button from "../components/Button";
-import Header from "../components/Header";
-import Post from "../components/Post";
+import Button from "../components/Button"
+import Header from "../components/Header"
+import PostItem from "../components/PostItem"
 
-import PostDTO from "../../core/dto/PostDTO";
-
-import { AuthCTX } from "../contexts/AuthCTX";
-
-import api from "../../services/api";
+import { AuthCTX } from "../contexts/AuthCTX"
 
 import styles from '../styles/pages/HomePage.module.scss'
 
 import harry from '../../assets/img/harry.jpg'
-import Microcontrolador8051ComLinguagemC from '../../assets/img/Microcontrolador8051ComLinguagemC.jpg' 
+import Microcontrolador8051ComLinguagemC from '../../assets/img/Microcontrolador8051ComLinguagemC.jpg'
 import padroesdeprojeto from '../../assets/img/padroesdeprojeto.jpg'
 import AHoraDaEstrela from '../../assets/img/AHoraDaEstrela.jpg'
 import funcoes from '../../assets/img/funcoes.jpg'
@@ -24,6 +20,8 @@ import _1984 from '../../assets/img/_1984.jpg'
 import OAlienista from '../../assets/img/OAlienista.jpeg'
 import PHP from '../../assets/img/PHP.jpg'
 import Python from '../../assets/img/Python.jpg'
+import PostService from "../../services/PostService"
+import Post from "../../core/domain/models/Post"
 
 function HomePage() {
   const navigate = useNavigate()
@@ -34,12 +32,13 @@ function HomePage() {
   const [isVisible, setIsVisible] = useState(false)
   const [warning, setWarning] = useState(true)
   const [text, setText] = useState<string>('Escreva um post')
-  const [posts, setPosts] = useState<PostDTO[]>([])
+  const [posts, setPosts] = useState<Post[]>([])
   const authCTX = useContext(AuthCTX)
 
   useEffect(() => {
     const getPosts = async () => {
-      const { data } = await api.get<PostDTO[]>('/api/posts')
+      const postService = new PostService()
+      const data = await postService.fetch()
       const posts = data.reverse()
       setPosts(posts)
     }
@@ -73,35 +72,32 @@ function HomePage() {
     event.preventDefault()
     const title = titleRef.current?.value
     const content = contentRef.current?.value
-
     const isLoggedUser = localStorage.getItem('token')
     const user = authCTX.user
 
-    if (title && title !== '' && content && 
-      content !== '' && isLoggedUser && user) {
-      const { name, id } = user
-      const post: PostDTO = {
-        name,
-        title,
-        content,
-        user_id: id
-      }
-
-      try {
-        await api.post('/api/posts', JSON.stringify(post), {
-          headers: {
-            'Content-type': 'application/json'
-          }
-        })
-
-        setPosts((previousState) => [
-          post,
-          ...previousState
-        ])
-      } catch (error) {
-        console.log(`Erro ao criar publicação: ${error}`)
-      }
+    if (!user) {
+      return
     }
+
+    const { name, id } = user
+
+    if (!title || !content || isLoggedUser == null || !name || !id) {
+      return
+    }
+
+    const postService = new PostService()
+    await postService.create(title, content, name, id)
+
+    const post = {
+      title,
+      content,
+      user_name: name
+    }
+
+    setPosts((previousState) => [
+      post as Post,
+      ...previousState
+    ])
 
     setIsVisible(!isVisible)
     setText('Escreva um post')
@@ -110,7 +106,7 @@ function HomePage() {
   const renderForm = () => {
     if (isVisible) {
       return (
-        <form action="#" ref={formRef} 
+        <form action="#" ref={formRef}
           onSubmit={handleCreatePost} className={styles.form}>
           <div className={styles.postTitle}>
             <label>Título do post</label>
@@ -250,7 +246,7 @@ function HomePage() {
         </div>
 
         <h3>Área de posts</h3>
-        
+
         <div className={styles.posts}>
           <div className={styles.search}>
             <Button
@@ -264,12 +260,12 @@ function HomePage() {
 
           {renderForm()}
 
-          {posts.map(({ name, title, content, created_at }) => (
-            <Post
+          {posts.map(({ user_name, title, content, created_at }) => (
+            <PostItem
               key={Math.random() * 6}
-              name={name}
-              title={title}
-              content={content}
+              name={user_name}
+              title={title ?? ''}
+              content={content ?? ''}
               created_at={created_at}
             />
           ))}
