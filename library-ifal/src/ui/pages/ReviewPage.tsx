@@ -64,15 +64,11 @@ function ReviewPage() {
       return
     }
 
-    if (bookInput.value.length === 0) {
-      return
-    }
-
-    if (authorInput.value.length === 0) {
-      return
-    }
-
-    if (reviewTextarea.value.length === 0) {
+    if (
+      authorInput.value.length === 0 ||
+      reviewTextarea.value.length === 0 ||
+      bookInput.value.length === 0
+    ) {
       return
     }
 
@@ -82,7 +78,7 @@ function ReviewPage() {
 
     const isLoggedUser = localStorage.getItem('token')
 
-    if (isLoggedUser != null) {
+    if (isLoggedUser === null) {
       return
     }
 
@@ -109,7 +105,6 @@ function ReviewPage() {
     ])
 
     setIsVisible(false)
-
   }
 
   const renderOpenOrCloseIcon = () => {

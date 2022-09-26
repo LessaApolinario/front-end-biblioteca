@@ -43,10 +43,19 @@ function ReviewsProvider({ children }: ReviewsProviderProps) {
     available: boolean
   ) => {
     const reviewService = new ReviewService()
-    const data = await reviewService.create(user_id, name, title_book, writer, review, available)
+    await reviewService.create(user_id, name, title_book, writer, review, available)
+    
+    const data = {
+      user_id,
+      name,
+      title_book,
+      writer,
+      review,
+      available
+    } as Review
 
     setData((previousState) => [
-      data as Review,
+      data,
       ...previousState as Review[]
     ])
 
