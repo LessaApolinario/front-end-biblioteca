@@ -25,7 +25,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     const storagedUser = localStorage.getItem('user')
     const storagedToken = localStorage.getItem('token')
 
-    if (storagedToken && storagedUser) {
+    if (storagedToken !== null && storagedUser !== null) {
       const _user = JSON.parse(storagedUser) as User
       setUser(_user)
       const userService = new UserService()
