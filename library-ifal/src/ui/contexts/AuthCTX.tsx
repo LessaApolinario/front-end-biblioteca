@@ -66,7 +66,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     const storagedId = localStorage.getItem('id')
     const storagedToken = localStorage.getItem('token')
 
-    if (!storagedId || !storagedToken) {
+    if (storagedId === null || storagedToken === null) {
       return
     }
 
@@ -74,7 +74,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     const token: string = JSON.parse(storagedToken)
 
     const userService = new UserService()
-    userService.logout(id, token)
+    await userService.logout(id, token)
     userService.destroySession()
 
     localStorage.removeItem('user')
