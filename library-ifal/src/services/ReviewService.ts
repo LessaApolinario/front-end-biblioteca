@@ -4,7 +4,7 @@ import IReviewService from '../core/interfaces/services/IReviewService'
 
 class ReviewService extends IReviewService {
   fetch(): Promise<Review[]> {
-    return new ReviewAPI().fetch()
+    return await new ReviewAPI().fetch()
   }
 
   async create(

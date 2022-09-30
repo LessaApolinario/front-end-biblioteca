@@ -5,7 +5,7 @@ import IUserService from '../core/interfaces/services/IUserService'
 
 class UserService extends IUserService {
   login(credentials: AuthCredentialsDTO): Promise<User> {
-    return new UserAPI().login(credentials)
+    return await new UserAPI().login(credentials)
   }
   
   async logout(id: string, token: string): Promise<void> {

@@ -4,11 +4,11 @@ import IBookService from '../core/interfaces/services/IBookService'
 
 class BookService extends IBookService {
   fetch(): Promise<Book[]> {
-    return new BookAPI().fetch()
+    return await new BookAPI().fetch()
   }
 
   search(query: string): Promise<Book[]> {
-    return new BookAPI().search(query)
+    return await new BookAPI().search(query)
   }
 }
 
