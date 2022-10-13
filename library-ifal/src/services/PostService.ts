@@ -4,7 +4,7 @@ import IPostService from '../core/interfaces/services/IPostService'
 
 class PostService extends IPostService {
   fetch(): Promise<Post[]> {
-    return await new PostAPI().fetch()
+    return new PostAPI().fetch()
   }
 
   async create(title: string, content: string, user_name: string, user_id: string): Promise<void> {
