@@ -29,22 +29,17 @@ function BooksPage() {
   const handleSearchBook = useCallback(async () => {
     const query = inputRef.current?.value
 
-    if (!query) {
-      return
-    }
-
-    if (query.length === 0) {
+    if (!query || query.length === 0) {
       return
     }
 
     const bookService = new BookService()
-    const data = await bookService.search(query)
+    const books = await bookService.search(query)
+    const isEmpty = !books.length
 
-    if (!data.length) {
-      return
+    if (!isEmpty) {
+      setBooks(books)
     }
-
-    setBooks(data)
   }, [])
 
   function handleSubmit(event: React.FormEvent) {
