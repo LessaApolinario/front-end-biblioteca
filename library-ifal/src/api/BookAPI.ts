@@ -13,7 +13,11 @@ class BookAPI extends IBookAPI {
 
   async search(query: string): Promise<Book[]> {
     const response = await this.client.get(`/books/search?s=${query}`)
-    return response.data
+    const books: Book[] = response.data.map((item: Record<string, unknown>) => {
+      return Book.fromJSON(item)
+    })
+
+    return books
   }
 }
 
