@@ -11,7 +11,7 @@ class UserAPI extends IUserAPI {
       }
     })
 
-    return response.data
+    return User.fromJSON(response.data)
   }
 
   async logout(id: string, token: string): Promise<void> {
