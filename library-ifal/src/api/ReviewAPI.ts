@@ -45,7 +45,11 @@ class ReviewAPI extends IReviewAPI {
 
   async search(query: string): Promise<Review[]> {
     const response = await this.client.get(`/api/review/search?s=${query}`)
-    return response.data
+    const reviews: Review[] = response.data.map((item: Record<string, unknown>) => {
+      return Review.fromJSON(item)
+    })
+
+    return reviews
   }
 }
 
