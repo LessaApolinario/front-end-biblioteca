@@ -48,19 +48,7 @@ function ReviewPage() {
     const reviewTextarea = reviewTextareaRef.current
     const user = authCTX.user
 
-    if (!button) {
-      return
-    }
-
-    if (!bookInput) {
-      return
-    }
-
-    if (!authorInput) {
-      return
-    }
-
-    if (!reviewTextarea) {
+    if (!button || !bookInput || !authorInput || !reviewTextarea) {
       return
     }
 
@@ -84,23 +72,22 @@ function ReviewPage() {
 
     const { id, name } = user
 
-    if (!id) {
+    if (!id || !name) {
       return
     }
 
-    if (!name) {
-      return
-    }
+    const newReview = new Review()
+    newReview.user_id = id
+    newReview.name = name
+    newReview.title_book = bookTitleRef.current.value
+    newReview.writer = authorNameRef.current.value
+    newReview.review = reviewTextareaRef.current.value
+    newReview.available = true
 
-    const user_id = id
-    const title_book = bookTitleRef.current.value
-    const writer = authorNameRef.current.value
-    const review = reviewTextareaRef.current.value
-
-    const r = await reviewsCTX.create(user_id, name, title_book, writer, review, true)
+    const reviewCreated = await reviewsCTX.create(newReview)
 
     setReviews((previousState) => [
-      r,
+      reviewCreated,
       ...previousState
     ])
 
