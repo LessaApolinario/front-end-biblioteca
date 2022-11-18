@@ -85,17 +85,18 @@ function HomePage() {
       return
     }
 
-    const postService = new PostService()
-    await postService.create(title, content, name, id)
+    const newPost = new Post()
+    newPost.title = title
+    newPost.content = content
+    newPost.user_name = name
+    newPost.user_id = id
 
-    const post = {
-      title,
-      content,
-      user_name: name
-    }
+    const postService = new PostService()
+    await postService.create(newPost)
+
 
     setPosts((previousState) => [
-      post as Post,
+      newPost,
       ...previousState
     ])
 
