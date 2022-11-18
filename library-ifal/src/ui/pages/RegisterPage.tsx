@@ -3,6 +3,7 @@ import { useContext, useRef } from 'react'
 import { GiTreeBranch } from 'react-icons/gi'
 
 import { useNavigate } from 'react-router-dom'
+import User from '../../core/domain/models/User'
 
 import Button from '../components/Button'
 
@@ -33,31 +34,20 @@ function RegisterPage() {
     const password = passwordInput?.value
     const confirmedPassword = confirmPasswordInput?.value
 
-    if (!name) {
+    if (
+      !name || !username || !email || !password ||
+      !confirmedPassword || password !== confirmedPassword
+    ) {
       return
     }
 
-    if (!username) {
-      return
-    }
+    const newUser = new User()
+    newUser.name = name
+    newUser.username = username
+    newUser.email = email
+    newUser.password = password
 
-    if (!email) {
-      return
-    }
-
-    if (!password) {
-      return
-    }
-
-    if (!confirmedPassword) {
-      return
-    }
-
-    if (password !== confirmedPassword) {
-      return
-    }
-
-    await authCTX.register(name, username, email, password)
+    await authCTX.register(newUser)
 
     navigate('/')
   }
