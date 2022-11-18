@@ -9,7 +9,7 @@ interface AuthCTXProps {
   user: User | undefined
   login(user: AuthCredentialsDTO): Promise<boolean>
   logout(): void
-  register(name: string, username: string, email: string, password: string): Promise<void>
+  register(user: User): Promise<void>
 }
 
 interface AuthProviderProps {
@@ -83,9 +83,9 @@ function AuthProvider({ children }: AuthProviderProps) {
     setUser(undefined)
   }
 
-  const register = async (name: string, username: string, email: string, password: string) => {
+  const register = async (user: User) => {
     const userService = new UserService()
-    await userService.register(name, username, email, password)
+    await userService.register(user)
   }
 
   return (

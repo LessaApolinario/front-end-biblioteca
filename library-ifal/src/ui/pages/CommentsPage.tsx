@@ -11,6 +11,7 @@ import { AuthCTX } from '../contexts/AuthCTX';
 import styles from '../styles/pages/CommentsPage.module.scss'
 
 import CommentService from '../../services/CommentService';
+import Comment from '../../core/domain/models/Comment';
 
 
 function CommentsPage() {
@@ -27,24 +28,20 @@ function CommentsPage() {
     let email = emailRef.current?.value
     let comment = commentRef.current?.value
 
-    if (!name || !email || !comment) {
+    if (
+      !name || !email || !comment ||
+      !nameRef.current || !emailRef.current || !commentRef.current
+    ) {
       return
     }
+
+    const newComment = new Comment()
+    newComment.name = name
+    newComment.email = email
+    newComment.comment = comment
 
     const commentService = new CommentService()
-    await commentService.create(name, email, comment)
-
-    if (!nameRef.current) {
-      return
-    }
-
-    if (!emailRef.current) {
-      return
-    }
-
-    if (!commentRef.current) {
-      return
-    }
+    await commentService.create(newComment)
 
     nameRef.current.value = ''
     emailRef.current.value = ''

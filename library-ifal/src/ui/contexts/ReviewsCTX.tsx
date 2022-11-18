@@ -6,14 +6,7 @@ import ReviewService from "../../services/ReviewService"
 interface ReviewsCTXProps {
   data: undefined | Review[]
   fetch(): Promise<Review[]>
-  create(
-    user_id: string,
-    name: string,
-    title_book: string,
-    writer: string,
-    review: string,
-    available: boolean
-  ): Promise<Review>
+  create(review: Review): Promise<Review>
 }
 
 interface ReviewsProviderProps {
@@ -34,32 +27,16 @@ function ReviewsProvider({ children }: ReviewsProviderProps) {
     return reviews
   }
 
-  const create = async (
-    user_id: string,
-    name: string,
-    title_book: string,
-    writer: string,
-    review: string,
-    available: boolean
-  ) => {
+  const create = async (review: Review) => {
     const reviewService = new ReviewService()
-    await reviewService.create(user_id, name, title_book, writer, review, available)
-    
-    const data = {
-      user_id,
-      name,
-      title_book,
-      writer,
-      review,
-      available
-    } as Review
+    await reviewService.create(review)
 
     setData((previousState) => [
-      data,
+      review,
       ...previousState as Review[]
     ])
 
-    return data
+    return review
   }
 
   return (

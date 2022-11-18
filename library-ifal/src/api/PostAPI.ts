@@ -11,9 +11,9 @@ class PostAPI extends IPostAPI {
     return posts
   }
 
-  async create(title: string, content: string, user_name: string, user_id: string): Promise<void> {
+  async create(post: Post): Promise<void> {
     await this.client.post('/api/posts',
-      JSON.stringify({ title, content, user_name, user_id }), {
+      JSON.stringify(post.toJSON()), {
       headers: {
         'Content-Type': 'application/json',
       }

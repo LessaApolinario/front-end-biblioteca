@@ -23,16 +23,8 @@ class UserAPI extends IUserAPI {
     })
   }
 
-  async register(name: string, username: string, email: string, password: string): Promise<void> {
-    const userJSON: Record<string, unknown> = {
-      name,
-      username,
-      email,
-      password,
-    }
-    const user = User.fromJSON(userJSON)
-
-    await this.client.post('/api/auth/register', JSON.stringify(user), {
+  async register(user: User): Promise<void> {
+    await this.client.post('/api/auth/register', JSON.stringify(user.toJSON()), {
       headers: {
         'Content-Type': 'application/json',
       }
