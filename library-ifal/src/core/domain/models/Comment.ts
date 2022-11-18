@@ -16,9 +16,9 @@ class Comment {
   toJSON(): Record<string, unknown> {
     const json: Record<string, unknown> = {}
     json["_id"] = this._id
-    json["_name"] = this.name
-    json["_email"] = this.email
-    json["_comment"] = this.comment
+    json["name"] = this.name
+    json["email"] = this.email
+    json["comment"] = this.comment
     return json
   }
 }
