@@ -7,15 +7,8 @@ class ReviewService extends IReviewService {
     return new ReviewAPI().fetch()
   }
 
-  async create(
-    user_id: string,
-    name: string,
-    title_book: string,
-    writer: string,
-    review: string,
-    available: boolean
-  ): Promise<void> {
-    await new ReviewAPI().create(user_id, name, title_book, writer, review, available)
+  async create(review: Review): Promise<void> {
+    await new ReviewAPI().create(review)
   }
 
   async search(query: string): Promise<Review[]> {
