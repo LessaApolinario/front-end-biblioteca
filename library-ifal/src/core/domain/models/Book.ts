@@ -7,11 +7,11 @@ class Book {
 
   static fromJSON(json: Record<string, unknown>): Book {
     const book = new Book()
-    book.titulo = String(json["titulo"])
-    book.autor = String(json["autor"])
-    book.edicao = String(json["edicao"])
-    book.ano = String(json["ano"])
-    book.localizacao = String(json["localizacao"])
+    book.titulo = json["titulo"] === undefined ? '-' : String(json["titulo"])
+    book.autor = json["autor"] === undefined ? '-' : String(json["autor"])
+    book.edicao = json["edicao"] === undefined ? '-' : String(json["edicao"])
+    book.ano = json["ano"] === undefined ? '-' : String(json["ano"])
+    book.localizacao = json["localizacao"] === undefined ? '-' : String(json["localizacao"])
     return book
   }
 
