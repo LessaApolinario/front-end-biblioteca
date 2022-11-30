@@ -1,4 +1,5 @@
 class Book {
+  _id?: string
   titulo?: string
   autor?: string
   edicao?: string
@@ -7,6 +8,7 @@ class Book {
 
   static fromJSON(json: Record<string, unknown>): Book {
     const book = new Book()
+    book._id = json["_id"] === undefined ? "-" : String(json["_id"])
     book.titulo = json["titulo"] === undefined ? '-' : String(json["titulo"])
     book.autor = json["autor"] === undefined ? '-' : String(json["autor"])
     book.edicao = json["edicao"] === undefined ? '-' : String(json["edicao"])
