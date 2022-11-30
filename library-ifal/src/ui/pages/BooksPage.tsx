@@ -25,7 +25,9 @@ function BooksPage() {
     "Localização"
   ]
 
-  const renderItem = (item: Book, key: number): ReactNode => {
+  const keyExtractor = (item: Book): string => String(item._id)
+
+  const renderItem = (item: Book, key: string): ReactNode => {
     return <BookComponent  props={item} key={key} />
   }
 
@@ -104,9 +106,11 @@ function BooksPage() {
 
       <Table<Book>
         className={styles.table}
-        columns={columns}
         data={books}
-        renderItem={renderItem} />
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        columns={columns}
+        />
     </div>
   )
 }
