@@ -1,4 +1,5 @@
-import styles from '../styles/components/Post.module.scss'
+import styles from '../styles/components/PostComponent.module.scss'
+
 import Text from './Text'
 
 interface PostItemProps {

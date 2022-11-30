@@ -5,7 +5,7 @@ import { GiTreeBranch } from 'react-icons/gi'
 
 import Button from "../components/Button"
 import Header from "../components/Header"
-import PostItem from "../components/PostItem"
+import PostComponent from "../components/PostComponent"
 
 import { AuthCTX } from "../contexts/AuthCTX"
 
@@ -262,7 +262,7 @@ function HomePage() {
           {renderForm()}
 
           {posts.map(({ user_name, title, content, created_at }) => (
-            <PostItem
+            <PostComponent
               key={Math.random() * 6}
               name={user_name}
               title={title ?? ''}
