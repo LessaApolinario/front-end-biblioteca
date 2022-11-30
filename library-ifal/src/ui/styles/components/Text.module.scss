@@ -1,0 +1,14 @@
+.container {
+  font-size: 1.05rem;
+  font-weight: normal;
+  font-style: normal;
+  text-align: justify;
+
+  &.primary {
+    color: #5B4B8A;
+  }
+
+  &.secondary {
+    color: #FFF;
+  }
+}

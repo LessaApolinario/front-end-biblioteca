@@ -1,4 +1,5 @@
 import styles from '../styles/components/Post.module.scss'
+import Text from './Text'
 
 interface PostItemProps {
   name?: string
@@ -49,7 +50,9 @@ function PostItem({ name, title, content, created_at }: PostItemProps) {
       <h3>{name} <span className={styles.date}>{formatDate()}</span></h3>
       <h4 className={styles.postTitle}>{title}</h4>
       
-      <p className={styles.content}>{content}</p>
+      <Text
+        className={'primary'}
+        text={content} />
     </article>
   )
 }
