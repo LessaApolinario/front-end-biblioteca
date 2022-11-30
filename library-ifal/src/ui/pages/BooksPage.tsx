@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom"
 
 import Book from "../../core/domain/models/Book"
 import BookService from "../../services/BookService"
+import BookComponent from "../components/BookComponent"
 
 import Button from "../components/Button"
 import Header from "../components/Header"
 import Table from "../components/Table"
 
 import styles from '../styles/pages/BooksPage.module.scss'
-import cellStyles from '../styles/components/Cell.module.scss'
 
 function BooksPage() {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -26,38 +26,7 @@ function BooksPage() {
   ]
 
   const renderItem = (item: Book, key: number): ReactNode => {
-    const formatAuthorName = (authorName: string | undefined) => {
-      if (!authorName) {
-        return '-'
-      }
-
-      const [lastName, firstName] = authorName.trim().split(',')
-
-      return firstName ? `${firstName} ${lastName}` : lastName
-    }
-
-    return (
-      <>
-        <tr className={cellStyles.container} key={key}>
-          <td>{item.autor}</td>
-          <td>{formatAuthorName(item.autor)}</td>
-          <td>{item.edicao}</td>
-          <td>{item.ano ? item.ano = item.ano.replace('.', '') : '-'}</td>
-          <td>
-            <Button
-              title='Informações sobre a localização dos livros'
-              type='button'
-              btnType="primary"
-              onClick={
-                () => console.log('redirecionando')
-              }
-            >
-              {item.localizacao}
-            </Button>
-          </td>
-        </tr>
-      </>
-    )
+    return <BookComponent  props={item} key={key} />
   }
 
   const handleListBooks = useCallback(async () => {
