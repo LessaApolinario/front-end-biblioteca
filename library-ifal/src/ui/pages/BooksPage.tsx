@@ -109,8 +109,7 @@ function BooksPage() {
         data={books}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        columns={columns}
-        />
+        columns={columns} />
     </div>
   )
 }
