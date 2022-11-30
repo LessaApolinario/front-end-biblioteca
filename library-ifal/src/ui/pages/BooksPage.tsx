@@ -17,7 +17,7 @@ function BooksPage() {
   const navigate = useNavigate()
   const [books, setBooks] = useState<Book[]>([])
 
-  const thead = [
+  const columns = [
     "Título",
     "Autor",
     "Edição",
@@ -104,7 +104,7 @@ function BooksPage() {
 
       <Table<Book>
         className={styles.table}
-        thead={thead}
+        columns={columns}
         data={books}
         renderItem={renderItem} />
     </div>
