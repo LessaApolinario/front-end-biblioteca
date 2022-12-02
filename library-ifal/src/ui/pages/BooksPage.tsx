@@ -26,7 +26,7 @@ function BooksPage() {
   ]
 
   const renderItem = (item: Book): ReactNode => {
-    return <BookComponent  props={item} key={String(item._id)} />
+    return <BookComponent props={item} key={String(item._id)} />
   }
 
   const handleListBooks = useCallback(async () => {
