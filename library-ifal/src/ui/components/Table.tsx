@@ -3,8 +3,7 @@ import { ReactNode } from 'react'
 interface TableProps<T> {
   className?: string
   data: T[]
-  renderItem: (item: T, key: string) => ReactNode
-  keyExtractor: (item: T) => string
+  renderItem: (item: T) => ReactNode
   columns: string[]
   onClick?(): void
 }
@@ -20,10 +19,7 @@ function Table<T>(props: TableProps<T>) {
         </tr>
       </thead>
       <tbody>
-        {props.data.map((data) => {
-          const key = props.keyExtractor(data)
-          return props.renderItem(data, key)
-        })}
+        {props.data.map((data) => (props.renderItem(data)))}
       </tbody>
     </table>
   )

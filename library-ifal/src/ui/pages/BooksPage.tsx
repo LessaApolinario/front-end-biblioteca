@@ -25,10 +25,8 @@ function BooksPage() {
     "Localização"
   ]
 
-  const keyExtractor = (item: Book): string => String(item._id)
-
-  const renderItem = (item: Book, key: string): ReactNode => {
-    return <BookComponent  props={item} key={key} />
+  const renderItem = (item: Book): ReactNode => {
+    return <BookComponent  props={item} key={String(item._id)} />
   }
 
   const handleListBooks = useCallback(async () => {
@@ -108,7 +106,6 @@ function BooksPage() {
         className={styles.table}
         data={books}
         renderItem={renderItem}
-        keyExtractor={keyExtractor}
         columns={columns} />
     </div>
   )
