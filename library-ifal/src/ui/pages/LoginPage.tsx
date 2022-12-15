@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import { GiTreeBranch } from 'react-icons/gi'
 
 import Button from '../components/Button'
+import Input from '../components/Input'
+import Label from '../components/Label'
 
 import styles from '../styles/pages/LoginPage.module.scss'
+
 import { AuthCTX } from '../contexts/AuthCTX'
 
 function LoginPage() {
@@ -41,13 +44,13 @@ function LoginPage() {
         <h2>Fazer login</h2>
 
         <div className={styles.username}>
-          <label>Nome de usuário</label>
-          <input type="text" ref={usernameRef} />
+          <Label text={'Nome de usuário'} />
+          <Input type={'text'} name={'nome de usuário'} />
         </div>
 
         <div className={styles.password}>
-          <label>Senha</label>
-          <input type="password" ref={passwordRef} />
+          <Label text={'Senha'} />
+          <Input type={'password'} name={'senha'} />
         </div>
 
         <Button type='submit' btnType='secondary'>Entrar</Button>

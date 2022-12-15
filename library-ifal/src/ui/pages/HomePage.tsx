@@ -1,13 +1,13 @@
-import { createRef, useContext, useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { createRef, useContext, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
 
-import Button from "../components/Button"
-import Header from "../components/Header"
-import PostComponent from "../components/PostComponent"
+import Button from '../components/Button'
+import Header from '../components/Header'
+import PostComponent from '../components/PostComponent'
 
-import { AuthCTX } from "../contexts/AuthCTX"
+import { AuthCTX } from '../contexts/AuthCTX'
 
 import styles from '../styles/pages/HomePage.module.scss'
 
@@ -20,8 +20,10 @@ import _1984 from '../../assets/img/_1984.jpg'
 import OAlienista from '../../assets/img/OAlienista.jpeg'
 import PHP from '../../assets/img/PHP.jpg'
 import Python from '../../assets/img/Python.jpg'
-import PostService from "../../services/PostService"
-import Post from "../../core/domain/models/Post"
+import PostService from '../../services/PostService'
+import Post from '../../core/domain/models/Post'
+import Label from '../components/Label'
+import Input from '../components/Input'
 
 function HomePage() {
   const navigate = useNavigate()
@@ -107,15 +109,15 @@ function HomePage() {
   const renderForm = () => {
     if (isVisible) {
       return (
-        <form action="#" ref={formRef}
+        <form action='#' ref={formRef}
           onSubmit={handleCreatePost} className={styles.form}>
           <div className={styles.postTitle}>
-            <label>Título do post</label>
-            <input type="text" ref={titleRef} />
+            <Label text={'Título do post'} />
+            <Input type={'text'} name={'título do post'} />
           </div>
 
           <div className={styles.postContent}>
-            <label>Conteúdo do post</label>
+            <Label text={'Conteúdo do post'} />
             <textarea cols={30} rows={10} ref={contentRef}></textarea>
           </div>
 
@@ -208,39 +210,39 @@ function HomePage() {
         <div className={styles.carrousel}>
           <div className={styles.images}>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
+              <img onClick={() => navigate('/books')} src={harry} alt='' />
               <p>Harry Potter e o cálice de fogo</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={Microcontrolador8051ComLinguagemC} alt="" />
+              <img onClick={() => navigate('/books')} src={Microcontrolador8051ComLinguagemC} alt='' />
               <p>Microcontrolador 8051 com Linguagem C</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={padroesdeprojeto} alt="" />
+              <img onClick={() => navigate('/books')} src={padroesdeprojeto} alt='' />
               <p>Use a cabeça!: padrões de projetos</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={AHoraDaEstrela} alt="" />
+              <img onClick={() => navigate('/books')} src={AHoraDaEstrela} alt='' />
               <p>A hora da estrela</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={funcoes} alt="" />
+              <img onClick={() => navigate('/books')} src={funcoes} alt='' />
               <p>Fundamentos de matemática elementar: Conjuntos e funções</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={_1984} alt="" />
+              <img onClick={() => navigate('/books')} src={_1984} alt='' />
               <p>1984</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={OAlienista} alt="" />
+              <img onClick={() => navigate('/books')} src={OAlienista} alt='' />
               <p>O alienista</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={PHP} alt="" />
+              <img onClick={() => navigate('/books')} src={PHP} alt='' />
               <p>Desenvolvendo Websites com PHP</p>
             </div>
             <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={Python} alt="" />
+              <img onClick={() => navigate('/books')} src={Python} alt='' />
               <p>Introdução à prgramação com Python</p>
             </div>
           </div>

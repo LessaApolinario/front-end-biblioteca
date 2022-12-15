@@ -16,6 +16,8 @@ import { ReviewsCTX } from '../contexts/ReviewsCTX'
 
 import Review from '../../core/domain/models/Review'
 import ReviewService from '../../services/ReviewService'
+import Label from '../components/Label'
+import Input from '../components/Input'
 
 function ReviewPage() {
   const [reviews, setReviews] = useState<Review[]>([])
@@ -141,21 +143,21 @@ function ReviewPage() {
   const renderForm = () => {
     if (isVisible) {
       return (
-        <form action="#" method='POST' className={styles.form}>
+        <form action='#' method='POST' className={styles.form}>
           <h3>Escreva sua resenha</h3>
 
           <div className={styles.book}>
-            <label>Livro</label>
-            <input type="text" ref={bookTitleRef} />
+            <Label text={'Livro'} />
+            <Input type={'text'} name={'livro'} />
           </div>
 
           <div className={styles.author}>
-            <label>Autor</label>
-            <input type="text" ref={authorNameRef} />
+            <Label text={'Autor'} />
+            <Input type={'text'} name={'autor'} />
           </div>
 
           <div className={styles.review}>
-            <label>Resenha</label>
+            <Label text={'Resenha'} />
             <textarea cols={30} rows={5} ref={reviewTextareaRef}></textarea>
           </div>
 

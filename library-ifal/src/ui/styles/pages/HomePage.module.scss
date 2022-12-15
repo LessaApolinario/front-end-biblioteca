@@ -130,24 +130,8 @@
           flex-direction: column;
           gap: .5rem;
 
-          > label {
-            color: $primary;
-          }
-
           > input {
-            padding: 0.5rem 1rem;
-
-            border: 1px solid $primary;
-            border-radius: 3px;
-
-            &:focus {
-              border: 1px solid transparent;
-              outline-color: $primary;
-            }
-
-            &::placeholder {
-              color: $primary;
-            }
+            width: 100%;
           }
         }
 

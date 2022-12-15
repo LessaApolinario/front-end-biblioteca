@@ -1,0 +1,16 @@
+.container {
+  $primary: #5B4B8A;
+  $secondary: #FFF;
+
+  padding: 0.5rem 1rem;
+  width: 16rem;
+
+  border: 1px solid $primary;
+  border-radius: 3px;
+
+  &:focus {
+    outline-color: $primary;
+  }
+
+  color: $primary;
+}

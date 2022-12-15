@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import User from '../../core/domain/models/User'
 
 import Button from '../components/Button'
+import Input from '../components/Input'
+import Label from '../components/Label'
 
 import { AuthCTX } from '../contexts/AuthCTX'
 
@@ -61,32 +63,32 @@ function RegisterPage() {
 
         <div className={styles.row}>
           <div className={styles.name}>
-            <label>Seu nome</label>
-            <input type="text" ref={nameRef} />
+            <Label text={'Seu nome'} />
+            <Input type={'text'} name={'nome'} />
           </div>
 
           <div className={styles.username}>
-            <label>Nome de usuário</label>
-            <input type="text" ref={usernameRef} />
+            <Label text={'Nome de usuário'} />
+            <Input type={'text'} name={'nome de usuário'} />
           </div>
         </div>
 
         <div className={styles.row}>
           <div className={styles.email}>
-            <label>Email</label>
-            <input type="email" ref={emailRef} />
+            <Label text={'Email'} />
+            <Input type={'email'} name={'email'} />
           </div>
 
           <div className={styles.password}>
-            <label>Senha</label>
-            <input type="password" ref={passwordRef} />
+            <Label text={'Senha'} />
+            <Input type={'password'} name={'senha'} />
           </div>
         </div>
 
         <div className={styles.row}>
           <div className={styles.confirmPassword}>
-            <label>Confirme sua senha</label>
-            <input type="password" ref={confirmPasswordRef} />
+            <Label text={'Confirme sua senha'} />
+            <Input type={'password'} name={'confirmação de senha'} />
           </div>
 
           <Button type='submit' btnType='secondary'>Cadastrar</Button>

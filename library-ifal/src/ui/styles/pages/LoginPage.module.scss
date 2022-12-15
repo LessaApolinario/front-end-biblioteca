@@ -43,25 +43,6 @@
       flex-direction: column;
 
       margin-bottom: 1rem;
-
-      > label {
-        margin-bottom: 0.5rem;
-        font-size: 1.05rem;
-      }
-
-      > input {
-        padding: 0.5rem 1rem;
-        width: 16rem;
-
-        border: 1px solid $primary;
-        border-radius: 3px;
-        
-        &:focus {
-          outline-color: $primary;
-        }
-
-        color: $primary;
-      }
     }
 
     > button {
