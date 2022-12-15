@@ -19,6 +19,7 @@ import ReviewService from '../../services/ReviewService'
 import Label from '../components/Label'
 import Input from '../components/Input'
 import FlexWrapper from '../components/FlexWrapper'
+import TextArea from '../components/TextArea'
 
 function ReviewPage() {
   const [reviews, setReviews] = useState<Review[]>([])
@@ -157,10 +158,10 @@ function ReviewPage() {
             <Input type={'text'} name={'autor'} />
           </FlexWrapper>
 
-          <div className={styles.review}>
+          <FlexWrapper className={styles.review} orientation={'column'}>
             <Label text={'Resenha'} />
-            <textarea cols={30} rows={5} ref={reviewTextareaRef}></textarea>
-          </div>
+            <TextArea name={'resenha'} id={'reviewTextArea'} cols={30} rows={5}></TextArea>
+          </FlexWrapper>
 
           <Button
             ref={buttonRef}

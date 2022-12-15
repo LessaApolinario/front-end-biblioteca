@@ -134,23 +134,7 @@
     }
 
     > .review {
-      display: flex;
-      flex-direction: column;
       justify-content: center;
-
-      textarea {
-        padding: 0.5rem;
-
-        border: 1px solid $primary;
-        border-radius: 3px;
-
-        &:focus {
-          border: 1px solid transparent;
-          outline-color: $primary;
-        }
-
-        color: $primary;
-      }
     }
 
     > button {
