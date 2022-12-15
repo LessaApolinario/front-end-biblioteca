@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { GiTreeBranch } from 'react-icons/gi'
 
 import Button from '../components/Button'
+import FlexWrapper from '../components/FlexWrapper'
 import Input from '../components/Input'
 import Label from '../components/Label'
 
@@ -43,15 +44,15 @@ function LoginPage() {
       <form className={styles.login} onSubmit={handleSubmit}>
         <h2>Fazer login</h2>
 
-        <div className={styles.username}>
+        <FlexWrapper className={styles.username} orientation={'column'}>
           <Label text={'Nome de usuário'} />
           <Input type={'text'} name={'nome de usuário'} />
-        </div>
+        </FlexWrapper>
 
-        <div className={styles.password}>
+        <FlexWrapper className={styles.password} orientation={'column'}>
           <Label text={'Senha'} />
           <Input type={'password'} name={'senha'} />
-        </div>
+        </FlexWrapper>
 
         <Button type='submit' btnType='secondary'>Entrar</Button>
 

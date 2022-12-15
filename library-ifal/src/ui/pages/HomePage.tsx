@@ -6,6 +6,9 @@ import { GiTreeBranch } from 'react-icons/gi'
 import Button from '../components/Button'
 import Header from '../components/Header'
 import PostComponent from '../components/PostComponent'
+import FlexWrapper from '../components/FlexWrapper'
+import Label from '../components/Label'
+import Input from '../components/Input'
 
 import { AuthCTX } from '../contexts/AuthCTX'
 
@@ -22,8 +25,6 @@ import PHP from '../../assets/img/PHP.jpg'
 import Python from '../../assets/img/Python.jpg'
 import PostService from '../../services/PostService'
 import Post from '../../core/domain/models/Post'
-import Label from '../components/Label'
-import Input from '../components/Input'
 
 function HomePage() {
   const navigate = useNavigate()
@@ -111,15 +112,15 @@ function HomePage() {
       return (
         <form action='#' ref={formRef}
           onSubmit={handleCreatePost} className={styles.form}>
-          <div className={styles.postTitle}>
+          <FlexWrapper className={styles.postTitle} orientation={'column'}>
             <Label text={'Título do post'} />
             <Input type={'text'} name={'título do post'} />
-          </div>
+          </FlexWrapper>
 
-          <div className={styles.postContent}>
+          <FlexWrapper className={styles.postContent} orientation={'column'}>
             <Label text={'Conteúdo do post'} />
             <textarea cols={30} rows={10} ref={contentRef}></textarea>
-          </div>
+          </FlexWrapper>
 
           <Button
             type='submit'

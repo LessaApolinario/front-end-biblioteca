@@ -9,6 +9,7 @@
   border-radius: 3px;
 
   &:focus {
+    border: 1px solid transparent;
     outline-color: $primary;
   }
 

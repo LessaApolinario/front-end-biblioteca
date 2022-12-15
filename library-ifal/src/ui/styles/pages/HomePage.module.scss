@@ -126,8 +126,6 @@
         padding: 1.25rem;
 
         .postTitle, .postContent {
-          display: flex;
-          flex-direction: column;
           gap: .5rem;
 
           > input {

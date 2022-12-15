@@ -113,6 +113,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 0.8rem;
 
     padding: 1rem;
     margin-bottom: 1.5rem;
@@ -124,38 +125,12 @@
       margin-bottom: 0.8rem;
     }
 
-    label {
-      color: $primary;
-      margin-bottom: 0.2rem;
-    }
+    > .fullWidth {
+      width: 100%;
 
-    input {
-      padding: 0.5rem 1rem;
-
-      border: 1px solid $primary;
-      border-radius: 3px;
-
-      &:focus {
-        outline-color: $primary;
+      > input {
+        width: 100%;
       }
-
-      color: $primary;
-    }
-
-    input, textarea {
-      margin-bottom: 0.8rem;
-    }
-
-    > .book {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    > .author {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
     > .review {

@@ -18,6 +18,7 @@ import Review from '../../core/domain/models/Review'
 import ReviewService from '../../services/ReviewService'
 import Label from '../components/Label'
 import Input from '../components/Input'
+import FlexWrapper from '../components/FlexWrapper'
 
 function ReviewPage() {
   const [reviews, setReviews] = useState<Review[]>([])
@@ -146,15 +147,15 @@ function ReviewPage() {
         <form action='#' method='POST' className={styles.form}>
           <h3>Escreva sua resenha</h3>
 
-          <div className={styles.book}>
+          <FlexWrapper className={styles.fullWidth} orientation={'column'}>
             <Label text={'Livro'} />
             <Input type={'text'} name={'livro'} />
-          </div>
+          </FlexWrapper>
 
-          <div className={styles.author}>
+          <FlexWrapper className={styles.fullWidth} orientation={'column'}>
             <Label text={'Autor'} />
             <Input type={'text'} name={'autor'} />
-          </div>
+          </FlexWrapper>
 
           <div className={styles.review}>
             <Label text={'Resenha'} />

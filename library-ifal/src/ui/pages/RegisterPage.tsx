@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import User from '../../core/domain/models/User'
 
 import Button from '../components/Button'
+import FlexWrapper from '../components/FlexWrapper'
 import Input from '../components/Input'
 import Label from '../components/Label'
 
@@ -61,38 +62,38 @@ function RegisterPage() {
       <form className={styles.register} onSubmit={handleRegister}>
         <h2>Cadastrar-se</h2>
 
-        <div className={styles.row}>
-          <div className={styles.name}>
+        <FlexWrapper className={styles.row} orientation={'row'}>
+          <FlexWrapper className={styles.name} orientation={'column'}>
             <Label text={'Seu nome'} />
             <Input type={'text'} name={'nome'} />
-          </div>
+          </FlexWrapper>
 
-          <div className={styles.username}>
+          <FlexWrapper className={styles.username} orientation={'column'}>
             <Label text={'Nome de usuário'} />
             <Input type={'text'} name={'nome de usuário'} />
-          </div>
-        </div>
+          </FlexWrapper>
+        </FlexWrapper>
 
-        <div className={styles.row}>
-          <div className={styles.email}>
+        <FlexWrapper className={styles.row} orientation={'row'}>
+          <FlexWrapper className={styles.email} orientation={'column'}>
             <Label text={'Email'} />
             <Input type={'email'} name={'email'} />
-          </div>
+          </FlexWrapper>
 
-          <div className={styles.password}>
+          <FlexWrapper className={styles.password} orientation={'column'}>
             <Label text={'Senha'} />
             <Input type={'password'} name={'senha'} />
-          </div>
-        </div>
+          </FlexWrapper>
+        </FlexWrapper>
 
-        <div className={styles.row}>
-          <div className={styles.confirmPassword}>
+        <FlexWrapper className={styles.row} orientation={'row'}>
+          <FlexWrapper className={styles.confirmPassword} orientation={'column'}>
             <Label text={'Confirme sua senha'} />
             <Input type={'password'} name={'confirmação de senha'} />
-          </div>
+          </FlexWrapper>
 
           <Button type='submit' btnType='secondary'>Cadastrar</Button>
-        </div>
+        </FlexWrapper>
 
         <p className={styles.link}>
           Já tem conta? Entre
