@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react'
+import { createRef, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -12,28 +12,43 @@ import styles from '../styles/pages/LoginPage.module.scss'
 
 import { AuthCTX } from '../contexts/AuthCTX'
 
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+import { useInput } from '../../hooks/useInput'
+
 function LoginPage() {
+  const useUsernameInput = useInput()
+  const usePasswordInput = useInput()
   const navigate = useNavigate()
-  const usernameRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
+  const usernameRef = createRef<HTMLInputElement>()
+  const passwordRef = createRef<HTMLInputElement>()
   const authCTX = useContext(AuthCTX)
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
 
-    const username = usernameRef.current?.value
-    const password = passwordRef.current?.value
+    const usernameInput = usernameRef.current
+    const passwordInput = passwordRef.current
+    const username = usernameInput?.value ?? ''
+    const password = passwordInput?.value ?? ''
 
     try {
-      if (username && password) {
-        const success = await authCTX.login({ username, password })
-        
-        if (success) {
-          navigate('/')
-        }
+      useUsernameInput.validate(usernameInput)
+      usePasswordInput.validate(passwordInput)
+
+      const success = await authCTX.login({ username, password })
+
+      if (success) {
+        toast.success('Login realizado com sucesso!', {
+          position: toast.POSITION.TOP_RIGHT,
+        })
+        navigate('/')
       }
-    } catch(error) {
-      console.log(`Erro ao fazer login: ${error}`)
+    } catch (error) {
+      toast.error(`Erro ao fazer login`, {
+        position: toast.POSITION.TOP_RIGHT
+      })
     }
   }
 
@@ -46,18 +61,18 @@ function LoginPage() {
 
         <FlexWrapper className={styles.username} orientation={'column'}>
           <Label text={'Nome de usuário'} />
-          <Input type={'text'} name={'nome de usuário'} />
+          <Input type={'text'} name={'nome de usuário'} ref={usernameRef} />
         </FlexWrapper>
 
         <FlexWrapper className={styles.password} orientation={'column'}>
           <Label text={'Senha'} />
-          <Input type={'password'} name={'senha'} />
+          <Input type={'password'} name={'senha'} ref={passwordRef} />
         </FlexWrapper>
 
         <Button type='submit' btnType='secondary'>Entrar</Button>
 
         <p className={styles.link}>
-          Ainda não tem conta? Cadastre-se 
+          Ainda não tem conta? Cadastre-se
           <span onClick={() => navigate('/register')}>aqui</span>
         </p>
       </form>
