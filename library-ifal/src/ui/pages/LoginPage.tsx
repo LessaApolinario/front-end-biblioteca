@@ -1,4 +1,4 @@
-import { createRef, useContext } from 'react'
+import { createRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -10,20 +10,16 @@ import Label from '../components/Label'
 
 import styles from '../styles/pages/LoginPage.module.scss'
 
-import { AuthCTX } from '../contexts/AuthCTX'
-
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-
 import { useInput } from '../../hooks/useInput'
+import { useAuth } from '../../hooks/useAuth'
 
 function LoginPage() {
   const useUsernameInput = useInput()
   const usePasswordInput = useInput()
+  const { login } = useAuth()
   const navigate = useNavigate()
   const usernameRef = createRef<HTMLInputElement>()
   const passwordRef = createRef<HTMLInputElement>()
-  const authCTX = useContext(AuthCTX)
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -33,23 +29,9 @@ function LoginPage() {
     const username = usernameInput?.value ?? ''
     const password = passwordInput?.value ?? ''
 
-    try {
-      useUsernameInput.validate(usernameInput)
-      usePasswordInput.validate(passwordInput)
-
-      const success = await authCTX.login({ username, password })
-
-      if (success) {
-        toast.success('Login realizado com sucesso!', {
-          position: toast.POSITION.TOP_RIGHT,
-        })
-        navigate('/')
-      }
-    } catch (error) {
-      toast.error(`Erro ao fazer login`, {
-        position: toast.POSITION.TOP_RIGHT
-      })
-    }
+    useUsernameInput.validate(usernameInput)
+    usePasswordInput.validate(passwordInput)
+    await login({ username, password })
   }
 
   return (
