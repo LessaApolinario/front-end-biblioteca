@@ -1,17 +1,18 @@
-import { HTMLInputTypeAttribute } from 'react'
+import { ForwardedRef, forwardRef, HTMLInputTypeAttribute } from 'react'
 
 import styles from '../styles/components/Input.module.scss'
 
 interface InputProps {
   type: HTMLInputTypeAttribute
-  name: string | undefined
+  name: string
 }
 
-function Input(props: InputProps) {
+function Input(props: InputProps, ref: ForwardedRef<HTMLInputElement>) {
   return <input
     type={props.type}
     className={styles.container}
-    name={props.name} />
+    name={props.name}
+    ref={ref} />
 }
 
-export default Input
+export default forwardRef(Input)
