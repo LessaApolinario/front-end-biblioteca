@@ -1,9 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+
 import AuthProvider from "../contexts/AuthCTX"
 import ReviewsProvider from "../contexts/ReviewsCTX"
+
 import BooksPage from "../pages/BooksPage"
 import CommentsPage from "../pages/CommentsPage"
-
 import Error404Page from "../pages/Error404Page"
 import HintsPage from "../pages/HintsPage"
 import HomePage from "../pages/HomePage"
