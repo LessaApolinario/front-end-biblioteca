@@ -18,7 +18,7 @@ export function useInput() {
 
   function validate(input: HTMLInputElement | null) {
     if (input !== null) {
-      const isPasswordLengthValid = input.value?.length < 6
+      const isPasswordLengthInvalid = input.value?.length < 6
       const isEmail = input.value.match(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i)
 
       if (input.value === '') {
@@ -26,7 +26,7 @@ export function useInput() {
         return
       }
 
-      if (input.type === 'password' && isPasswordLengthValid) {
+      if (input.type === 'password' && isPasswordLengthInvalid) {
         setError('O campo de senha precisa ter no mínimo 6 caracteres')
         return
       }
