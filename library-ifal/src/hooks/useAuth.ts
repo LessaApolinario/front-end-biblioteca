@@ -4,10 +4,12 @@ import User from '../core/domain/models/User'
 
 import { AuthCTX } from '../ui/contexts/AuthCTX'
 import { toast } from 'react-toastify'
+
 import AuthCredentialsDTO from '../core/dto/AuthCredentialsDTO'
+
 import { useNavigate } from 'react-router-dom'
 
-interface UserPartial {
+export interface UserPartial {
   name: string | undefined
   username: string | undefined
   email: string | undefined
