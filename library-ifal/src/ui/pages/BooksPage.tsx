@@ -1,21 +1,25 @@
-import { ReactNode, useCallback, useRef, useState } from "react"
+import { ReactNode, createRef, useCallback, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 
-import Book from "../../core/domain/models/Book"
-import BookService from "../../services/BookService"
 import BookComponent from "../components/BookComponent"
-
 import Button from "../components/Button"
 import Header from "../components/Header"
 import Table from "../components/Table"
 
 import styles from '../styles/pages/BooksPage.module.scss'
+import Input from "../components/Input"
+
+import { useBooks } from "../../hooks/useBooks"
+import { useInput } from "../../hooks/useInput"
+
+import Book from "../../core/domain/models/Book"
 
 function BooksPage() {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const { validate } = useInput()
+  const { books, listBooks, searchBooks } = useBooks()
+  const inputRef = createRef<HTMLInputElement>()
   const formRef = useRef<HTMLFormElement>(null)
   const navigate = useNavigate()
-  const [books, setBooks] = useState<Book[]>([])
 
   const columns = [
     "Título",
@@ -30,29 +34,14 @@ function BooksPage() {
   }
 
   const handleListBooks = useCallback(async () => {
-    const bookService = new BookService()
-    const booksList = await bookService.fetch()
-    const isEmpty = !booksList?.length
-
-    if (booksList && !isEmpty) {
-      setBooks(booksList)
-    }
+    await listBooks()
   }, [])
 
   const handleSearchBook = useCallback(async () => {
-    const query = inputRef.current?.value
-
-    if (!query || query.length === 0) {
-      return
-    }
-
-    const bookService = new BookService()
-    const books = await bookService.search(query)
-    const isEmpty = !books.length
-
-    if (!isEmpty) {
-      setBooks(books)
-    }
+    const searchInput = inputRef.current
+    const query = searchInput?.value ?? ''
+    validate(searchInput)
+    await searchBooks(query)
   }, [])
 
   function handleSubmit(event: React.FormEvent) {
@@ -76,11 +65,11 @@ function BooksPage() {
 
       <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.search}>
-          <input
+          <Input
+            type={'text'}
+            placeholder={'Buscar ou listar livros'}
+            name={'pesquisa de livros'}
             ref={inputRef}
-            type='text'
-            placeholder='Buscar ou listar livros'
-            name='search'
           />
 
           <div className={styles.buttons}>
