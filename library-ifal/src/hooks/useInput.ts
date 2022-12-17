@@ -19,7 +19,8 @@ export function useInput() {
   function validate(input: HTMLInputElement | null) {
     if (input !== null) {
       const isPasswordLengthInvalid = input.value?.length < 6
-      const isEmail = input.value.match(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i)
+      let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}')
+      const isEmail = regex.test(input.value)
 
       if (input.value === '') {
         setError(`O campo de ${input.name} é obrigatório`)
@@ -31,7 +32,7 @@ export function useInput() {
         return
       }
 
-      if (input.type === 'email' && isEmail) {
+      if (input.type === 'email' && !isEmail) {
         setError('Este não é um email válido')
         return
       }
@@ -47,8 +48,12 @@ export function useInput() {
     }
   }
 
+  function validateAll(inputs: Array<HTMLInputElement | null>) {
+    inputs.forEach((input) => validate(input))
+  }
+
   return {
-    validate,
-    checkEqualFields
+    checkEqualFields,
+    validateAll
   }
 }
