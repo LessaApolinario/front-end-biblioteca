@@ -53,6 +53,7 @@ export function useInput() {
   }
 
   return {
+    validate,
     checkEqualFields,
     validateAll
   }
