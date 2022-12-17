@@ -38,5 +38,17 @@ export function useInput() {
     }
   }
 
-  return { validate }
+  function checkEqualFields(firstField: HTMLInputElement | null, secondField: HTMLInputElement | null) {
+    if (firstField !== null && secondField !== null) {
+      if (firstField.value !== secondField.value) {
+        setError(`O campo de ${firstField.name} é deve igual ao campo de ${secondField.name}`)
+        return
+      }
+    }
+  }
+
+  return {
+    validate,
+    checkEqualFields
+  }
 }
