@@ -14,8 +14,7 @@ import { useInput } from '../../hooks/useInput'
 import { useAuth } from '../../hooks/useAuth'
 
 function LoginPage() {
-  const useUsernameInput = useInput()
-  const usePasswordInput = useInput()
+  const { validateAll } = useInput()
   const { login } = useAuth()
   const navigate = useNavigate()
   const usernameRef = createRef<HTMLInputElement>()
@@ -29,8 +28,7 @@ function LoginPage() {
     const username = usernameInput?.value ?? ''
     const password = passwordInput?.value ?? ''
 
-    useUsernameInput.validate(usernameInput)
-    usePasswordInput.validate(passwordInput)
+    validateAll([usernameInput, passwordInput])
     await login({ username, password })
   }
 
