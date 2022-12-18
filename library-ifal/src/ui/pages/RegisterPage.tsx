@@ -12,10 +12,10 @@ import Label from '../components/Label'
 import styles from '../styles/pages/RegisterPage.module.scss'
 
 import { UserPartial, useAuth } from '../../hooks/useAuth'
-import { useInput } from '../../hooks/useInput'
+import { useFields } from '../../hooks/useFields'
 
 function RegisterPage() {
-  const { validateAll, checkEqualFields } = useInput()
+  const { validateAllInputs, checkEqualFields } = useFields()
   const { register } = useAuth()
   const navigate = useNavigate()
   const nameRef = createRef<HTMLInputElement>()
@@ -32,7 +32,7 @@ function RegisterPage() {
     const passwordInput = passwordRef.current
     const confirmPasswordInput = confirmPasswordRef.current
 
-    validateAll([
+    validateAllInputs([
       nameInput,
       usernameInput,
       emailInput,

@@ -10,12 +10,12 @@ import styles from '../styles/pages/BooksPage.module.scss'
 import Input from "../components/Input"
 
 import { useBooks } from "../../hooks/useBooks"
-import { useInput } from "../../hooks/useInput"
+import { useFields } from "../../hooks/useFields"
 
 import Book from "../../core/domain/models/Book"
 
 function BooksPage() {
-  const { validate } = useInput()
+  const { validateInput } = useFields()
   const { books, listBooks, searchBooks } = useBooks()
   const inputRef = createRef<HTMLInputElement>()
   const formRef = useRef<HTMLFormElement>(null)
@@ -40,7 +40,7 @@ function BooksPage() {
   const handleSearchBook = useCallback(async () => {
     const searchInput = inputRef.current
     const query = searchInput?.value ?? ''
-    validate(searchInput)
+    validateInput(searchInput)
     await searchBooks(query)
   }, [])
 

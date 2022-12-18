@@ -10,11 +10,11 @@ import Label from '../components/Label'
 
 import styles from '../styles/pages/LoginPage.module.scss'
 
-import { useInput } from '../../hooks/useInput'
+import { useFields } from '../../hooks/useFields'
 import { useAuth } from '../../hooks/useAuth'
 
 function LoginPage() {
-  const { validateAll } = useInput()
+  const { validateAllInputs } = useFields()
   const { login } = useAuth()
   const navigate = useNavigate()
   const usernameRef = createRef<HTMLInputElement>()
@@ -28,7 +28,7 @@ function LoginPage() {
     const username = usernameInput?.value ?? ''
     const password = passwordInput?.value ?? ''
 
-    validateAll([usernameInput, passwordInput])
+    validateAllInputs([usernameInput, passwordInput])
     await login({ username, password })
   }
 
