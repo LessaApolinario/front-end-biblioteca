@@ -1,3 +1,5 @@
+import { ForwardedRef, forwardRef } from 'react'
+
 import styles from '../styles/components/TextArea.module.scss'
 
 interface TextAreaProps {
@@ -7,13 +9,14 @@ interface TextAreaProps {
   rows: number
 }
 
-function TextArea(props: TextAreaProps) {
+function TextArea(props: TextAreaProps, ref: ForwardedRef<HTMLTextAreaElement>) {
   return <textarea
     className={styles.container}
     name={props.name}
     id={props.id}
     cols={props.cols}
-    rows={props.rows}></textarea>
+    rows={props.rows}
+    ref={ref}></textarea>
 }
 
-export default TextArea
+export default forwardRef(TextArea)
