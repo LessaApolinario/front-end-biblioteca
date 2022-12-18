@@ -1,7 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 
 import AuthProvider from "../contexts/AuthCTX"
-import ReviewsProvider from "../contexts/ReviewsCTX"
 
 import BooksPage from "../pages/BooksPage"
 import CommentsPage from "../pages/CommentsPage"
@@ -17,20 +16,18 @@ function RouteManager() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ReviewsProvider>
-          <Routes>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/books" element={<BooksPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/reviews" element={<ReviewPage />} />
-            <Route path="/reviews/review/:id" element={<ReviewDetailsPage />} />
-            <Route path="/contact" element={<CommentsPage />} />
-            <Route path="/hints" element={<HintsPage />} />
-            <Route path="/" element={<Navigate replace to='/home' />} />
-            <Route path="/*" element={<Error404Page />} />
-          </Routes>
-        </ReviewsProvider>
+        <Routes>
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/books" element={<BooksPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/reviews" element={<ReviewPage />} />
+          <Route path="/reviews/review/:id" element={<ReviewDetailsPage />} />
+          <Route path="/contact" element={<CommentsPage />} />
+          <Route path="/hints" element={<HintsPage />} />
+          <Route path="/" element={<Navigate replace to='/home' />} />
+          <Route path="/*" element={<Error404Page />} />
+        </Routes>
       </AuthProvider>
     </BrowserRouter>
   )
