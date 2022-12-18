@@ -19,6 +19,7 @@ export interface UserPartial {
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const authCTX = useContext(AuthCTX)
+  const user = authCTX.user
   const navigate = useNavigate()
 
   async function register(userPartial: UserPartial) {
@@ -81,6 +82,7 @@ export function useAuth() {
     isAuthenticated,
     register,
     login,
-    logout
+    logout,
+    user
   }
 }
