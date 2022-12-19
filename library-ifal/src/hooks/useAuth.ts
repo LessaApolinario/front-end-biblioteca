@@ -3,11 +3,12 @@ import { useContext, useState } from 'react'
 import User from '../core/domain/models/User'
 
 import { AuthCTX } from '../ui/contexts/AuthCTX'
-import { toast } from 'react-toastify'
 
 import AuthCredentialsDTO from '../core/dto/AuthCredentialsDTO'
 
 import { useNavigate } from 'react-router-dom'
+
+import { useNotifications } from './useNotifications'
 
 export interface UserPartial {
   name: string | undefined
@@ -17,6 +18,7 @@ export interface UserPartial {
 }
 
 export function useAuth() {
+  const { notifySuccess, notifyError } = useNotifications()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const authCTX = useContext(AuthCTX)
   const user = authCTX.user
@@ -31,14 +33,10 @@ export function useAuth() {
 
     try {
       await authCTX.register(user)
-      toast.success('Usuário registrado com sucesso!', {
-        position: toast.POSITION.TOP_RIGHT,
-      })
+      notifySuccess('Usuário registrado com sucesso!')
       navigate('/')
     } catch (error) {
-      toast.error('Erro ao registrar um usuário', {
-        position: toast.POSITION.TOP_RIGHT
-      })
+      notifyError('Erro ao registrar um usuário')
     }
   }
 
@@ -48,16 +46,11 @@ export function useAuth() {
 
       if (success) {
         setIsAuthenticated(true)
-        toast.success('Login realizado com sucesso!', {
-          position: toast.POSITION.TOP_RIGHT
-        })
-
+        notifySuccess('Login realizado com sucesso!')
         navigate('/')
       }
     } catch (error) {
-      toast.error('Erro ao realizar login', {
-        position: toast.POSITION.TOP_RIGHT
-      })
+      notifyError('Erro ao realizar login')
     }
   }
 
@@ -65,16 +58,10 @@ export function useAuth() {
     try {
       authCTX.logout()
       setIsAuthenticated(false)
-
-      toast.success('Logout com sucesso!', {
-        position: toast.POSITION.TOP_RIGHT
-      })
-
+      notifySuccess('Logout realizado com sucesso!')
       navigate('/')
     } catch (error) {
-      toast.error('Erro ao fazer logout', {
-        position: toast.POSITION.TOP_RIGHT
-      })
+      notifyError('Erro ao realizar logout')
     }
   }
 

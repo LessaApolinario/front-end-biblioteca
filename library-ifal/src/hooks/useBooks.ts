@@ -4,9 +4,10 @@ import Book from '../core/domain/models/Book'
 
 import BookService from '../services/BookService'
 
-import { toast } from 'react-toastify'
+import { useNotifications } from './useNotifications'
 
 export function useBooks() {
+  const { notifySuccess, notifyError } = useNotifications()
   const [books, setBooks] = useState<Book[]>([])
 
   async function listBooks(): Promise<void> {
@@ -17,14 +18,10 @@ export function useBooks() {
 
       if (booksList && !isEmpty) {
         setBooks(booksList)
-        toast.success('Livros listados com sucesso!', {
-          position: toast.POSITION.TOP_RIGHT
-        })
+        notifySuccess('Livros listados com sucesso!')
       }
     } catch (error) {
-      toast.error('Erro ao listar livros', {
-        position: toast.POSITION.TOP_RIGHT
-      })
+      notifyError('Erro ao listar livros')
     }
   }
 
@@ -36,14 +33,10 @@ export function useBooks() {
 
       if (!isEmpty) {
         setBooks(books)
-        toast.success('Livros buscados com sucesso!', {
-          position: toast.POSITION.TOP_RIGHT
-        })
+        notifySuccess('Livros buscados com sucesso!')
       }
     } catch (error) {
-      toast.error('Erro ao buscar livros', {
-        position: toast.POSITION.TOP_RIGHT
-      })
+      notifyError('Erro ao buscar livros')
     }
   }
 

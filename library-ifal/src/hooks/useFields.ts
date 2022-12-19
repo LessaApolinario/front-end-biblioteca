@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react'
 
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useNotifications } from './useNotifications'
 
 type InputField = HTMLInputElement | null
 type TextAreaField = HTMLTextAreaElement | null
 type Field = InputField | TextAreaField
 
 export function useFields() {
+  const { notifyError } = useNotifications()
   const [error, setError] = useState('')
 
   useEffect(() => {
     const isEmpty = error === ''
     if (!isEmpty) {
-      toast.error(error, {
-        position: toast.POSITION.TOP_RIGHT
-      })
+      notifyError(error)
       setError('')
     }
   }, [error])
