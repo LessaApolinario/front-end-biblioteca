@@ -1,4 +1,5 @@
 import { ToastPosition, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const position: ToastPosition = toast.POSITION.TOP_RIGHT
 
