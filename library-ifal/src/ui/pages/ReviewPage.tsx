@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from 'react'
+import { createRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '../components/Button'
@@ -28,7 +28,7 @@ import ReviewBuilder from '../../core/domain/builders/ReviewBuilder'
 function ReviewPage() {
   const useAuthHook = useAuth()
   const { validateInput, validateAllInputs, validateTextArea } = useFields()
-  const { reviews, fetchReviews, createReview, searchReview } = useReviews()
+  const { data, createReview, searchReview } = useReviews()
   const { notifyError } = useNotifications()
   const [isVisible, setIsVisible] = useState(false)
   const navigate = useNavigate()
@@ -36,14 +36,6 @@ function ReviewPage() {
   const authorNameRef = createRef<HTMLInputElement>()
   const reviewTextareaRef = createRef<HTMLTextAreaElement>()
   const searchRef = createRef<HTMLInputElement>()
-
-  useEffect(() => {
-    const loadReviews = async () => {
-      await fetchReviews()
-    }
-
-    loadReviews()
-  }, [])
 
   function goBack() {
     navigate(-1)
@@ -230,7 +222,7 @@ function ReviewPage() {
       {renderForm()}
 
       <div className={styles.reviews}>
-        {reviews?.map(item => (
+        {data?.map(item => (
           <ReviewItem
             key={item._id}
             name={item.name}
