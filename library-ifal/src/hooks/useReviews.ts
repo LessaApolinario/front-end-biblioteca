@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Review from '../core/domain/models/Review'
 
@@ -10,16 +10,26 @@ import { useNotifications } from './useNotifications'
 export function useReviews() {
   const { isAuthenticated } = useAuth()
   const { notifySuccess, notifyError } = useNotifications()
-  const [reviews, setReviews] = useState<Review[]>([])
+  const [data, setData] = useState<Review[]>()
+
+  useEffect(() => {
+    async function loadReviews() {
+      await fetchReviews()
+    }
+
+    return () => {
+      loadReviews()
+    }
+  }, [data])
 
   async function fetchReviews(): Promise<void> {
     try {
       const reviewService = new ReviewService()
-      const data = await reviewService.fetch()
-      const isEmpty = !data?.length
+      const reviews = await reviewService.fetch()
+      const isEmpty = !reviews?.length
 
       if (!isEmpty) {
-        setReviews(data)
+        setData(reviews)
         notifySuccess('Resenhas listadas com sucesso!')
       }
     } catch (error) {
@@ -27,14 +37,14 @@ export function useReviews() {
     }
   }
 
-  async function createReview(data: Review) {
+  async function createReview(review: Review) {
     if (!isAuthenticated) {
       throw new Error('Aviso: é preciso estar logado para criar mensagens.')
     }
 
     try {
       const reviewService = new ReviewService()
-      await reviewService.create(data)
+      await reviewService.create(review)
       notifySuccess('Resenha criada com sucesso!')
     } catch (error) {
       notifyError('Erro ao adicionar resenha')
@@ -44,11 +54,11 @@ export function useReviews() {
   async function searchReview(query: string) {
     try {
       const reviewService = new ReviewService()
-      const data = await reviewService.search(query)
-      const isEmpty = !data.length
+      const reviews = await reviewService.search(query)
+      const isEmpty = !reviews.length
 
       if (!isEmpty) {
-        setReviews(data)
+        setData(reviews)
         notifySuccess('Resenhas listadas com sucesso!')
       }
     } catch (error) {
@@ -57,7 +67,7 @@ export function useReviews() {
   }
 
   return {
-    reviews,
+    data,
     fetchReviews,
     createReview,
     searchReview
