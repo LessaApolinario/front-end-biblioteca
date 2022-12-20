@@ -52,7 +52,6 @@
     
     padding: 1rem;
 
-    display: flex;
     align-items: center;
     justify-content: center;
 
@@ -69,14 +68,10 @@
       border: 1px solid $primary;
       border-radius: 3px;
 
-      display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
 
       .box {
-        display: flex;
-        flex-direction: column;
         align-items: center;
         gap: 0.8rem;
 
@@ -95,28 +90,10 @@
         > div > input, > div > textarea {
           padding: 0.5rem 1rem;
           width: 100%;
-
-          border: 1px solid $primary;
-          border-radius: 3px;
-
-          &:focus {
-            outline-color: $primary;
-          }
         }
 
         .name, .email, .comment {
           width: 100%;
-
-          display: flex;
-          flex-direction: column;
-
-          > label > span {
-            color: red;
-          }
-        }
-
-        .comment > textarea {
-          resize: none;
         }
 
         > button {
