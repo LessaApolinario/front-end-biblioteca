@@ -18,50 +18,40 @@ export function useFields() {
     }
   }, [error])
 
-  function validateEmptyField(field: Field) {
-    if (field!.value === '') {
-      setError(`O campo de ${field!.name} é obrigatório`)
-      return
-    }
-  }
-
-  function validatePassword(field: InputField) {
-    const isPasswordLengthInvalid = field!.value?.length < 6
-    if (field!.type === 'password' && isPasswordLengthInvalid) {
-      setError('O campo de senha precisa ter no mínimo 6 caracteres')
-      return
-    }
-  }
-
-  function validateEmail(field: InputField) {
-    let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}')
-    const isEmail = regex.test(field!.value)
-    if (field!.type === 'email' && !isEmail) {
-      setError('Este não é um email válido')
-      return
-    }
-  }
-
   function validateInput(input: InputField) {
     if (input !== null) {
-      validateEmptyField(input)
-      validatePassword(input)
-      validateEmail(input)
+      const isPasswordLengthInvalid = input.value.length < 6
+      let regex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}')
+      const isEmail = regex.test(input!.value)
+
+      if (input.value === '') {
+        setError(`O campo de ${input.name} é obrigatório`)
+        return
+      }
+
+      if (input.type === 'password' && isPasswordLengthInvalid) {
+        setError('O campo de senha precisa ter no mínimo 6 caracteres')
+        return
+      }
+
+      if (input.type === 'email' && !isEmail) {
+        setError('Este não é um email válido')
+        return
+      }
     }
   }
 
   function validateTextArea(textarea: TextAreaField) {
-    if (textarea) {
-      validateEmptyField(textarea)
+    if (textarea?.value === '') {
+      setError(`O campo de ${textarea?.name} é obrigatório`)
+      return
     }
   }
 
   function checkEqualFields(firstField: Field, secondField: Field) {
-    if (firstField !== null && secondField !== null) {
-      if (firstField.value !== secondField.value) {
-        setError(`O campo de ${firstField.name} é deve igual ao campo de ${secondField.name}`)
-        return
-      }
+    if (firstField?.value !== secondField?.value) {
+      setError(`O campo de ${firstField?.name} é deve igual ao campo de ${secondField?.name}`)
+      return
     }
   }
 
