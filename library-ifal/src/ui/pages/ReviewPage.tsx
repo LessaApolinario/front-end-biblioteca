@@ -1,4 +1,4 @@
-import { createRef, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '../components/Button'
@@ -21,17 +21,56 @@ import TextArea from '../components/TextArea'
 import { useReviews } from '../../hooks/useReviews'
 import { useFields } from '../../hooks/useFields'
 import { useAuth } from '../../hooks/useAuth'
+import { useNotifications } from '../../hooks/useNotifications'
+
+import ReviewBuilder from '../../core/domain/builders/ReviewBuilder'
 
 function ReviewPage() {
-  const { reviews, addReview, searchReview } = useReviews()
-  const { validateAllInputs, validateTextArea } = useFields()
   const useAuthHook = useAuth()
+  const { validateInput, validateAllInputs, validateTextArea } = useFields()
+  const { reviews, fetchReviews, createReview, searchReview } = useReviews()
+  const { notifyError } = useNotifications()
   const [isVisible, setIsVisible] = useState(false)
   const navigate = useNavigate()
   const bookTitleRef = createRef<HTMLInputElement>()
   const authorNameRef = createRef<HTMLInputElement>()
   const reviewTextareaRef = createRef<HTMLTextAreaElement>()
   const searchRef = createRef<HTMLInputElement>()
+
+  useEffect(() => {
+    const loadReviews = async () => {
+      await fetchReviews()
+    }
+
+    loadReviews()
+  }, [])
+
+  function goBack() {
+    navigate(-1)
+  }
+
+  function buildReview() {
+    const user = useAuthHook.user
+    const review = new ReviewBuilder()
+      .withUserID(user?.id)
+      .withUserName(user?.name)
+      .withTitleBook(bookTitleRef.current?.value)
+      .withWriter(authorNameRef.current?.value)
+      .withReview(reviewTextareaRef.current?.value)
+      .withAvailable(true)
+      .build()
+
+    return review
+  }
+
+  async function addReview() {
+    try {
+      const review = buildReview()
+      await createReview(review)
+    } catch (error: any) {
+      notifyError(error.message)
+    }
+  }
 
   const handleAddReview = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -44,17 +83,8 @@ function ReviewPage() {
       authorInput,
     ])
     validateTextArea(reviewTextarea)
-    
-    const user = useAuthHook.user
-    const newReview = new Review()
-    newReview.user_id = user?.id
-    newReview.name = user?.name
-    newReview.title_book = bookTitleRef.current?.value
-    newReview.writer = authorNameRef.current?.value
-    newReview.review = reviewTextareaRef.current?.value
-    newReview.available = true
 
-    await addReview(newReview)
+    await addReview()
 
     setIsVisible(false)
   }
@@ -89,17 +119,28 @@ function ReviewPage() {
 
           <FlexWrapper className={styles.fullWidth} orientation={'column'}>
             <Label text={'Livro'} />
-            <Input type={'text'} name={'livro'} ref={bookTitleRef} />
+            <Input
+              type={'text'}
+              name={'livro'}
+              ref={bookTitleRef} />
           </FlexWrapper>
 
           <FlexWrapper className={styles.fullWidth} orientation={'column'}>
             <Label text={'Autor'} />
-            <Input type={'text'} name={'autor'} ref={authorNameRef} />
+            <Input
+              type={'text'}
+              name={'autor'}
+              ref={authorNameRef} />
           </FlexWrapper>
 
           <FlexWrapper className={styles.review} orientation={'column'}>
             <Label text={'Resenha'} />
-            <TextArea name={'resenha'} id={'reviewTextArea'} cols={30} rows={5} ref={reviewTextareaRef}></TextArea>
+            <TextArea
+              name={'resenha'}
+              id={'reviewTextArea'}
+              cols={30}
+              rows={5}
+              ref={reviewTextareaRef}></TextArea>
           </FlexWrapper>
 
           <Button
@@ -115,7 +156,7 @@ function ReviewPage() {
 
   const logout = async () => {
     await useAuthHook.logout()
-    navigate(-1)
+    goBack()
   }
 
   const redirectToReviewsDetails = (item: Review) => {
@@ -123,15 +164,14 @@ function ReviewPage() {
   }
 
   const handleSearchReview = async () => {
+    const searchInput = searchRef?.current
     const query = searchRef.current?.value ?? ''
+    validateInput(searchInput)
     await searchReview(query)
   }
 
   const renderButtons = () => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
-
-    if (storagedUser !== null && storagedToken !== null) {
+    if (useAuthHook.isAuthenticated) {
       return (
         <Button
           type='button'
@@ -146,10 +186,8 @@ function ReviewPage() {
         <Button
           type='button'
           btnType='secondary'
-          onClick={() => navigate(-1)}
-        >
-          Voltar
-        </Button>
+          onClick={goBack}
+        >Voltar</Button>
       )
     }
   }
@@ -177,14 +215,14 @@ function ReviewPage() {
       </div>
 
       <div className={styles.search}>
-        <input type='text' ref={searchRef} />
+        <Input
+          type={'text'}
+          name={'pesquisa'}
+          ref={searchRef} />
         <Button
           type='button'
           btnType='secondary'
-          onClick={handleSearchReview}
-        >
-          Pesquisar
-        </Button>
+          onClick={handleSearchReview}>Pesquisar</Button>
       </div>
 
       <h2>Resenhas</h2>
