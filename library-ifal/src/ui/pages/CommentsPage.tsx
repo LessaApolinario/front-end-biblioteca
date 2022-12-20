@@ -1,64 +1,89 @@
-import { useContext, useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { createRef, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
 
-import Button from '../components/Button';
-import Header from "../components/Header";
-
-import { AuthCTX } from '../contexts/AuthCTX';
-
 import styles from '../styles/pages/CommentsPage.module.scss'
 
-import CommentService from '../../services/CommentService';
-import Comment from '../../core/domain/models/Comment';
+import Button from '../components/Button'
+import Header from '../components/Header'
+import CommentService from '../../services/CommentService'
+import Comment from '../../core/domain/models/Comment'
+import Label from '../components/Label'
+import Input from '../components/Input'
+import FlexWrapper from '../components/FlexWrapper'
+import TextArea from '../components/TextArea'
 
+import { useAuth } from '../../hooks/useAuth'
+import { useFields } from '../../hooks/useFields'
+import { useNotifications } from '../../hooks/useNotifications'
 
 function CommentsPage() {
+  const { isAuthenticated, logout } = useAuth()
+  const { validateAllInputs, validateTextArea } = useFields()
+  const { notifySuccess, notifyError } = useNotifications()
   const formRef = useRef<HTMLFormElement>(null)
-  const nameRef = useRef<HTMLInputElement>(null)
-  const emailRef = useRef<HTMLInputElement>(null)
-  const commentRef = useRef<HTMLTextAreaElement>(null)
+  const nameRef = createRef<HTMLInputElement>()
+  const emailRef = createRef<HTMLInputElement>()
+  const commentRef = createRef<HTMLTextAreaElement>()
   const navigate = useNavigate()
-  const authCTX = useContext(AuthCTX)
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
-    let name = nameRef.current?.value
-    let email = emailRef.current?.value
-    let comment = commentRef.current?.value
-
-    if (
-      !name || !email || !comment ||
-      !nameRef.current || !emailRef.current || !commentRef.current
-    ) {
-      return
-    }
+  async function createComment() {
+    const name = nameRef.current?.value
+    const email = emailRef.current?.value
+    const comment = commentRef.current?.value
 
     const newComment = new Comment()
     newComment.name = name
     newComment.email = email
     newComment.comment = comment
 
-    const commentService = new CommentService()
-    await commentService.create(newComment)
+    try {
+      const commentService = new CommentService()
+      await commentService.create(newComment)
+      notifySuccess('Comentário criado com sucesso!')
+    } catch (error: any) {
+      notifyError('Falha ao criar comentário')
+    }
+  }
 
-    nameRef.current.value = ''
-    emailRef.current.value = ''
-    commentRef.current.value = ''
+  function clearFields() {
+    const nameInput = nameRef.current
+    const emailInput = emailRef.current
+    const commentTextArea = commentRef.current
+
+    if (nameInput && emailInput && commentTextArea) {
+      nameInput.value = ''
+      emailInput.value = ''
+      commentTextArea.value = ''
+    }
+  }
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    const nameInput = nameRef.current
+    const emailInput = emailRef.current
+    const commentTextArea = commentRef.current
+
+    validateAllInputs([
+      nameInput,
+      emailInput,
+    ])
+    validateTextArea(commentTextArea)
+
+    await createComment()
+
+    clearFields()
   }
 
   const renderButtons = () => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
-
-    if (storagedUser && storagedToken) {
+    if (isAuthenticated) {
       return (
         <Button
           type='button'
           btnType='secondary'
           onClick={() => {
-            authCTX.logout()
+            logout()
             navigate(-1)
           }}
         >
@@ -104,9 +129,9 @@ function CommentsPage() {
         </div>
       </Header>
 
-      <div className={styles.flexWrapper}>
-        <div className={styles.presentation}>
-          <div className={styles.box}>
+      <FlexWrapper className={styles.flexWrapper} orientation={'column'}>
+        <FlexWrapper className={styles.presentation} orientation={'column'}>
+          <FlexWrapper className={styles.box} orientation={'column'}>
             <h2>Contato</h2>
             <h3>Olá, querido visitante</h3>
 
@@ -114,28 +139,39 @@ function CommentsPage() {
               Sinta-se livre para deixar uma mensagem sobre: dicas de como melhorar o site, ou mande seu livro, poema,
               ou qualquer outra razão.
             </p>
-          </div>
+          </FlexWrapper>
 
-          <form action="#" className={styles.form} onSubmit={handleSubmit} ref={formRef}>
-            <div className={styles.name}>
-              <label>Seu nome <span>*</span></label>
-              <input type="text" ref={nameRef} />
-            </div>
+          <form action='#' className={styles.form} onSubmit={handleSubmit} ref={formRef}>
+            <FlexWrapper className={styles.name} orientation={'column'}>
+              <Label text={'Seu nome'} />
+              <Input
+                type={'text'}
+                name={'nome'}
+                ref={nameRef} />
+            </FlexWrapper>
 
-            <div className={styles.email}>
-              <label>Seu melhor email <span>*</span></label>
-              <input type="email" ref={emailRef} />
-            </div>
+            <FlexWrapper className={styles.email} orientation={'column'}>
+              <Label text={'Seu melhor email'} />
+              <Input
+                type={'email'}
+                name={'email'}
+                ref={emailRef} />
+            </FlexWrapper>
 
-            <div className={styles.comment}>
-              <label>Comentário <span>*</span></label>
-              <textarea cols={30} rows={10} ref={commentRef}></textarea>
-            </div>
+            <FlexWrapper className={styles.comment} orientation={'column'}>
+              <Label text={'Comentário'} />
+              <TextArea
+                id={'commentTextArea'}
+                cols={30}
+                rows={10}
+                name={'comentário'}
+                ref={commentRef}></TextArea>
+            </FlexWrapper>
 
             <Button type='submit' btnType='secondary'>Enviar</Button>
           </form>
-        </div>
-      </div>
+        </FlexWrapper>
+      </FlexWrapper>
     </div>
   )
 }
