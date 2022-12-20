@@ -27,7 +27,7 @@ export function useReviews() {
     }
   }
 
-  async function addReview(data: Review) {
+  async function createReview(data: Review) {
     if (!isAuthenticated) {
       throw new Error('Aviso: é preciso estar logado para criar mensagens.')
     }
@@ -59,7 +59,7 @@ export function useReviews() {
   return {
     reviews,
     fetchReviews,
-    addReview,
+    createReview,
     searchReview
   }
 }
