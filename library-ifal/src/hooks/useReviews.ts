@@ -37,7 +37,7 @@ export function useReviews() {
 
   async function createReview(review: Review) {
     if (!isAuthenticated) {
-      throw new Error('Aviso: é preciso estar logado para criar mensagens.')
+      throw new Error('Aviso: é preciso estar logado para criar resenhas.')
     }
 
     try {
