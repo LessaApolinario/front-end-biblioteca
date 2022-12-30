@@ -1,5 +1,4 @@
 import { createRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
 
@@ -17,7 +16,6 @@ import LinkComponent from '../components/LinkComponent'
 function LoginPage() {
   const { validateAllInputs } = useFields()
   const { login } = useAuth()
-  const navigate = useNavigate()
   const usernameRef = createRef<HTMLInputElement>()
   const passwordRef = createRef<HTMLInputElement>()
 

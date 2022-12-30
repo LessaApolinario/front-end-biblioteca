@@ -2,8 +2,6 @@ import { createRef } from 'react'
 
 import { GiTreeBranch } from 'react-icons/gi'
 
-import { useNavigate } from 'react-router-dom'
-
 import Button from '../components/Button'
 import FlexWrapper from '../components/FlexWrapper'
 import Input from '../components/Input'
@@ -20,7 +18,6 @@ import LinkComponent from '../components/LinkComponent'
 function RegisterPage() {
   const { validateAllInputs, checkEqualFields } = useFields()
   const { register } = useAuth()
-  const navigate = useNavigate()
   const nameRef = createRef<HTMLInputElement>()
   const usernameRef = createRef<HTMLInputElement>()
   const emailRef = createRef<HTMLInputElement>()
