@@ -1,4 +1,4 @@
-import { createRef, useState } from 'react'
+import { ReactNode, createRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '../components/Button'
@@ -17,6 +17,7 @@ import Label from '../components/Label'
 import Input from '../components/Input'
 import FlexWrapper from '../components/FlexWrapper'
 import TextArea from '../components/TextArea'
+import ReviewsList from '../components/ReviewsList'
 
 import { useReviews } from '../../hooks/useReviews'
 import { useFields } from '../../hooks/useFields'
@@ -155,6 +156,13 @@ function ReviewPage() {
     navigate(`/reviews/review/${item._id}`, { state: item })
   }
 
+  function renderItem(item: Review): ReactNode {
+    return <ReviewItem
+      data={item}
+      onClick={() => redirectToReviewsDetails}
+    />
+  }
+
   const handleSearchReview = async () => {
     const searchInput = searchRef?.current
     const query = searchRef.current?.value ?? ''
@@ -221,19 +229,9 @@ function ReviewPage() {
 
       {renderForm()}
 
-      <div className={styles.reviews}>
-        {useReviewsHook.data?.map(item => (
-          <ReviewItem
-            key={item._id}
-            name={item.name}
-            title_book={item.title_book ?? ''}
-            writer={item.writer ?? ''}
-            review={item.review ?? ''}
-            created_at={item.created_at}
-            onClick={() => redirectToReviewsDetails(item)}
-          />
-        ))}
-      </div>
+      <ReviewsList
+        data={useReviewsHook.data}
+        renderItem={renderItem} />
     </div>
   )
 }
