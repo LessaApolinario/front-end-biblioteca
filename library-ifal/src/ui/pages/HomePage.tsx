@@ -1,4 +1,4 @@
-import { ReactNode, createRef, useContext, useEffect, useRef, useState } from 'react'
+import { ReactNode, createRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -11,11 +11,9 @@ import Label from '../components/Label'
 import Input from '../components/Input'
 import PostsList from '../components/PostsList'
 
-import { AuthCTX } from '../contexts/AuthCTX'
-
-import PostService from '../../services/PostService'
-
 import Post from '../../core/domain/models/Post'
+
+import PostBuilder from '../../core/domain/builders/PostBuilder'
 
 import styles from '../styles/pages/HomePage.module.scss'
 
@@ -29,82 +27,47 @@ import OAlienista from '../../assets/img/OAlienista.jpeg'
 import PHP from '../../assets/img/PHP.jpg'
 import Python from '../../assets/img/Python.jpg'
 
+import { usePosts } from '../../hooks/usePosts'
+import { useAuth } from '../../hooks/useAuth'
+import { useNotifications } from '../../hooks/useNotifications'
+import { useFields } from '../../hooks/useFields'
+
 function HomePage() {
   const navigate = useNavigate()
-  const formRef = useRef<HTMLFormElement>(null)
-  const titleRef = useRef<HTMLInputElement>(null)
-  const contentRef = useRef<HTMLTextAreaElement>(null)
+  const formRef = createRef<HTMLFormElement>()
+  const titleRef = createRef<HTMLInputElement>()
+  const contentRef = createRef<HTMLTextAreaElement>()
   const createPostRef = createRef<HTMLButtonElement>()
   const [isVisible, setIsVisible] = useState(false)
-  const [warning, setWarning] = useState(true)
   const [text, setText] = useState<string>('Escreva um post')
-  const [posts, setPosts] = useState<Post[]>([])
-  const authCTX = useContext(AuthCTX)
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const postService = new PostService()
-      const data = await postService.fetch()
-      const posts = data.reverse()
-      setPosts(posts)
-    }
+  const useAuthHook = useAuth()
+  const useFieldsHook = useFields()
+  const useNotificationHook = useNotifications()
+  const usePostsHook = usePosts()
 
-    getPosts()
-  }, [])
-
-  useEffect(() => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
-
-    if (!storagedUser && !storagedToken) {
-      createPostRef.current?.setAttribute('disabled', 'true')
-    } else {
-      createPostRef.current?.removeAttribute('disabled')
-    }
-  }, [createPostRef])
-
-  useEffect(() => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
-
-    if (!storagedUser && !storagedToken) {
-      setWarning(true)
-    } else {
-      setWarning(false)
-    }
-  }, [])
+  function buildPost() {
+    return new PostBuilder(useAuthHook.user?.name)
+      .withTitle(titleRef.current?.value)
+      .withContent(contentRef.current?.value)
+      .build()
+  }
 
   const handleCreatePost = async (event: React.FormEvent) => {
     event.preventDefault()
-    const title = titleRef.current?.value
-    const content = contentRef.current?.value
-    const isLoggedUser = localStorage.getItem('token')
-    const user = authCTX.user
+    const titleInput = titleRef.current
+    const contentTextArea = contentRef.current
 
-    if (!user) {
-      return
+    useFieldsHook.validateInput(titleInput)
+    useFieldsHook.validateTextArea(contentTextArea)
+
+    const post = buildPost()
+
+    try {
+      await usePostsHook.createPost(post)
+    } catch (error: any) {
+      useNotificationHook.notifyError(error.message)
     }
-
-    const { name, id } = user
-
-    if (!title || !content || isLoggedUser == null || !name || !id) {
-      return
-    }
-
-    const newPost = new Post()
-    newPost.title = title
-    newPost.content = content
-    newPost.user_name = name
-    newPost.user_id = id
-
-    const postService = new PostService()
-    await postService.create(newPost)
-
-
-    setPosts((previousState) => [
-      newPost,
-      ...previousState
-    ])
 
     setIsVisible(!isVisible)
     setText('Escreva um post')
@@ -117,12 +80,12 @@ function HomePage() {
           onSubmit={handleCreatePost} className={styles.form}>
           <FlexWrapper className={styles.postTitle} orientation={'column'}>
             <Label text={'Título do post'} />
-            <Input type={'text'} name={'título do post'} />
+            <Input type={'text'} name={'título'} ref={titleRef} />
           </FlexWrapper>
 
           <FlexWrapper className={styles.postContent} orientation={'column'}>
             <Label text={'Conteúdo do post'} />
-            <textarea cols={30} rows={10} ref={contentRef}></textarea>
+            <textarea cols={30} rows={10} name={'conteúdo'} ref={contentRef}></textarea>
           </FlexWrapper>
 
           <Button
@@ -132,11 +95,6 @@ function HomePage() {
           >
             Publicar post
           </Button>
-          {
-            warning
-            &&
-            <p className={styles.warning}>Faça login para criar um post</p>
-          }
         </form>
       )
     }
@@ -153,10 +111,7 @@ function HomePage() {
   }
 
   const renderButtons = () => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
-
-    if (!storagedUser && !storagedToken) {
+    if (!useAuthHook.isAuthenticated) {
       return (
         <>
           <Button
@@ -180,10 +135,7 @@ function HomePage() {
         <Button
           type='button'
           btnType='secondary'
-          onClick={() => {
-            authCTX.logout()
-            setWarning(true)
-          }}
+          onClick={() => { useAuthHook.logout() }}
         >
           Sair
         </Button>
@@ -272,7 +224,7 @@ function HomePage() {
           {renderForm()}
 
           <PostsList
-            data={posts}
+            data={usePostsHook.data}
             renderItem={renderItem} />
         </div>
       </section>
