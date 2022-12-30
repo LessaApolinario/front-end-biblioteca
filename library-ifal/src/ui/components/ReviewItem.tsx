@@ -1,15 +1,13 @@
+import Review from '../../core/domain/models/Review'
+
 import styles from '../styles/components/Review.module.scss'
 
 interface ReviewItemProps {
-  name?: string
-  title_book: string
-  writer: string
-  review: string
-  created_at?: string
+  data: Review
   onClick?(): void
 }
 
-function ReviewItem({ name, title_book, writer, review, created_at, onClick }: ReviewItemProps) {
+function ReviewItem({ data, onClick}: ReviewItemProps) {
   const abbreviateMonth = (month: string) => {
     const abbreviatedMonths: Record<string, string> = {
       '01': "Ja",
@@ -30,8 +28,8 @@ function ReviewItem({ name, title_book, writer, review, created_at, onClick }: R
   }
 
   const formatDate = () => {
-    const date = created_at?.slice(0, 10)
-    const time = created_at?.slice(11, 16)
+    const date = data.created_at?.slice(0, 10)
+    const time = data.created_at?.slice(11, 16)
 
     if (date && time) {
       const [hours, minutes] = time?.split(':')
@@ -46,14 +44,14 @@ function ReviewItem({ name, title_book, writer, review, created_at, onClick }: R
 
   return (
     <article className={styles.container}>
-      <h3>{name} sobre {title_book} de {writer}:</h3>
+      <h3>{data.name} sobre {data.title_book} de {data.writer}:</h3>
 
       <p
         className={styles.review}
         title='Clique para ver detalhes da resenha'
         onClick={onClick}
       >
-        {review}
+        {data.review}
       </p>
 
       <p className={styles.date}>
