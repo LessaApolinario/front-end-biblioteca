@@ -27,9 +27,9 @@ import ReviewBuilder from '../../core/domain/builders/ReviewBuilder'
 
 function ReviewPage() {
   const useAuthHook = useAuth()
-  const { validateInput, validateAllInputs, validateTextArea } = useFields()
-  const { data, createReview, searchReview } = useReviews()
-  const { notifyError } = useNotifications()
+  const useFieldsHook = useFields()
+  const useReviewsHook = useReviews()
+  const useNotificationsHook = useNotifications()
   const [isVisible, setIsVisible] = useState(false)
   const navigate = useNavigate()
   const bookTitleRef = createRef<HTMLInputElement>()
@@ -58,9 +58,9 @@ function ReviewPage() {
   async function addReview() {
     try {
       const review = buildReview()
-      await createReview(review)
+      await useReviewsHook.createReview(review)
     } catch (error: any) {
-      notifyError(error.message)
+      useNotificationsHook.notifyError(error.message)
     }
   }
 
@@ -70,11 +70,11 @@ function ReviewPage() {
     const authorInput = authorNameRef.current
     const reviewTextarea = reviewTextareaRef.current
 
-    validateAllInputs([
+    useFieldsHook.validateAllInputs([
       bookInput,
       authorInput,
     ])
-    validateTextArea(reviewTextarea)
+    useFieldsHook.validateTextArea(reviewTextarea)
 
     await addReview()
 
@@ -158,8 +158,8 @@ function ReviewPage() {
   const handleSearchReview = async () => {
     const searchInput = searchRef?.current
     const query = searchRef.current?.value ?? ''
-    validateInput(searchInput)
-    await searchReview(query)
+    useFieldsHook.validateInput(searchInput)
+    await useReviewsHook.searchReview(query)
   }
 
   const renderButtons = () => {
@@ -222,7 +222,7 @@ function ReviewPage() {
       {renderForm()}
 
       <div className={styles.reviews}>
-        {data?.map(item => (
+        {useReviewsHook.data?.map(item => (
           <ReviewItem
             key={item._id}
             name={item.name}
