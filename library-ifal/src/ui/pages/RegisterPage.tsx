@@ -11,8 +11,10 @@ import Label from '../components/Label'
 
 import styles from '../styles/pages/RegisterPage.module.scss'
 
-import { UserPartial, useAuth } from '../../hooks/useAuth'
+import { useAuth } from '../../hooks/useAuth'
 import { useFields } from '../../hooks/useFields'
+
+import UserBuilder from '../../core/domain/builders/UserBuilder'
 
 function RegisterPage() {
   const { validateAllInputs, checkEqualFields } = useFields()
@@ -23,6 +25,14 @@ function RegisterPage() {
   const emailRef = createRef<HTMLInputElement>()
   const passwordRef = createRef<HTMLInputElement>()
   const confirmPasswordRef = createRef<HTMLInputElement>()
+
+  function buildUser() {
+    return new UserBuilder(nameRef.current?.value)
+      .withUsername(usernameRef.current?.value)
+      .withEmail(emailRef.current?.value)
+      .withPassword(passwordRef.current?.value)
+      .build()
+  }
 
   const handleRegister = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -41,14 +51,8 @@ function RegisterPage() {
     ])
     checkEqualFields(passwordInput, confirmPasswordInput)
 
-    const userPartial: UserPartial = {
-      name: nameInput?.value,
-      username: usernameInput?.value,
-      email: emailInput?.value,
-      password: passwordInput?.value,
-    }
-
-    await register(userPartial)
+    const user = buildUser()
+    await register(user)
   }
 
   return (
