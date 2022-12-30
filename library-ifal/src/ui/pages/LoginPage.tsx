@@ -12,6 +12,7 @@ import styles from '../styles/pages/LoginPage.module.scss'
 
 import { useFields } from '../../hooks/useFields'
 import { useAuth } from '../../hooks/useAuth'
+import LinkComponent from '../components/LinkComponent'
 
 function LoginPage() {
   const { validateAllInputs } = useFields()
@@ -51,10 +52,9 @@ function LoginPage() {
 
         <Button type='submit' btnType='secondary'>Entrar</Button>
 
-        <p className={styles.link}>
-          Ainda não tem conta? Cadastre-se
-          <span onClick={() => navigate('/register')}>aqui</span>
-        </p>
+        <LinkComponent
+          text={'Ainda não tem conta? Cadastre-se aqui'}
+          to={'/register'} />
       </form>
     </div>
   )

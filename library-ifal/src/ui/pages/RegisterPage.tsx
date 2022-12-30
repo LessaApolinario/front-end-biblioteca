@@ -15,6 +15,7 @@ import { useAuth } from '../../hooks/useAuth'
 import { useFields } from '../../hooks/useFields'
 
 import UserBuilder from '../../core/domain/builders/UserBuilder'
+import LinkComponent from '../components/LinkComponent'
 
 function RegisterPage() {
   const { validateAllInputs, checkEqualFields } = useFields()
@@ -95,10 +96,9 @@ function RegisterPage() {
           <Button type='submit' btnType='secondary'>Cadastrar</Button>
         </FlexWrapper>
 
-        <p className={styles.link}>
-          Já tem conta? Entre
-          <span onClick={() => navigate('/login')}>aqui</span>
-        </p>
+        <LinkComponent
+          text={'Já tem conta? Entre aqui'}
+          to={'/login'} />
       </form>
     </div>
   )
