@@ -1,4 +1,4 @@
-import { createRef, useContext, useEffect, useRef, useState } from 'react'
+import { ReactNode, createRef, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { GiTreeBranch } from 'react-icons/gi'
@@ -9,8 +9,13 @@ import PostComponent from '../components/PostComponent'
 import FlexWrapper from '../components/FlexWrapper'
 import Label from '../components/Label'
 import Input from '../components/Input'
+import PostsList from '../components/PostsList'
 
 import { AuthCTX } from '../contexts/AuthCTX'
+
+import PostService from '../../services/PostService'
+
+import Post from '../../core/domain/models/Post'
 
 import styles from '../styles/pages/HomePage.module.scss'
 
@@ -23,8 +28,6 @@ import _1984 from '../../assets/img/_1984.jpg'
 import OAlienista from '../../assets/img/OAlienista.jpeg'
 import PHP from '../../assets/img/PHP.jpg'
 import Python from '../../assets/img/Python.jpg'
-import PostService from '../../services/PostService'
-import Post from '../../core/domain/models/Post'
 
 function HomePage() {
   const navigate = useNavigate()
@@ -188,6 +191,10 @@ function HomePage() {
     }
   }
 
+  function renderItem(item: Post): ReactNode {
+    return <PostComponent data={item} />
+  }
+
   return (
     <main className={styles.container}>
       <Header>
@@ -264,15 +271,9 @@ function HomePage() {
 
           {renderForm()}
 
-          {posts.map(({ user_name, title, content, created_at }) => (
-            <PostComponent
-              key={Math.random() * 6}
-              name={user_name}
-              title={title ?? ''}
-              content={content ?? ''}
-              created_at={created_at}
-            />
-          ))}
+          <PostsList
+            data={posts}
+            renderItem={renderItem} />
         </div>
       </section>
     </main>
