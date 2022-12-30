@@ -17,9 +17,7 @@ export function useReviews() {
       await fetchReviews()
     }
 
-    return () => {
-      loadReviews()
-    }
+    loadReviews()
   }, [data])
 
   async function fetchReviews(): Promise<void> {
