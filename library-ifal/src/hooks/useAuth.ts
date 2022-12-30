@@ -10,13 +10,6 @@ import { useNavigate } from 'react-router-dom'
 
 import { useNotifications } from './useNotifications'
 
-export interface UserPartial {
-  name: string | undefined
-  username: string | undefined
-  email: string | undefined
-  password: string | undefined
-}
-
 export function useAuth() {
   const { notifySuccess, notifyError } = useNotifications()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -24,13 +17,7 @@ export function useAuth() {
   const user = authCTX.user
   const navigate = useNavigate()
 
-  async function register(userPartial: UserPartial) {
-    const user = new User()
-    user.name = userPartial.name
-    user.username = userPartial.username
-    user.email = userPartial.email
-    user.password = userPartial.password
-
+  async function register(user: User) {
     try {
       await authCTX.register(user)
       notifySuccess('Usuário registrado com sucesso!')
