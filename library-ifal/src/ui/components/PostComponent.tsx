@@ -1,17 +1,14 @@
+import Post from '../../core/domain/models/Post'
+
 import styles from '../styles/components/PostComponent.module.scss'
 
 import Text from './Text'
 
-interface PostItemProps {
-  name?: string
-  title: string
-  content: string
-  user_id?: string
-  created_at?: string
-  updated_at?: string
+interface PostComponentProps {
+  data: Post
 }
 
-function PostItem({ name, title, content, created_at }: PostItemProps) {
+function PostComponent({ data }: PostComponentProps) {
   const abbreviateMonth = (month: string) => {
     const abbreviatedMonths: Record<string, string> = {
       '01': "Ja",
@@ -32,8 +29,8 @@ function PostItem({ name, title, content, created_at }: PostItemProps) {
   }
 
   const formatDate = () => {
-    const date = created_at?.slice(0, 10)
-    const time = created_at?.slice(11, 16)
+    const date = data.created_at?.slice(0, 10)
+    const time = data.created_at?.slice(11, 16)
 
     if (date && time) {
       const [hours, minutes] = time?.split(':')
@@ -45,17 +42,17 @@ function PostItem({ name, title, content, created_at }: PostItemProps) {
 
     return ''
   }
-  
+
   return (
     <article className={styles.container}>
-      <h3>{name} <span className={styles.date}>{formatDate()}</span></h3>
-      <h4 className={styles.postTitle}>{title}</h4>
-      
+      <h3>{data.user_name} <span className={styles.date}>{formatDate()}</span></h3>
+      <h4 className={styles.postTitle}>{data.title}</h4>
+
       <Text
         className={'primary'}
-        text={content} />
+        text={data.content ?? ''} />
     </article>
   )
 }
 
-export default PostItem
+export default PostComponent
