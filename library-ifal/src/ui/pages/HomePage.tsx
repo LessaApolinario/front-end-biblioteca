@@ -9,7 +9,7 @@ import PostComponent from '../components/PostComponent'
 import FlexWrapper from '../components/FlexWrapper'
 import Label from '../components/Label'
 import Input from '../components/Input'
-import PostsList from '../components/PostsList'
+import ItemsList from '../components/ItemsList'
 
 import Post from '../../core/domain/models/Post'
 
@@ -223,8 +223,9 @@ function HomePage() {
 
           {renderForm()}
 
-          <PostsList
+          <ItemsList<Post>
             data={usePostsHook.data}
+            orientation={'column'}
             renderItem={renderItem} />
         </div>
       </section>

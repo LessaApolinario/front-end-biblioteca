@@ -17,7 +17,7 @@ import Label from '../components/Label'
 import Input from '../components/Input'
 import FlexWrapper from '../components/FlexWrapper'
 import TextArea from '../components/TextArea'
-import ReviewsList from '../components/ReviewsList'
+import ItemsList from '../components/ItemsList'
 
 import { useReviews } from '../../hooks/useReviews'
 import { useFields } from '../../hooks/useFields'
@@ -229,8 +229,9 @@ function ReviewPage() {
 
       {renderForm()}
 
-      <ReviewsList
+      <ItemsList<Review>
         data={useReviewsHook.data}
+        orientation={'row'}
         renderItem={renderItem} />
     </div>
   )
