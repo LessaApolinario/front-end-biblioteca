@@ -16,8 +16,8 @@ class UserService extends IUserService {
     await new UserAPI().register(user)
   }
   
-  refreshSession(storagedToken: string): void {
-    new UserAPI().refreshSession(storagedToken)
+  refreshSession(storedToken: string): void {
+    new UserAPI().refreshSession(storedToken)
   }
 
   destroySession(): void {

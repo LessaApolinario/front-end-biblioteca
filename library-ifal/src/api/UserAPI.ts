@@ -31,8 +31,8 @@ class UserAPI extends IUserAPI {
     })
   }
 
-  refreshSession(storagedToken: string): void {
-    this.client.defaults.headers.common['Authorization'] = `Bearer ${storagedToken}`
+  refreshSession(storedToken: string): void {
+    this.client.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`
   }
 
   destroySession(): void {
