@@ -1,5 +1,5 @@
 import User from '../core/domain/models/User'
-import AuthCredentialsDTO from '../core/dto/AuthCredentialsDTO'
+import AuthCredentialsDTO from '../core/domain/dto/AuthCredentialsDTO'
 import IUserAPI from '../core/interfaces/api/IUserAPI'
 
 class UserAPI extends IUserAPI {

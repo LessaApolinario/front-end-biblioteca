@@ -1,6 +1,6 @@
 import UserAPI from '../api/UserAPI'
 import User from '../core/domain/models/User'
-import AuthCredentialsDTO from '../core/dto/AuthCredentialsDTO'
+import AuthCredentialsDTO from '../core/domain/dto/AuthCredentialsDTO'
 import IUserService from '../core/interfaces/services/IUserService'
 
 class UserService extends IUserService {

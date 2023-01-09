@@ -1,5 +1,5 @@
 import User from '../../domain/models/User'
-import AuthCredentialsDTO from '../../dto/AuthCredentialsDTO'
+import AuthCredentialsDTO from '../../domain/dto/AuthCredentialsDTO'
 import IAPI from './IAPI'
 
 abstract class IUserAPI extends IAPI {
