@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
 
 import User from '../../core/domain/models/User'
-import AuthCredentialsDTO from '../../core/dto/AuthCredentialsDTO'
+import AuthCredentialsDTO from '../../core/domain/dto/AuthCredentialsDTO'
 import UserService from '../../services/UserService'
 
 import { useLocalStorage } from '../../hooks/useLocalStorage'

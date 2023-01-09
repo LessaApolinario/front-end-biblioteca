@@ -4,7 +4,7 @@ import User from '../core/domain/models/User'
 
 import { AuthCTX } from '../ui/contexts/AuthCTX'
 
-import AuthCredentialsDTO from '../core/dto/AuthCredentialsDTO'
+import AuthCredentialsDTO from '../core/domain/dto/AuthCredentialsDTO'
 
 import { useNavigate } from 'react-router-dom'
 
