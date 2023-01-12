@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import Text from './Text';
+import FlexWrapper from './FlexWrapper';
 
 import styles from '../styles/components/LinkComponent.module.scss';
 
@@ -11,15 +12,24 @@ interface LinkComponentProps {
 
 function LinkComponent(props: LinkComponentProps) {
   const navigate = useNavigate();
-  const words = props.text.split(' ');
-  const lastText = words.pop();
-  const title = words.join(' ');
+
+  function handleLinkText(): string[] {
+    const words = props.text.split(' ');
+    const hereWordIndex = words.indexOf('aqui');
+    const lastWord = words.splice(hereWordIndex);
+    const title = words.join(' ');
+    const subtitle = lastWord.join(' ');
+
+    return [title, subtitle];
+  }
+
+  const [title, subtitle] = handleLinkText();
 
   return (
-    <div className={styles.container}>
+    <FlexWrapper className={styles.container} orientation={'row'}>
       <Text className={'primary'} text={title} />
-      <span onClick={() => navigate(props.to)}>{lastText}</span>
-    </div>
+      <span onClick={() => navigate(props.to)}>{subtitle}</span>
+    </FlexWrapper>
   );
 }
 
