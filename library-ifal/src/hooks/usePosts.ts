@@ -21,12 +21,11 @@ export function usePosts() {
     loadPosts();
   }, [data]);
 
-  async function fetchPosts(): Promise<Post[] | undefined> {
+  async function fetchPosts() {
     try {
       const posts = await service.fetch();
       setData(posts);
       notifySuccess('Posts listados com sucesso!');
-      return posts;
     } catch (error) {
       notifyError('Erro ao listar posts');
     }
