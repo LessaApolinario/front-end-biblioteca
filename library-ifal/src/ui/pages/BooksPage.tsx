@@ -1,51 +1,45 @@
-import { ReactNode, createRef, useCallback, useRef } from "react"
-import { useNavigate } from "react-router-dom"
+import { ReactNode, createRef, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import BookComponent from "../components/BookComponent"
-import Button from "../components/Button"
-import Header from "../components/Header"
-import Table from "../components/Table"
+import BookComponent from '../components/BookComponent';
+import Button from '../components/Button';
+import Header from '../components/Header';
+import Table from '../components/Table';
 
-import styles from '../styles/pages/BooksPage.module.scss'
-import Input from "../components/Input"
+import styles from '../styles/pages/BooksPage.module.scss';
+import Input from '../components/Input';
 
-import { useBooks } from "../../hooks/useBooks"
-import { useFields } from "../../hooks/useFields"
+import { useBooks } from '../../hooks/useBooks';
+import { useFields } from '../../hooks/useFields';
 
-import Book from "../../core/domain/models/Book"
+import Book from '../../core/domain/models/Book';
 
 function BooksPage() {
-  const { validateInput } = useFields()
-  const { books, listBooks, searchBooks } = useBooks()
-  const inputRef = createRef<HTMLInputElement>()
-  const formRef = useRef<HTMLFormElement>(null)
-  const navigate = useNavigate()
+  const { validateInput } = useFields();
+  const { books, listBooks, searchBooks } = useBooks();
+  const inputRef = createRef<HTMLInputElement>();
+  const formRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
 
-  const columns = [
-    "Título",
-    "Autor",
-    "Edição",
-    "Ano",
-    "Localização"
-  ]
+  const columns = ['Título', 'Autor', 'Edição', 'Ano', 'Localização'];
 
   const renderItem = (item: Book): ReactNode => {
-    return <BookComponent props={item} key={String(item._id)} />
-  }
+    return <BookComponent props={item} key={String(item._id)} />;
+  };
 
   const handleListBooks = useCallback(async () => {
-    await listBooks()
-  }, [])
+    await listBooks();
+  }, []);
 
   const handleSearchBook = useCallback(async () => {
-    const searchInput = inputRef.current
-    const query = searchInput?.value ?? ''
-    validateInput(searchInput)
-    await searchBooks(query)
-  }, [])
+    const searchInput = inputRef.current;
+    const query = searchInput?.value ?? '';
+    validateInput(searchInput);
+    await searchBooks(query);
+  }, []);
 
   function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
   }
 
   return (
@@ -53,7 +47,7 @@ function BooksPage() {
       <Header>
         <nav className={styles.navbar}>
           <Button
-            type='button'
+            type="button"
             btnType="secondary"
             onClick={() => navigate(-1)}
           >
@@ -73,18 +67,10 @@ function BooksPage() {
           />
 
           <div className={styles.buttons}>
-            <Button
-              type='submit'
-              btnType='primary'
-              onClick={handleSearchBook}
-            >
+            <Button type="submit" btnType="primary" onClick={handleSearchBook}>
               Pesquisar livros
             </Button>
-            <Button
-              type='submit'
-              btnType='primary'
-              onClick={handleListBooks}
-            >
+            <Button type="submit" btnType="primary" onClick={handleListBooks}>
               Listar livros
             </Button>
           </div>
@@ -95,9 +81,10 @@ function BooksPage() {
         className={styles.table}
         data={books}
         renderItem={renderItem}
-        columns={columns} />
+        columns={columns}
+      />
     </div>
-  )
+  );
 }
 
-export default BooksPage
+export default BooksPage;

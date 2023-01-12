@@ -1,34 +1,34 @@
-import { createRef } from 'react'
+import { createRef } from 'react';
 
-import { GiTreeBranch } from 'react-icons/gi'
+import { GiTreeBranch } from 'react-icons/gi';
 
-import Button from '../components/Button'
-import FlexWrapper from '../components/FlexWrapper'
-import Input from '../components/Input'
-import Label from '../components/Label'
+import Button from '../components/Button';
+import FlexWrapper from '../components/FlexWrapper';
+import Input from '../components/Input';
+import Label from '../components/Label';
 
-import styles from '../styles/pages/LoginPage.module.scss'
+import styles from '../styles/pages/LoginPage.module.scss';
 
-import { useFields } from '../../hooks/useFields'
-import { useAuth } from '../../hooks/useAuth'
-import LinkComponent from '../components/LinkComponent'
+import { useFields } from '../../hooks/useFields';
+import { useAuth } from '../../hooks/useAuth';
+import LinkComponent from '../components/LinkComponent';
 
 function LoginPage() {
-  const { validateAllInputs } = useFields()
-  const { login } = useAuth()
-  const usernameRef = createRef<HTMLInputElement>()
-  const passwordRef = createRef<HTMLInputElement>()
+  const { validateAllInputs } = useFields();
+  const { login } = useAuth();
+  const usernameRef = createRef<HTMLInputElement>();
+  const passwordRef = createRef<HTMLInputElement>();
 
   async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const usernameInput = usernameRef.current
-    const passwordInput = passwordRef.current
-    const username = usernameInput?.value ?? ''
-    const password = passwordInput?.value ?? ''
+    const usernameInput = usernameRef.current;
+    const passwordInput = passwordRef.current;
+    const username = usernameInput?.value ?? '';
+    const password = passwordInput?.value ?? '';
 
-    validateAllInputs([usernameInput, passwordInput])
-    await login({ username, password })
+    validateAllInputs([usernameInput, passwordInput]);
+    await login({ username, password });
   }
 
   return (
@@ -48,14 +48,17 @@ function LoginPage() {
           <Input type={'password'} name={'senha'} ref={passwordRef} />
         </FlexWrapper>
 
-        <Button type='submit' btnType='secondary'>Entrar</Button>
+        <Button type="submit" btnType="secondary">
+          Entrar
+        </Button>
 
         <LinkComponent
           text={'Ainda não tem conta? Cadastre-se aqui'}
-          to={'/register'} />
+          to={'/register'}
+        />
       </form>
     </div>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

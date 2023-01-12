@@ -1,57 +1,57 @@
-import { createRef } from 'react'
+import { createRef } from 'react';
 
-import { GiTreeBranch } from 'react-icons/gi'
+import { GiTreeBranch } from 'react-icons/gi';
 
-import Button from '../components/Button'
-import FlexWrapper from '../components/FlexWrapper'
-import Input from '../components/Input'
-import Label from '../components/Label'
+import Button from '../components/Button';
+import FlexWrapper from '../components/FlexWrapper';
+import Input from '../components/Input';
+import Label from '../components/Label';
 
-import styles from '../styles/pages/RegisterPage.module.scss'
+import styles from '../styles/pages/RegisterPage.module.scss';
 
-import { useAuth } from '../../hooks/useAuth'
-import { useFields } from '../../hooks/useFields'
+import { useAuth } from '../../hooks/useAuth';
+import { useFields } from '../../hooks/useFields';
 
-import UserBuilder from '../../core/domain/builders/UserBuilder'
-import LinkComponent from '../components/LinkComponent'
+import UserBuilder from '../../core/domain/builders/UserBuilder';
+import LinkComponent from '../components/LinkComponent';
 
 function RegisterPage() {
-  const { validateAllInputs, checkEqualFields } = useFields()
-  const { register } = useAuth()
-  const nameRef = createRef<HTMLInputElement>()
-  const usernameRef = createRef<HTMLInputElement>()
-  const emailRef = createRef<HTMLInputElement>()
-  const passwordRef = createRef<HTMLInputElement>()
-  const confirmPasswordRef = createRef<HTMLInputElement>()
+  const { validateAllInputs, checkEqualFields } = useFields();
+  const { register } = useAuth();
+  const nameRef = createRef<HTMLInputElement>();
+  const usernameRef = createRef<HTMLInputElement>();
+  const emailRef = createRef<HTMLInputElement>();
+  const passwordRef = createRef<HTMLInputElement>();
+  const confirmPasswordRef = createRef<HTMLInputElement>();
 
   function buildUser() {
     return new UserBuilder(nameRef.current?.value)
       .withUsername(usernameRef.current?.value)
       .withEmail(emailRef.current?.value)
       .withPassword(passwordRef.current?.value)
-      .build()
+      .build();
   }
 
   const handleRegister = async (event: React.FormEvent) => {
-    event.preventDefault()
-    const nameInput = nameRef.current
-    const usernameInput = usernameRef.current
-    const emailInput = emailRef.current
-    const passwordInput = passwordRef.current
-    const confirmPasswordInput = confirmPasswordRef.current
+    event.preventDefault();
+    const nameInput = nameRef.current;
+    const usernameInput = usernameRef.current;
+    const emailInput = emailRef.current;
+    const passwordInput = passwordRef.current;
+    const confirmPasswordInput = confirmPasswordRef.current;
 
     validateAllInputs([
       nameInput,
       usernameInput,
       emailInput,
       passwordInput,
-      confirmPasswordInput
-    ])
-    checkEqualFields(passwordInput, confirmPasswordInput)
+      confirmPasswordInput,
+    ]);
+    checkEqualFields(passwordInput, confirmPasswordInput);
 
-    const user = buildUser()
-    await register(user)
-  }
+    const user = buildUser();
+    await register(user);
+  };
 
   return (
     <div className={styles.container}>
@@ -85,20 +85,27 @@ function RegisterPage() {
         </FlexWrapper>
 
         <FlexWrapper className={styles.row} orientation={'row'}>
-          <FlexWrapper className={styles.confirmPassword} orientation={'column'}>
+          <FlexWrapper
+            className={styles.confirmPassword}
+            orientation={'column'}
+          >
             <Label text={'Confirme sua senha'} />
-            <Input type={'password'} name={'confirmação de senha'} ref={confirmPasswordRef} />
+            <Input
+              type={'password'}
+              name={'confirmação de senha'}
+              ref={confirmPasswordRef}
+            />
           </FlexWrapper>
 
-          <Button type='submit' btnType='secondary'>Cadastrar</Button>
+          <Button type="submit" btnType="secondary">
+            Cadastrar
+          </Button>
         </FlexWrapper>
 
-        <LinkComponent
-          text={'Já tem conta? Entre aqui'}
-          to={'/login'} />
+        <LinkComponent text={'Já tem conta? Entre aqui'} to={'/login'} />
       </form>
     </div>
-  )
+  );
 }
 
-export default RegisterPage
+export default RegisterPage;
