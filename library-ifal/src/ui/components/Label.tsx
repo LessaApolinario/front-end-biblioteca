@@ -1,14 +1,16 @@
-import styles from '../styles/components/Label.module.scss'
+import styles from '../styles/components/Label.module.scss';
 
 interface LabelProps {
-  text: string
-  htmlFor?: string
+  text: string;
+  htmlFor?: string;
 }
 
 function Label(props: LabelProps) {
-  return <label
-    className={styles.container}
-    htmlFor={props.htmlFor}>{props.text}</label>
+  return (
+    <label className={styles.container} htmlFor={props.htmlFor}>
+      {props.text}
+    </label>
+  );
 }
 
-export default Label
+export default Label;

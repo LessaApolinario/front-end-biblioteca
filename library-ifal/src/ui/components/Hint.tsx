@@ -1,19 +1,19 @@
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
-import styles from '../styles/components/Hint.module.scss'
+import styles from '../styles/components/Hint.module.scss';
 
 interface HintProps {
-  title: string
-  children: ReactNode
+  title: string;
+  children: ReactNode;
 }
 
-function Hint({ title, children }: HintProps) {
+function Hint(props: HintProps) {
   return (
     <section className={styles.container}>
-      <h2>{title}</h2>
-      {children}
+      <h2>{props.title}</h2>
+      {props.children}
     </section>
-  )
+  );
 }
 
-export default Hint
+export default Hint;

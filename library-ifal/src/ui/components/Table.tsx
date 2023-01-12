@@ -1,11 +1,11 @@
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
 interface TableProps<T> {
-  className?: string
-  data: T[]
-  renderItem: (item: T) => ReactNode
-  columns: string[]
-  onClick?(): void
+  className?: string;
+  data: T[];
+  renderItem: (item: T) => ReactNode;
+  columns: string[];
+  onClick?(): void;
 }
 
 function Table<T>(props: TableProps<T>) {
@@ -18,11 +18,9 @@ function Table<T>(props: TableProps<T>) {
           ))}
         </tr>
       </thead>
-      <tbody>
-        {props.data.map((data) => (props.renderItem(data)))}
-      </tbody>
+      <tbody>{props.data.map((item) => props.renderItem(item))}</tbody>
     </table>
-  )
+  );
 }
 
-export default Table
+export default Table;

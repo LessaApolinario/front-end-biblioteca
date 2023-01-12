@@ -1,16 +1,16 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import AuthProvider from "../contexts/AuthCTX"
+import AuthProvider from '../contexts/AuthCTX';
 
-import BooksPage from "../pages/BooksPage"
-import CommentsPage from "../pages/CommentsPage"
-import Error404Page from "../pages/Error404Page"
-import HintsPage from "../pages/HintsPage"
-import HomePage from "../pages/HomePage"
-import LoginPage from "../pages/LoginPage"
-import RegisterPage from "../pages/RegisterPage"
-import ReviewDetailsPage from "../pages/ReviewDetailsPage"
-import ReviewPage from "../pages/ReviewPage"
+import BooksPage from '../pages/BooksPage';
+import CommentsPage from '../pages/CommentsPage';
+import Error404Page from '../pages/Error404Page';
+import HintsPage from '../pages/HintsPage';
+import HomePage from '../pages/HomePage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import ReviewDetailsPage from '../pages/ReviewDetailsPage';
+import ReviewPage from '../pages/ReviewPage';
 
 function RouteManager() {
   return (
@@ -25,12 +25,12 @@ function RouteManager() {
           <Route path="/reviews/review/:id" element={<ReviewDetailsPage />} />
           <Route path="/contact" element={<CommentsPage />} />
           <Route path="/hints" element={<HintsPage />} />
-          <Route path="/" element={<Navigate replace to='/home' />} />
+          <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="/*" element={<Error404Page />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default RouteManager
+export default RouteManager;
