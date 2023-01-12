@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { GiTreeBranch } from 'react-icons/gi';
 
 import Button from '../components/Button';
+import Carousel from '../components/Carousel';
 import Header from '../components/Header';
 import PostComponent from '../components/PostComponent';
 import FlexWrapper from '../components/FlexWrapper';
@@ -16,16 +17,6 @@ import Post from '../../core/domain/models/Post';
 import PostBuilder from '../../core/domain/builders/PostBuilder';
 
 import styles from '../styles/pages/HomePage.module.scss';
-
-import harry from '../../assets/img/harry.jpg';
-import Microcontrolador8051ComLinguagemC from '../../assets/img/Microcontrolador8051ComLinguagemC.jpg';
-import padroesdeprojeto from '../../assets/img/padroesdeprojeto.jpg';
-import AHoraDaEstrela from '../../assets/img/AHoraDaEstrela.jpg';
-import funcoes from '../../assets/img/funcoes.jpg';
-import _1984 from '../../assets/img/_1984.jpg';
-import OAlienista from '../../assets/img/OAlienista.jpeg';
-import PHP from '../../assets/img/PHP.jpg';
-import Python from '../../assets/img/Python.jpg';
 
 import { usePosts } from '../../hooks/usePosts';
 import { useAuth } from '../../hooks/useAuth';
@@ -172,58 +163,7 @@ function HomePage() {
       <section className={styles.content}>
         <h1>Bem-vindo</h1>
 
-        <div className={styles.carrousel}>
-          <div className={styles.images}>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={harry} alt="" />
-              <p>Harry Potter e o cálice de fogo</p>
-            </div>
-            <div className={styles.item}>
-              <img
-                onClick={() => navigate('/books')}
-                src={Microcontrolador8051ComLinguagemC}
-                alt=""
-              />
-              <p>Microcontrolador 8051 com Linguagem C</p>
-            </div>
-            <div className={styles.item}>
-              <img
-                onClick={() => navigate('/books')}
-                src={padroesdeprojeto}
-                alt=""
-              />
-              <p>Use a cabeça!: padrões de projetos</p>
-            </div>
-            <div className={styles.item}>
-              <img
-                onClick={() => navigate('/books')}
-                src={AHoraDaEstrela}
-                alt=""
-              />
-              <p>A hora da estrela</p>
-            </div>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={funcoes} alt="" />
-              <p>Fundamentos de matemática elementar: Conjuntos e funções</p>
-            </div>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={_1984} alt="" />
-              <p>1984</p>
-            </div>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={OAlienista} alt="" />
-              <p>O alienista</p>
-            </div>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={PHP} alt="" />
-              <p>Desenvolvendo Websites com PHP</p>
-            </div>
-            <div className={styles.item}>
-              <img onClick={() => navigate('/books')} src={Python} alt="" />
-              <p>Introdução à prgramação com Python</p>
-            </div>
-          </div>
-        </div>
+        <Carousel />
 
         <h3>Área de posts</h3>
 

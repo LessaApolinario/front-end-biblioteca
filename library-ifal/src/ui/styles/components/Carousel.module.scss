@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  .images {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    user-select: none;
+
+    overflow-x: auto;
+    padding: 0.8rem 0rem;
+
+    .item {
+      flex: none;
+
+      width: 183px;
+
+      cursor: pointer;
+
+      img {
+        object-fit: cover;
+
+        width: 100%;
+
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -webkit-touch-callout: none;
+      }
+
+      &:not(:last-child) {
+        margin-right: 1.5rem;
+      }
+    }
+  }
+}
