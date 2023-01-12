@@ -1,233 +1,153 @@
-import { createRef, useContext, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { ReactNode, createRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import Button from '../components/Button'
-import ReviewItem from '../components/ReviewItem'
-import Header from '../components/Header'
+import Button from '../components/Button';
+import ReviewItem from '../components/ReviewItem';
+import Header from '../components/Header';
 
-import { BsPlusCircleFill } from 'react-icons/bs'
-import { GiTreeBranch } from 'react-icons/gi'
-import { RiCloseCircleFill } from 'react-icons/ri'
+import { GiTreeBranch } from 'react-icons/gi';
 
-import styles from '../styles/pages/ReviewPage.module.scss'
+import styles from '../styles/pages/ReviewPage.module.scss';
 
-import { AuthCTX } from '../contexts/AuthCTX'
-import { ReviewsCTX } from '../contexts/ReviewsCTX'
+import Review from '../../core/domain/models/Review';
 
-import Review from '../../core/domain/models/Review'
-import ReviewService from '../../services/ReviewService'
+import Label from '../components/Label';
+import Input from '../components/Input';
+import FlexWrapper from '../components/FlexWrapper';
+import TextArea from '../components/TextArea';
+import ItemsList from '../components/ItemsList';
+
+import { useReviews } from '../../hooks/useReviews';
+import { useFields } from '../../hooks/useFields';
+import { useAuth } from '../../hooks/useAuth';
+import { useNotifications } from '../../hooks/useNotifications';
+
+import ReviewBuilder from '../../core/domain/builders/ReviewBuilder';
+import OpenCloseButton from '../components/OpenCloseButton';
 
 function ReviewPage() {
-  const [reviews, setReviews] = useState<Review[]>([])
-  const [isVisible, setIsVisible] = useState(false)
-  const [warning, setWarning] = useState(false)
-  const navigate = useNavigate()
-  const buttonRef = createRef<HTMLButtonElement>()
-  const bookTitleRef = useRef<HTMLInputElement>(null)
-  const authorNameRef = useRef<HTMLInputElement>(null)
-  const reviewTextareaRef = useRef<HTMLTextAreaElement>(null)
-  const searchRef = useRef<HTMLInputElement>(null)
-  const authCTX = useContext(AuthCTX)
-  const reviewsCTX = useContext(ReviewsCTX)
+  const useAuthHook = useAuth();
+  const useFieldsHook = useFields();
+  const useReviewsHook = useReviews();
+  const useNotificationsHook = useNotifications();
+  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
+  const bookTitleRef = createRef<HTMLInputElement>();
+  const authorNameRef = createRef<HTMLInputElement>();
+  const reviewTextareaRef = createRef<HTMLTextAreaElement>();
+  const searchRef = createRef<HTMLInputElement>();
 
-  useEffect(() => {
-    const getReviews = async () => {
-      const reviews = await reviewsCTX.fetch()
-      reviews.reverse()
-      setReviews(reviews)
-    }
-
-    getReviews()
-    // eslint-disable-next-line
-  }, [])
-
-  const handleAddReview = async () => {
-    const button = buttonRef.current
-    const bookInput = bookTitleRef.current
-    const authorInput = authorNameRef.current
-    const reviewTextarea = reviewTextareaRef.current
-    const user = authCTX.user
-
-    if (!button || !bookInput || !authorInput || !reviewTextarea) {
-      return
-    }
-
-    if (
-      authorInput.value.length === 0 ||
-      reviewTextarea.value.length === 0 ||
-      bookInput.value.length === 0
-    ) {
-      return
-    }
-
-    if (!user) {
-      return
-    }
-
-    const isLoggedUser = localStorage.getItem('token')
-
-    if (isLoggedUser === null) {
-      return
-    }
-
-    const { id, name } = user
-
-    if (!id || !name) {
-      return
-    }
-
-    const newReview = new Review()
-    newReview.user_id = id
-    newReview.name = name
-    newReview.title_book = bookTitleRef.current.value
-    newReview.writer = authorNameRef.current.value
-    newReview.review = reviewTextareaRef.current.value
-    newReview.available = true
-
-    const reviewCreated = await reviewsCTX.create(newReview)
-
-    setReviews((previousState) => [
-      reviewCreated,
-      ...previousState
-    ])
-
-    setIsVisible(false)
+  function goBack() {
+    navigate(-1);
   }
 
-  const renderOpenOrCloseIcon = () => {
-    if (isVisible) {
-      return (
-        <RiCloseCircleFill
-          onClick={
-            () => setIsVisible(!isVisible)
-          }
-          title='Fechar'
-        />
-      )
-    } else {
-      return (
-        <BsPlusCircleFill
-          onClick={
-            () => setIsVisible(!isVisible)
-          }
-          title='Adicionar resenha'
-        />
-      )
+  function buildReview() {
+    const user = useAuthHook.user;
+    const review = new ReviewBuilder()
+      .withUserID(user?.id)
+      .withUserName(user?.name)
+      .withTitleBook(bookTitleRef.current?.value)
+      .withWriter(authorNameRef.current?.value)
+      .withReview(reviewTextareaRef.current?.value)
+      .withAvailable(true)
+      .build();
+
+    return review;
+  }
+
+  async function addReview() {
+    try {
+      const review = buildReview();
+      await useReviewsHook.createReview(review);
+    } catch (error: any) {
+      useNotificationsHook.notifyError(error.message);
     }
   }
 
-  useEffect(() => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
+  const handleAddReview = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const bookInput = bookTitleRef.current;
+    const authorInput = authorNameRef.current;
+    const reviewTextarea = reviewTextareaRef.current;
 
-    if (!storagedUser && !storagedToken) {
-      buttonRef.current?.setAttribute('disabled', 'true')
-    } else {
-      buttonRef.current?.removeAttribute('disabled')
-    }
-  }, [buttonRef])
+    useFieldsHook.validateAllInputs([bookInput, authorInput]);
+    useFieldsHook.validateTextArea(reviewTextarea);
 
-  useEffect(() => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
+    await addReview();
 
-    if (!storagedUser && !storagedToken) {
-      setWarning(true)
-    } else {
-      setWarning(false)
-    }
-  }, [])
+    setIsVisible(false);
+  };
 
   const renderForm = () => {
     if (isVisible) {
       return (
-        <form action="#" method='POST' className={styles.form}>
+        <form className={styles.form} onSubmit={handleAddReview}>
           <h3>Escreva sua resenha</h3>
 
-          <div className={styles.book}>
-            <label>Livro</label>
-            <input type="text" ref={bookTitleRef} />
-          </div>
+          <FlexWrapper className={styles.fullWidth} orientation={'column'}>
+            <Label text={'Livro'} />
+            <Input type={'text'} name={'livro'} ref={bookTitleRef} />
+          </FlexWrapper>
 
-          <div className={styles.author}>
-            <label>Autor</label>
-            <input type="text" ref={authorNameRef} />
-          </div>
+          <FlexWrapper className={styles.fullWidth} orientation={'column'}>
+            <Label text={'Autor'} />
+            <Input type={'text'} name={'autor'} ref={authorNameRef} />
+          </FlexWrapper>
 
-          <div className={styles.review}>
-            <label>Resenha</label>
-            <textarea cols={30} rows={5} ref={reviewTextareaRef}></textarea>
-          </div>
+          <FlexWrapper className={styles.review} orientation={'column'}>
+            <Label text={'Resenha'} />
+            <TextArea
+              name={'resenha'}
+              id={'reviewTextArea'}
+              cols={30}
+              rows={5}
+              ref={reviewTextareaRef}
+            ></TextArea>
+          </FlexWrapper>
 
-          <Button
-            ref={buttonRef}
-            type='button'
-            btnType='secondary'
-            onClick={handleAddReview}
-          >
+          <Button type="submit" btnType="secondary">
             Escrever
           </Button>
-          {
-            warning
-            &&
-            <p className={styles.warning}>Faça login para criar resenhas</p>
-          }
         </form>
-      )
+      );
     }
-  }
+  };
 
-  const logout = () => {
-    authCTX.logout()
-    navigate(-1)
-  }
+  const logout = async () => {
+    await useAuthHook.logout();
+    goBack();
+  };
 
   const redirectToReviewsDetails = (item: Review) => {
-    navigate(`/reviews/review/${item._id}`, { state: item })
+    navigate(`/reviews/review/${item._id}`, { state: item });
+  };
+
+  function renderItem(item: Review): ReactNode {
+    return <ReviewItem data={item} onClick={() => redirectToReviewsDetails} />;
   }
 
   const handleSearchReview = async () => {
-    const query = searchRef.current?.value
-
-    if (!query) {
-      return
-    }
-
-    const reviewService = new ReviewService()
-    const data = await reviewService.search(query)
-    const isEmpty = !data.length
-
-    if (!isEmpty) {
-      setReviews(data)
-    }
-  }
+    const searchInput = searchRef?.current;
+    const query = searchRef.current?.value ?? '';
+    useFieldsHook.validateInput(searchInput);
+    await useReviewsHook.searchReview(query);
+  };
 
   const renderButtons = () => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
-
-    if (storagedUser !== null && storagedToken !== null) {
+    if (useAuthHook.isAuthenticated) {
       return (
-        <Button
-          type='button'
-          btnType='secondary'
-          onClick={logout}
-        >
+        <Button type="button" btnType="secondary" onClick={logout}>
           Sair
         </Button>
-      )
+      );
     } else {
       return (
-        <Button
-          type='button'
-          btnType='secondary'
-          onClick={() => navigate(-1)}
-        >
+        <Button type="button" btnType="secondary" onClick={goBack}>
           Voltar
         </Button>
-      )
+      );
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -247,17 +167,17 @@ function ReviewPage() {
         </>
       </Header>
 
-      <div className={styles.plusIcon}>
-        {renderOpenOrCloseIcon()}
-      </div>
+      <OpenCloseButton
+        className={'secondary'}
+        closeText={'Fechar'}
+        addItemText={'Adicionar resenha'}
+        isVisible={isVisible}
+        onClick={() => setIsVisible(!isVisible)}
+      />
 
       <div className={styles.search}>
-        <input type='text' ref={searchRef} />
-        <Button
-          type='button'
-          btnType='secondary'
-          onClick={handleSearchReview}
-        >
+        <Input type={'text'} name={'pesquisa'} ref={searchRef} />
+        <Button type="button" btnType="secondary" onClick={handleSearchReview}>
           Pesquisar
         </Button>
       </div>
@@ -266,21 +186,13 @@ function ReviewPage() {
 
       {renderForm()}
 
-      <div className={styles.reviews}>
-        {reviews?.map(item => (
-          <ReviewItem
-            key={Math.random().toString()}
-            name={item.name}
-            title_book={item.title_book ?? ''}
-            writer={item.writer ?? ''}
-            review={item.review ?? ''}
-            created_at={item.created_at}
-            onClick={() => redirectToReviewsDetails(item)}
-          />
-        ))}
-      </div>
+      <ItemsList<Review>
+        data={useReviewsHook.data}
+        orientation={'row'}
+        renderItem={renderItem}
+      />
     </div>
-  )
+  );
 }
 
-export default ReviewPage
+export default ReviewPage;

@@ -37,63 +37,21 @@
     }
 
     .row {
-      display: flex;
       align-items: center;
       justify-content: center;
+      gap: 0.8rem;
 
       width: 100%;
 
-      > *:not(:last-child) {
-        margin-right: 0.8rem;
-      }
-
       > button {
+        margin-top: 0.5rem;
         height: max-content;
-        margin-top: 0.8rem;
         width: 16rem;
       }
     }
 
     .name, .username, .email, .password, .confirmPassword {
-      display: flex;
-      flex-direction: column;
-
       margin-bottom: 1rem;
-
-      > label {
-        margin-bottom: 0.5rem;
-        font-size: 1.05rem;
-      }
-
-      > input {
-        padding: 0.5rem 1rem;
-        width: 16rem;
-
-        border: 1px solid $primary;
-        border-radius: 3px;
-        
-        &:focus {
-          outline-color: $primary;
-        }
-
-        color: $primary;
-      }
-    }
-
-    > .link {
-      font-size: 1.05rem;
-      text-align: center;
-
-      > span {
-        cursor: pointer;
-        margin-left: 0.2rem;
-
-        text-decoration: underline;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
     }
   }
 }

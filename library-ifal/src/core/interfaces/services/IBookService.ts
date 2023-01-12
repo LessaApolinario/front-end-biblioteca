@@ -1,8 +1,11 @@
-import Book from '../../domain/models/Book'
+import Book from '../../domain/models/Book';
+import BookAdapter from '../adapter/BookAdapter';
 
 abstract class IBookService {
-  abstract fetch(): Promise<Book[]>
-  abstract search(query: string): Promise<Book[]>
+  constructor(protected readonly adapter: BookAdapter) {}
+
+  abstract fetch(): Promise<Book[]>;
+  abstract search(query: string): Promise<Book[]>;
 }
 
-export default IBookService
+export default IBookService;

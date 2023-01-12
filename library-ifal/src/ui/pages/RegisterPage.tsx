@@ -1,56 +1,57 @@
-import { useContext, useRef } from 'react'
+import { createRef } from 'react';
 
-import { GiTreeBranch } from 'react-icons/gi'
+import { GiTreeBranch } from 'react-icons/gi';
 
-import { useNavigate } from 'react-router-dom'
-import User from '../../core/domain/models/User'
+import Button from '../components/Button';
+import FlexWrapper from '../components/FlexWrapper';
+import Input from '../components/Input';
+import Label from '../components/Label';
 
-import Button from '../components/Button'
+import styles from '../styles/pages/RegisterPage.module.scss';
 
-import { AuthCTX } from '../contexts/AuthCTX'
+import { useAuth } from '../../hooks/useAuth';
+import { useFields } from '../../hooks/useFields';
 
-import styles from '../styles/pages/RegisterPage.module.scss'
+import UserBuilder from '../../core/domain/builders/UserBuilder';
+import LinkComponent from '../components/LinkComponent';
 
 function RegisterPage() {
-  const navigate = useNavigate()
-  const nameRef = useRef<HTMLInputElement>(null)
-  const usernameRef = useRef<HTMLInputElement>(null)
-  const emailRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
-  const confirmPasswordRef = useRef<HTMLInputElement>(null)
-  const authCTX = useContext(AuthCTX)
+  const { validateAllInputs, checkEqualFields } = useFields();
+  const { register } = useAuth();
+  const nameRef = createRef<HTMLInputElement>();
+  const usernameRef = createRef<HTMLInputElement>();
+  const emailRef = createRef<HTMLInputElement>();
+  const passwordRef = createRef<HTMLInputElement>();
+  const confirmPasswordRef = createRef<HTMLInputElement>();
+
+  function buildUser() {
+    return new UserBuilder(nameRef.current?.value)
+      .withUsername(usernameRef.current?.value)
+      .withEmail(emailRef.current?.value)
+      .withPassword(passwordRef.current?.value)
+      .build();
+  }
 
   const handleRegister = async (event: React.FormEvent) => {
-    event.preventDefault()
-    const nameInput = nameRef.current
-    const usernameInput = usernameRef.current
-    const emailInput = emailRef.current
-    const passwordInput = passwordRef.current
-    const confirmPasswordInput = confirmPasswordRef.current
+    event.preventDefault();
+    const nameInput = nameRef.current;
+    const usernameInput = usernameRef.current;
+    const emailInput = emailRef.current;
+    const passwordInput = passwordRef.current;
+    const confirmPasswordInput = confirmPasswordRef.current;
 
-    const name = nameInput?.value
-    const username = usernameInput?.value
-    const email = emailInput?.value
-    const password = passwordInput?.value
-    const confirmedPassword = confirmPasswordInput?.value
+    validateAllInputs([
+      nameInput,
+      usernameInput,
+      emailInput,
+      passwordInput,
+      confirmPasswordInput,
+    ]);
+    checkEqualFields(passwordInput, confirmPasswordInput);
 
-    if (
-      !name || !username || !email || !password ||
-      !confirmedPassword || password !== confirmedPassword
-    ) {
-      return
-    }
-
-    const newUser = new User()
-    newUser.name = name
-    newUser.username = username
-    newUser.email = email
-    newUser.password = password
-
-    await authCTX.register(newUser)
-
-    navigate('/')
-  }
+    const user = buildUser();
+    await register(user);
+  };
 
   return (
     <div className={styles.container}>
@@ -59,46 +60,52 @@ function RegisterPage() {
       <form className={styles.register} onSubmit={handleRegister}>
         <h2>Cadastrar-se</h2>
 
-        <div className={styles.row}>
-          <div className={styles.name}>
-            <label>Seu nome</label>
-            <input type="text" ref={nameRef} />
-          </div>
+        <FlexWrapper className={styles.row} orientation={'row'}>
+          <FlexWrapper className={styles.name} orientation={'column'}>
+            <Label text={'Seu nome'} />
+            <Input type={'text'} name={'nome'} ref={nameRef} />
+          </FlexWrapper>
 
-          <div className={styles.username}>
-            <label>Nome de usuário</label>
-            <input type="text" ref={usernameRef} />
-          </div>
-        </div>
+          <FlexWrapper className={styles.username} orientation={'column'}>
+            <Label text={'Nome de usuário'} />
+            <Input type={'text'} name={'nome de usuário'} ref={usernameRef} />
+          </FlexWrapper>
+        </FlexWrapper>
 
-        <div className={styles.row}>
-          <div className={styles.email}>
-            <label>Email</label>
-            <input type="email" ref={emailRef} />
-          </div>
+        <FlexWrapper className={styles.row} orientation={'row'}>
+          <FlexWrapper className={styles.email} orientation={'column'}>
+            <Label text={'Email'} />
+            <Input type={'email'} name={'email'} ref={emailRef} />
+          </FlexWrapper>
 
-          <div className={styles.password}>
-            <label>Senha</label>
-            <input type="password" ref={passwordRef} />
-          </div>
-        </div>
+          <FlexWrapper className={styles.password} orientation={'column'}>
+            <Label text={'Senha'} />
+            <Input type={'password'} name={'senha'} ref={passwordRef} />
+          </FlexWrapper>
+        </FlexWrapper>
 
-        <div className={styles.row}>
-          <div className={styles.confirmPassword}>
-            <label>Confirme sua senha</label>
-            <input type="password" ref={confirmPasswordRef} />
-          </div>
+        <FlexWrapper className={styles.row} orientation={'row'}>
+          <FlexWrapper
+            className={styles.confirmPassword}
+            orientation={'column'}
+          >
+            <Label text={'Confirme sua senha'} />
+            <Input
+              type={'password'}
+              name={'confirmação de senha'}
+              ref={confirmPasswordRef}
+            />
+          </FlexWrapper>
 
-          <Button type='submit' btnType='secondary'>Cadastrar</Button>
-        </div>
+          <Button type="submit" btnType="secondary">
+            Cadastrar
+          </Button>
+        </FlexWrapper>
 
-        <p className={styles.link}>
-          Já tem conta? Entre
-          <span onClick={() => navigate('/login')}>aqui</span>
-        </p>
+        <LinkComponent text={'Já tem conta? Entre aqui'} to={'/login'} />
       </form>
     </div>
-  )
+  );
 }
 
-export default RegisterPage
+export default RegisterPage;

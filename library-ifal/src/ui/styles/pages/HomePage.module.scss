@@ -1,6 +1,6 @@
 .container {
-  $primary:  #5B4B8A;
-  $secondary: #FFF;
+  $primary: #5b4b8a;
+  $secondary: #fff;
 
   width: 100%;
   height: 100%;
@@ -23,12 +23,12 @@
       li {
         font-weight: bold;
         font-size: 1.05rem;
-        
+
         color: $secondary;
         padding: 0.5rem 1rem;
 
         cursor: pointer;
-        
+
         border: 1px solid transparent;
 
         &:hover {
@@ -54,132 +54,11 @@
 
     width: 100%;
 
-    .carrousel {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      width: 100%;
-
-      .images {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        user-select: none;
-
-        overflow-x: auto;
-        padding: 0.8rem 0rem;
-        
-        .item {
-          flex: none;
-          
-          width: 183px;
-
-          cursor: pointer;
-
-          img {
-            object-fit: cover;
-            
-            width: 100%;
-
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-user-drag: none;
-            -webkit-touch-callout: none;
-          }
-  
-          &:not(:last-child) {
-            margin-right: 1.5rem;
-          }
-        }
-      }
-    }
-
     > h1 {
       font-size: 4rem;
 
       margin-top: 0.8rem;
       margin-bottom: 2.5rem;
-    }
-
-    > .posts {
-      padding: 1rem 1.5rem;
-      width: 100%;
-
-      > *:not(:last-child) {
-        margin-bottom: 1.25rem;
-      }
-
-      > .form {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: .5rem;
-
-        border: 1px solid $primary;
-        border-radius: 3px;
-        
-        width: 25rem;
-        padding: 1.25rem;
-
-        .postTitle, .postContent {
-          display: flex;
-          flex-direction: column;
-          gap: .5rem;
-
-          > label {
-            color: $primary;
-          }
-
-          > input {
-            padding: 0.5rem 1rem;
-
-            border: 1px solid $primary;
-            border-radius: 3px;
-
-            &:focus {
-              border: 1px solid transparent;
-              outline-color: $primary;
-            }
-
-            &::placeholder {
-              color: $primary;
-            }
-          }
-        }
-
-        .postContent > textarea {
-          padding: 0.5rem 1rem;
-
-          border: 1px solid $primary;
-          border-radius: 3px;
-
-          resize: none;
-
-          &:focus {
-            border: 1px solid transparent;
-            outline-color: $primary;
-          }
-
-          &::placeholder {
-            color: $primary;
-          }
-        }
-
-        .warning {
-          color: #F00;
-          font-size: 1.05rem;
-          text-align: center;
-        }
-      }
-    }
-
-    > h3 {
-      margin: 1rem 0;
-      font-size: 3.5rem;
     }
   }
 }

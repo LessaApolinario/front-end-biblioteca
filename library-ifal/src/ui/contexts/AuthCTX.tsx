@@ -1,98 +1,89 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useEffect, useState } from 'react';
 
-import User from '../../core/domain/models/User'
-import AuthCredentialsDTO from '../../core/dto/AuthCredentialsDTO'
-import UserService from '../../services/UserService'
+import User from '../../core/domain/models/User';
+import AuthCredentialsDTO from '../../core/domain/types/AuthCredentialsDTO';
+
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+
+import WebDIContainer from '../../dicontainer/web';
 
 interface AuthCTXProps {
-  signed: boolean
-  user: User | undefined
-  login(user: AuthCredentialsDTO): Promise<boolean>
-  logout(): void
-  register(user: User): Promise<void>
+  user: User | undefined;
+  login(user: AuthCredentialsDTO): Promise<boolean>;
+  logout(): void;
+  register(user: User): Promise<void>;
 }
 
 interface AuthProviderProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
-export const AuthCTX = createContext({} as AuthCTXProps)
+export const AuthCTX = createContext({} as AuthCTXProps);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User>();
+  const { setItem, getItem, removeItem } = useLocalStorage<User>();
+  const diContainer = new WebDIContainer();
+  const service = diContainer.getUserService();
 
   useEffect(() => {
-    const storagedUser = localStorage.getItem('user')
-    const storagedToken = localStorage.getItem('token')
-
-    if (storagedToken !== null && storagedUser !== null) {
-      const _user = JSON.parse(storagedUser) as User
-      setUser(_user)
-      const userService = new UserService()
-      userService.refreshSession(storagedToken)
-    }
-  }, [])
+    const storedUser = getItem<User>('user') as User;
+    const storedToken = getItem<string>('token') ?? '';
+    setUser(storedUser);
+    service.refreshSession(storedToken);
+  }, []);
 
   const login = async (credentials: AuthCredentialsDTO) => {
     if (!credentials.username || !credentials.password) {
-      return false
+      return false;
     }
 
-    const userService = new UserService()
-    const data = await userService.login(credentials)
-    const { access_token, id } = data
+    const data = await service.login(credentials);
+    const { access_token, id } = data;
 
     if (!access_token) {
-      return false
+      return false;
     }
 
     if (!id) {
-      return false
+      return false;
     }
 
-    userService.refreshSession(access_token)
+    service.refreshSession(access_token);
 
-    const newUser: User = data
-    setUser(newUser)
+    const newUser: User = data;
+    setUser(newUser);
 
-    localStorage.setItem('user', JSON.stringify(newUser))
-    localStorage.setItem('token', JSON.stringify(access_token))
-    localStorage.setItem('id', JSON.stringify(id))
+    setItem('user', newUser);
+    setItem('token', access_token);
+    setItem('id', id);
 
-    return true
-  }
+    return true;
+  };
 
   const logout = async () => {
-    const storagedId = localStorage.getItem('id')
-    const storagedToken = localStorage.getItem('token')
+    const storedId = getItem<string>('id') ?? '';
+    const storedToken = getItem<string>('token') ?? '';
 
-    if (storagedId === null || storagedToken === null) {
-      return
-    }
+    await service.logout(storedId, storedToken);
+    service.destroySession();
 
-    const id: string = JSON.parse(storagedId)
-    const token: string = JSON.parse(storagedToken)
+    removeItem('user');
+    removeItem('id');
+    removeItem('token');
 
-    const userService = new UserService()
-    await userService.logout(id, token)
-    userService.destroySession()
-
-    localStorage.removeItem('user')
-    localStorage.removeItem('id')
-    localStorage.removeItem('token')
-    setUser(undefined)
-  }
+    setUser(undefined);
+  };
 
   const register = async (user: User) => {
-    const userService = new UserService()
-    await userService.register(user)
-  }
+    await service.register(user);
+  };
 
   return (
-    <AuthCTX.Provider value={{ signed: Boolean(user), user, login, logout, register }}>
+    <AuthCTX.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthCTX.Provider>
-  )
+  );
 }
 
-export default AuthProvider
+export default AuthProvider;

@@ -1,0 +1,15 @@
+.container {
+  font-size: 1.05rem;
+  text-align: center;
+
+  > span {
+    cursor: pointer;
+    margin-left: 0.2rem;
+
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

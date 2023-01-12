@@ -1,36 +1,34 @@
-import { useContext, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { createRef } from 'react';
 
-import { GiTreeBranch } from 'react-icons/gi'
+import { GiTreeBranch } from 'react-icons/gi';
 
-import Button from '../components/Button'
+import Button from '../components/Button';
+import FlexWrapper from '../components/FlexWrapper';
+import Input from '../components/Input';
+import Label from '../components/Label';
 
-import styles from '../styles/pages/LoginPage.module.scss'
-import { AuthCTX } from '../contexts/AuthCTX'
+import styles from '../styles/pages/LoginPage.module.scss';
+
+import { useFields } from '../../hooks/useFields';
+import { useAuth } from '../../hooks/useAuth';
+import LinkComponent from '../components/LinkComponent';
 
 function LoginPage() {
-  const navigate = useNavigate()
-  const usernameRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
-  const authCTX = useContext(AuthCTX)
+  const { validateAllInputs } = useFields();
+  const { login } = useAuth();
+  const usernameRef = createRef<HTMLInputElement>();
+  const passwordRef = createRef<HTMLInputElement>();
 
   async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const username = usernameRef.current?.value
-    const password = passwordRef.current?.value
+    const usernameInput = usernameRef.current;
+    const passwordInput = passwordRef.current;
+    const username = usernameInput?.value ?? '';
+    const password = passwordInput?.value ?? '';
 
-    try {
-      if (username && password) {
-        const success = await authCTX.login({ username, password })
-        
-        if (success) {
-          navigate('/')
-        }
-      }
-    } catch(error) {
-      console.log(`Erro ao fazer login: ${error}`)
-    }
+    validateAllInputs([usernameInput, passwordInput]);
+    await login({ username, password });
   }
 
   return (
@@ -40,25 +38,27 @@ function LoginPage() {
       <form className={styles.login} onSubmit={handleSubmit}>
         <h2>Fazer login</h2>
 
-        <div className={styles.username}>
-          <label>Nome de usuário</label>
-          <input type="text" ref={usernameRef} />
-        </div>
+        <FlexWrapper className={styles.username} orientation={'column'}>
+          <Label text={'Nome de usuário'} />
+          <Input type={'text'} name={'nome de usuário'} ref={usernameRef} />
+        </FlexWrapper>
 
-        <div className={styles.password}>
-          <label>Senha</label>
-          <input type="password" ref={passwordRef} />
-        </div>
+        <FlexWrapper className={styles.password} orientation={'column'}>
+          <Label text={'Senha'} />
+          <Input type={'password'} name={'senha'} ref={passwordRef} />
+        </FlexWrapper>
 
-        <Button type='submit' btnType='secondary'>Entrar</Button>
+        <Button type="submit" btnType="secondary">
+          Entrar
+        </Button>
 
-        <p className={styles.link}>
-          Ainda não tem conta? Cadastre-se 
-          <span onClick={() => navigate('/register')}>aqui</span>
-        </p>
+        <LinkComponent
+          text={'Ainda não tem conta? Cadastre-se aqui'}
+          to={'/register'}
+        />
       </form>
     </div>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

@@ -1,42 +1,26 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react';
 
 interface TableProps<T> {
-  className: string
-  data: T[]
-  renderItem: (item: T, key: number) => ReactNode
-  thead: string[]
-  onClick?(): void
+  className?: string;
+  data: T[];
+  renderItem: (item: T) => ReactNode;
+  columns: string[];
+  onClick?(): void;
 }
 
 function Table<T>(props: TableProps<T>) {
-  function Thead() {
-    const thead = <thead>
-      <tr>
-        {props.thead.map((cell, index) => {
-          return <th key={index}>{cell}</th>
-        })}
-      </tr>
-    </thead>
-
-    return thead
-  }
-
-  function Tbody() {
-    const tbody = <tbody>
-      {props.data.map((data, index) => {
-        return props.renderItem(data, index)
-      })}
-    </tbody>
-
-    return tbody
-  }
-
   return (
     <table className={props.className}>
-      <Thead />
-      <Tbody />
+      <thead>
+        <tr>
+          {props.columns.map((column, index) => (
+            <th key={index}>{column}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{props.data.map((item) => props.renderItem(item))}</tbody>
     </table>
-  )
+  );
 }
 
-export default Table
+export default Table;

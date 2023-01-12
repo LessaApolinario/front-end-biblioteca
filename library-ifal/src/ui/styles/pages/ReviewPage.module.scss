@@ -55,24 +55,6 @@
     }
   }
 
-  > .plusIcon {
-    border-radius: 50%;
-    margin-bottom: 1.5rem;
-
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    > svg {
-      fill: $secondary;
-      color: $secondary;
-      font-size: 2rem;
-
-      cursor: pointer;
-    }
-  }
-
   > .search {
     width: 100%;
     display: flex;
@@ -113,6 +95,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 0.8rem;
 
     padding: 1rem;
     margin-bottom: 1.5rem;
@@ -124,58 +107,16 @@
       margin-bottom: 0.8rem;
     }
 
-    label {
-      color: $primary;
-      margin-bottom: 0.2rem;
-    }
+    > .fullWidth {
+      width: 100%;
 
-    input {
-      padding: 0.5rem 1rem;
-
-      border: 1px solid $primary;
-      border-radius: 3px;
-
-      &:focus {
-        outline-color: $primary;
+      > input {
+        width: 100%;
       }
-
-      color: $primary;
-    }
-
-    input, textarea {
-      margin-bottom: 0.8rem;
-    }
-
-    > .book {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    > .author {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
     > .review {
-      display: flex;
-      flex-direction: column;
       justify-content: center;
-
-      textarea {
-        padding: 0.5rem;
-
-        border: 1px solid $primary;
-        border-radius: 3px;
-
-        &:focus {
-          border: 1px solid transparent;
-          outline-color: $primary;
-        }
-
-        color: $primary;
-      }
     }
 
     > button {
@@ -187,12 +128,5 @@
       font-size: 1.05rem;
       margin-top: 0.5rem;
     }
-  }
-
-  .reviews {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
   }
 }

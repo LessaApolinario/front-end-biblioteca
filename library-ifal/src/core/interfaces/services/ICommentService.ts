@@ -1,6 +1,10 @@
-import Comment from "../../domain/models/Comment";
+import Comment from '../../domain/models/Comment';
+import CommentAdapter from '../adapter/CommentAdapter';
 
 abstract class ICommentService {
-  abstract create(comment: Comment): Promise<void>
+  constructor(protected readonly adapter: CommentAdapter) {}
+
+  abstract create(comment: Comment): Promise<void>;
 }
-export default ICommentService
+
+export default ICommentService;
