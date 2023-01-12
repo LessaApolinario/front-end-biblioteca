@@ -5,9 +5,7 @@ import Button from '../components/Button';
 import ReviewItem from '../components/ReviewItem';
 import Header from '../components/Header';
 
-import { BsPlusCircleFill } from 'react-icons/bs';
 import { GiTreeBranch } from 'react-icons/gi';
-import { RiCloseCircleFill } from 'react-icons/ri';
 
 import styles from '../styles/pages/ReviewPage.module.scss';
 
@@ -25,6 +23,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNotifications } from '../../hooks/useNotifications';
 
 import ReviewBuilder from '../../core/domain/builders/ReviewBuilder';
+import OpenCloseButton from '../components/OpenCloseButton';
 
 function ReviewPage() {
   const useAuthHook = useAuth();
@@ -77,24 +76,6 @@ function ReviewPage() {
     await addReview();
 
     setIsVisible(false);
-  };
-
-  const renderOpenOrCloseIcon = () => {
-    if (isVisible) {
-      return (
-        <RiCloseCircleFill
-          onClick={() => setIsVisible(!isVisible)}
-          title="Fechar"
-        />
-      );
-    } else {
-      return (
-        <BsPlusCircleFill
-          onClick={() => setIsVisible(!isVisible)}
-          title="Adicionar resenha"
-        />
-      );
-    }
   };
 
   const renderForm = () => {
@@ -186,7 +167,13 @@ function ReviewPage() {
         </>
       </Header>
 
-      <div className={styles.plusIcon}>{renderOpenOrCloseIcon()}</div>
+      <OpenCloseButton
+        className={'secondary'}
+        closeText={'Fechar'}
+        addItemText={'Adicionar resenha'}
+        isVisible={isVisible}
+        onClick={() => setIsVisible(!isVisible)}
+      />
 
       <div className={styles.search}>
         <Input type={'text'} name={'pesquisa'} ref={searchRef} />
