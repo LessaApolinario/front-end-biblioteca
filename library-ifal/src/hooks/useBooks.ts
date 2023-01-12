@@ -1,48 +1,48 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
-import Book from '../core/domain/models/Book'
+import Book from '../core/domain/models/Book';
 
-import BookService from '../services/BookService'
+import { useNotifications } from './useNotifications';
 
-import { useNotifications } from './useNotifications'
+import WebDIContainer from '../dicontainer/web';
 
 export function useBooks() {
-  const { notifySuccess, notifyError } = useNotifications()
-  const [books, setBooks] = useState<Book[]>([])
+  const { notifySuccess, notifyError } = useNotifications();
+  const [books, setBooks] = useState<Book[]>([]);
+  const diContainer = new WebDIContainer();
+  const service = diContainer.getBookService();
 
   async function listBooks(): Promise<void> {
     try {
-      const bookService = new BookService()
-      const booksList = await bookService.fetch()
-      const isEmpty = !booksList?.length
+      const books = await service.fetch();
+      const isEmpty = !books?.length;
 
-      if (booksList && !isEmpty) {
-        setBooks(booksList)
-        notifySuccess('Livros listados com sucesso!')
+      if (books && !isEmpty) {
+        setBooks(books);
+        notifySuccess('Livros listados com sucesso!');
       }
     } catch (error) {
-      notifyError('Erro ao listar livros')
+      notifyError('Erro ao listar livros');
     }
   }
 
   async function searchBooks(query: string): Promise<void> {
     try {
-      const bookService = new BookService()
-      const books = await bookService.search(query)
-      const isEmpty = !books.length
+      const books = await service.search(query);
+      const isEmpty = !books.length;
 
       if (!isEmpty) {
-        setBooks(books)
-        notifySuccess('Livros buscados com sucesso!')
+        setBooks(books);
+        notifySuccess('Livros buscados com sucesso!');
       }
     } catch (error) {
-      notifyError('Erro ao buscar livros')
+      notifyError('Erro ao buscar livros');
     }
   }
 
   return {
     books,
     listBooks,
-    searchBooks
-  }
+    searchBooks,
+  };
 }

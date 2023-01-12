@@ -1,66 +1,65 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
-import Review from '../core/domain/models/Review'
+import Review from '../core/domain/models/Review';
 
-import ReviewService from '../services/ReviewService'
+import { useAuth } from './useAuth';
+import { useNotifications } from './useNotifications';
 
-import { useAuth } from './useAuth'
-import { useNotifications } from './useNotifications'
+import WebDIContainer from '../dicontainer/web';
 
 export function useReviews() {
-  const { isAuthenticated } = useAuth()
-  const { notifySuccess, notifyError } = useNotifications()
-  const [data, setData] = useState<Review[]>()
+  const { isAuthenticated } = useAuth();
+  const { notifySuccess, notifyError } = useNotifications();
+  const [data, setData] = useState<Review[]>();
+  const diContainer = new WebDIContainer();
+  const service = diContainer.getReviewService();
 
   useEffect(() => {
     async function loadReviews() {
-      await fetchReviews()
+      await fetchReviews();
     }
 
-    loadReviews()
-  }, [data])
+    loadReviews();
+  }, [data]);
 
   async function fetchReviews(): Promise<void> {
     try {
-      const reviewService = new ReviewService()
-      const reviews = await reviewService.fetch()
-      const isEmpty = !reviews?.length
+      const reviews = await service.fetch();
+      const isEmpty = !reviews?.length;
 
       if (!isEmpty) {
-        setData(reviews)
-        notifySuccess('Resenhas listadas com sucesso!')
+        setData(reviews);
+        notifySuccess('Resenhas listadas com sucesso!');
       }
     } catch (error) {
-      notifyError('Erro ao listar resenhas')
+      notifyError('Erro ao listar resenhas');
     }
   }
 
   async function createReview(review: Review) {
     if (!isAuthenticated) {
-      throw new Error('Aviso: é preciso estar logado para criar resenhas.')
+      throw new Error('Aviso: é preciso estar logado para criar resenhas.');
     }
 
     try {
-      const reviewService = new ReviewService()
-      await reviewService.create(review)
-      notifySuccess('Resenha criada com sucesso!')
+      await service.create(review);
+      notifySuccess('Resenha criada com sucesso!');
     } catch (error) {
-      notifyError('Erro ao adicionar resenha')
+      notifyError('Erro ao adicionar resenha');
     }
   }
 
   async function searchReview(query: string) {
     try {
-      const reviewService = new ReviewService()
-      const reviews = await reviewService.search(query)
-      const isEmpty = !reviews.length
+      const reviews = await service.search(query);
+      const isEmpty = !reviews.length;
 
       if (!isEmpty) {
-        setData(reviews)
-        notifySuccess('Resenhas listadas com sucesso!')
+        setData(reviews);
+        notifySuccess('Resenhas listadas com sucesso!');
       }
     } catch (error) {
-      notifyError('Erro ao pesquisar resenhas')
+      notifyError('Erro ao pesquisar resenhas');
     }
   }
 
@@ -68,6 +67,6 @@ export function useReviews() {
     data,
     fetchReviews,
     createReview,
-    searchReview
-  }
+    searchReview,
+  };
 }
