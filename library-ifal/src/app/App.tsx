@@ -1,8 +1,8 @@
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify';
 
-import RouteManager from '../ui/components/RouteManager'
+import RouteManager from '../ui/components/RouteManager';
 
-import styles from './App.module.scss'
+import styles from './App.module.scss';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <RouteManager />
       <ToastContainer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
