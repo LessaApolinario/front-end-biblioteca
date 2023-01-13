@@ -1,8 +1,8 @@
 import { createRef, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import styles from '../styles/pages/CommentsPage.module.scss';
 
+import AuthenticationButtons from '../components/AuthenticationButtons';
 import Button from '../components/Button';
 import ButtonsHeader from '../components/ButtonsHeader';
 import Comment from '../../core/domain/models/Comment';
@@ -25,7 +25,6 @@ function CommentsPage() {
   const nameRef = createRef<HTMLInputElement>();
   const emailRef = createRef<HTMLInputElement>();
   const commentRef = createRef<HTMLTextAreaElement>();
-  const navigate = useNavigate();
 
   async function createComment() {
     const name = nameRef.current?.value;
@@ -73,41 +72,14 @@ function CommentsPage() {
     clearFields();
   };
 
-  const renderButtons = () => {
-    if (isAuthenticated) {
-      return (
-        <Button
-          type="button"
-          btnType="secondary"
-          onClick={() => {
-            logout();
-            navigate(-1);
-          }}
-        >
-          Sair
-        </Button>
-      );
-    }
-
+  function renderButtons() {
     return (
-      <>
-        <Button
-          type="button"
-          btnType="secondary"
-          onClick={() => navigate('/login')}
-        >
-          Entrar
-        </Button>
-        <Button
-          type="button"
-          btnType="secondary"
-          onClick={() => navigate('/register')}
-        >
-          Cadastrar-se
-        </Button>
-      </>
+      <AuthenticationButtons
+        isAuthenticated={isAuthenticated}
+        logout={logout}
+      />
     );
-  };
+  }
 
   return (
     <div className={styles.container}>

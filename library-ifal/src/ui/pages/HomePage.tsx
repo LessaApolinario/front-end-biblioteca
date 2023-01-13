@@ -1,6 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
-import Button from '../components/Button';
+import AuthenticationButtons from '../components/AuthenticationButtons';
 import ButtonsHeader from '../components/ButtonsHeader';
 import Carousel from '../components/Carousel';
 import PostsArea from '../components/PostsArea';
@@ -11,42 +9,15 @@ import styles from '../styles/pages/HomePage.module.scss';
 
 function HomePage() {
   const { isAuthenticated, logout } = useAuth();
-  const navigate = useNavigate();
 
-  const renderButtons = () => {
-    if (!isAuthenticated) {
-      return (
-        <>
-          <Button
-            type="button"
-            btnType="secondary"
-            onClick={() => navigate('/login')}
-          >
-            Entrar
-          </Button>
-          <Button
-            type="button"
-            btnType="secondary"
-            onClick={() => navigate('/register')}
-          >
-            Cadastrar-se
-          </Button>
-        </>
-      );
-    } else {
-      return (
-        <Button
-          type="button"
-          btnType="secondary"
-          onClick={() => {
-            logout();
-          }}
-        >
-          Sair
-        </Button>
-      );
-    }
-  };
+  function renderButtons() {
+    return (
+      <AuthenticationButtons
+        isAuthenticated={isAuthenticated}
+        logout={logout}
+      />
+    );
+  }
 
   return (
     <main className={styles.container}>
