@@ -123,7 +123,9 @@ function ReviewPage() {
   };
 
   function renderItem(item: Review): ReactNode {
-    return <ReviewItem data={item} onClick={() => redirectToReviewsDetails} />;
+    return (
+      <ReviewItem data={item} onClick={() => redirectToReviewsDetails(item)} />
+    );
   }
 
   const handleSearchReview = async () => {
