@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
-import { GiTreeBranch } from 'react-icons/gi';
-
 import Button from '../components/Button';
+import ButtonsHeader from '../components/ButtonsHeader';
 import Carousel from '../components/Carousel';
-import Header from '../components/Header';
 import PostsArea from '../components/PostsArea';
 
 import { useAuth } from '../../hooks/useAuth';
@@ -52,18 +50,7 @@ function HomePage() {
 
   return (
     <main className={styles.container}>
-      <Header>
-        <GiTreeBranch />
-        <ul>
-          <li onClick={() => navigate('/')}>Home</li>
-          <li onClick={() => navigate('/books')}>Livros</li>
-          <li onClick={() => navigate('/reviews')}>Resenhas</li>
-          <li onClick={() => navigate('/hints')}>Dicas</li>
-          <li onClick={() => navigate('/contact')}>Contato</li>
-        </ul>
-
-        <div className={styles.buttons}>{renderButtons()}</div>
-      </Header>
+      <ButtonsHeader headerType={'primary'} renderButtons={renderButtons} />
 
       <section className={styles.content}>
         <h1>Bem-vindo</h1>

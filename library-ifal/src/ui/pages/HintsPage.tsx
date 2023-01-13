@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-import { GiTreeBranch } from 'react-icons/gi';
-
 import Button from '../components/Button';
-import Header from '../components/Header';
+import ButtonsHeader from '../components/ButtonsHeader';
 import Hint from '../components/Hint';
 
 import styles from '../styles/pages/HintsPage.module.scss';
@@ -11,23 +9,17 @@ import styles from '../styles/pages/HintsPage.module.scss';
 function HintsPage() {
   const navigate = useNavigate();
 
+  function renderButtons() {
+    return (
+      <Button type="button" btnType="secondary" onClick={() => navigate(-1)}>
+        Voltar
+      </Button>
+    );
+  }
+
   return (
     <div className={styles.container}>
-      <Header>
-        <GiTreeBranch />
-
-        <ul>
-          <li onClick={() => navigate('/')}>Home</li>
-          <li onClick={() => navigate('/books')}>Livros</li>
-          <li onClick={() => navigate('/reviews')}>Resenhas</li>
-          <li onClick={() => navigate('/hints')}>Dicas</li>
-          <li onClick={() => navigate('/contact')}>Contato</li>
-        </ul>
-
-        <Button type="button" btnType="secondary" onClick={() => navigate(-1)}>
-          Voltar
-        </Button>
-      </Header>
+      <ButtonsHeader headerType={'secondary'} renderButtons={renderButtons} />
 
       <h3>Sobre a Biblioteca</h3>
 
