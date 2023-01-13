@@ -46,7 +46,6 @@ function BooksPage() {
         headerType={'primary'}
         btnType={'primary'}
         headingText={'SIB'}
-        renderList={() => ''}
       />
 
       <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>

@@ -10,7 +10,6 @@ interface GoBackHeaderProps {
   headerType: 'primary' | 'secondary';
   btnType: 'primary' | 'secondary';
   headingText: string;
-  renderList(): ReactNode;
 }
 
 function GoBackHeader(props: GoBackHeaderProps) {
@@ -27,8 +26,6 @@ function GoBackHeader(props: GoBackHeaderProps) {
         <Button type={'button'} btnType={props.btnType} onClick={goBack}>
           Voltar
         </Button>
-
-        {props.renderList()}
 
         <h2>{props.headingText}</h2>
       </nav>

@@ -18,7 +18,6 @@ function ReviewDetailsPage() {
         headerType={'secondary'}
         btnType={'secondary'}
         headingText={'Bem-vindo'}
-        renderList={() => ''}
       />
 
       <section className={styles.content}>
