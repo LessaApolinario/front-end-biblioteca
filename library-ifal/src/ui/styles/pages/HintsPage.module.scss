@@ -9,42 +9,6 @@
 
   background-color: $primary;
 
-  > header {
-    background-color: $secondary;
-
-    > svg {
-      fill: $primary;
-      font-size: 2rem;
-
-      cursor: pointer;
-    }
-
-    > ul {
-      list-style: none;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      li {
-        font-weight: bold;
-        font-size: 1.05rem;
-
-        color: $primary;
-        padding: 0.5rem 1rem;
-
-        cursor: pointer;
-
-        border: 1px solid transparent;
-
-        &:hover {
-          border-top: 1px solid $primary;
-          border-bottom: 1px solid $primary;
-        }
-      }
-    }
-  }
-
   > h3 {
     font-size: 4rem;
     text-align: center;
