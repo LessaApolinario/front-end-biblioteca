@@ -1,0 +1,41 @@
+.container {
+  $primary: #5b4b8a;
+  $secondary: #fff;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0.5rem 1rem;
+
+  > svg {
+    font-size: 2rem;
+
+    cursor: pointer;
+  }
+
+  &.primary {
+    background-color: $primary;
+
+    > svg {
+      fill: $secondary;
+    }
+  }
+
+  &.secondary {
+    background-color: $secondary;
+
+    > svg {
+      fill: $primary;
+    }
+  }
+
+  > .buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+}
