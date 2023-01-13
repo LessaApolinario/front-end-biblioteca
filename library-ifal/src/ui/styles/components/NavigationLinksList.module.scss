@@ -1,0 +1,50 @@
+.container {
+  $primary: #5b4b8a;
+  $secondary: #fff;
+
+  > ul {
+    list-style: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    li {
+      font-weight: bold;
+      font-size: 1.05rem;
+
+      color: $secondary;
+      padding: 0.5rem 1rem;
+
+      cursor: pointer;
+
+      border: 1px solid transparent;
+    }
+  }
+
+  &.primary {
+    background-color: $primary;
+
+    ul li {
+      color: $secondary;
+    }
+
+    ul li:hover {
+      border-top: 1px solid $secondary;
+      border-bottom: 1px solid $secondary;
+    }
+  }
+
+  &.secondary {
+    background-color: $secondary;
+
+    ul li {
+      color: $primary;
+    }
+
+    ul li:hover {
+      border-top: 1px solid $primary;
+      border-bottom: 1px solid $primary;
+    }
+  }
+}

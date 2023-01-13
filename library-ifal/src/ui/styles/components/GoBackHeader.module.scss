@@ -1,0 +1,40 @@
+.container {
+  $primary: #5b4b8a;
+  $secondary: #fff;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > .navbar {
+    width: 80%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    > h2 {
+      font-size: 2.5rem;
+    }
+  }
+
+  padding: 0.5rem 1rem;
+
+  &.primary {
+    background-color: $primary;
+
+    > .navbar > h2 {
+      color: $secondary;
+    }
+  }
+
+  &.secondary {
+    background-color: $secondary;
+
+    > .navbar > h2 {
+      color: $primary;
+    }
+  }
+}

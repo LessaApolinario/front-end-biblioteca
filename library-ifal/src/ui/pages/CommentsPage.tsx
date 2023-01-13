@@ -1,12 +1,10 @@
 import { createRef, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { GiTreeBranch } from 'react-icons/gi';
-
 import styles from '../styles/pages/CommentsPage.module.scss';
 
 import Button from '../components/Button';
-import Header from '../components/Header';
+import ButtonsHeader from '../components/ButtonsHeader';
 import Comment from '../../core/domain/models/Comment';
 import Label from '../components/Label';
 import Input from '../components/Input';
@@ -113,18 +111,7 @@ function CommentsPage() {
 
   return (
     <div className={styles.container}>
-      <Header>
-        <GiTreeBranch />
-        <ul>
-          <li onClick={() => navigate('/')}>Home</li>
-          <li onClick={() => navigate('/books')}>Livros</li>
-          <li onClick={() => navigate('/reviews')}>Resenhas</li>
-          <li onClick={() => navigate('/hints')}>Dicas</li>
-          <li onClick={() => navigate('/contact')}>Contato</li>
-        </ul>
-
-        <div className={styles.buttons}>{renderButtons()}</div>
-      </Header>
+      <ButtonsHeader headerType={'primary'} renderButtons={renderButtons} />
 
       <FlexWrapper className={styles.flexWrapper} orientation={'column'}>
         <FlexWrapper className={styles.presentation} orientation={'column'}>

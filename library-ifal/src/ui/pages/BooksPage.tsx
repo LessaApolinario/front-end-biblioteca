@@ -1,9 +1,7 @@
 import { ReactNode, createRef, useCallback, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import BookComponent from '../components/BookComponent';
 import Button from '../components/Button';
-import Header from '../components/Header';
 import Table from '../components/Table';
 
 import styles from '../styles/pages/BooksPage.module.scss';
@@ -13,13 +11,13 @@ import { useBooks } from '../../hooks/useBooks';
 import { useFields } from '../../hooks/useFields';
 
 import Book from '../../core/domain/models/Book';
+import GoBackHeader from '../components/GoBackHeader';
 
 function BooksPage() {
   const { validateInput } = useFields();
   const { books, listBooks, searchBooks } = useBooks();
   const inputRef = createRef<HTMLInputElement>();
   const formRef = useRef<HTMLFormElement>(null);
-  const navigate = useNavigate();
 
   const columns = ['Título', 'Autor', 'Edição', 'Ano', 'Localização'];
 
@@ -44,18 +42,11 @@ function BooksPage() {
 
   return (
     <div className={styles.container}>
-      <Header>
-        <nav className={styles.navbar}>
-          <Button
-            type="button"
-            btnType="secondary"
-            onClick={() => navigate(-1)}
-          >
-            Voltar
-          </Button>
-          <h2>SIB</h2>
-        </nav>
-      </Header>
+      <GoBackHeader
+        headerType={'primary'}
+        btnType={'primary'}
+        headingText={'SIB'}
+      />
 
       <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.search}>

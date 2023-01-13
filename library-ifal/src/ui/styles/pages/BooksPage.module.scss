@@ -6,21 +6,6 @@
   height: 100%;
   
   > header {
-    justify-content: center;
-
-    .navbar {
-      width: 80%;
-  
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      
-      > h2 {
-        font-size: 2.5rem;
-        color: $secondary;
-      }
-    }
-
     margin-bottom: 1.5rem;
   }
 

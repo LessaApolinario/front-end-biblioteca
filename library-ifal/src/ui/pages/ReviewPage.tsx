@@ -3,9 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '../components/Button';
 import ReviewItem from '../components/ReviewItem';
-import Header from '../components/Header';
-
-import { GiTreeBranch } from 'react-icons/gi';
 
 import styles from '../styles/pages/ReviewPage.module.scss';
 
@@ -24,6 +21,7 @@ import { useNotifications } from '../../hooks/useNotifications';
 
 import ReviewBuilder from '../../core/domain/builders/ReviewBuilder';
 import OpenCloseButton from '../components/OpenCloseButton';
+import ButtonsHeader from '../components/ButtonsHeader';
 
 function ReviewPage() {
   const useAuthHook = useAuth();
@@ -123,7 +121,9 @@ function ReviewPage() {
   };
 
   function renderItem(item: Review): ReactNode {
-    return <ReviewItem data={item} onClick={() => redirectToReviewsDetails} />;
+    return (
+      <ReviewItem data={item} onClick={() => redirectToReviewsDetails(item)} />
+    );
   }
 
   const handleSearchReview = async () => {
@@ -151,21 +151,7 @@ function ReviewPage() {
 
   return (
     <div className={styles.container}>
-      <Header>
-        <>
-          <GiTreeBranch />
-
-          <ul>
-            <li onClick={() => navigate('/')}>Home</li>
-            <li onClick={() => navigate('/books')}>Livros</li>
-            <li onClick={() => navigate('/reviews')}>Resenhas</li>
-            <li onClick={() => navigate('/hints')}>Dicas</li>
-            <li onClick={() => navigate('/contact')}>Contato</li>
-          </ul>
-
-          {renderButtons()}
-        </>
-      </Header>
+      <ButtonsHeader headerType={'secondary'} renderButtons={renderButtons} />
 
       <OpenCloseButton
         className={'secondary'}
