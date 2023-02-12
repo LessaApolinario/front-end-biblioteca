@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+
+  &.row {
+    flex-direction: row;
+  }
+
+  &.column {
+    flex-direction: column;
+  }
+
+  gap: 0.5rem;
+
+  border-radius: 3px;
+}
