@@ -1,29 +1,27 @@
-import { ReactNode, createRef, useCallback, useRef } from 'react';
+import { ReactNode, createRef, useCallback } from 'react';
+
+import { useBooks } from '../../hooks/useBooks';
 
 import BookComponent from '../components/BookComponent';
 import Button from '../components/Button';
+import Form from '../components/Form';
+import GoBackHeader from '../components/GoBackHeader';
+import Input from '../components/Input';
 import Table from '../components/Table';
 
-import styles from '../styles/pages/BooksPage.module.scss';
-import Input from '../components/Input';
-
-import { useBooks } from '../../hooks/useBooks';
-import { useFields } from '../../hooks/useFields';
-
 import Book from '../../core/domain/models/Book';
-import GoBackHeader from '../components/GoBackHeader';
+
+import styles from '../styles/pages/BooksPage.module.scss';
 
 function BooksPage() {
-  const { validateInput } = useFields();
   const { books, listBooks, searchBooks } = useBooks();
   const inputRef = createRef<HTMLInputElement>();
-  const formRef = useRef<HTMLFormElement>(null);
 
   const columns = ['Título', 'Autor', 'Edição', 'Ano', 'Localização'];
 
-  const renderItem = (item: Book): ReactNode => {
+  function renderItem(item: Book): ReactNode {
     return <BookComponent props={item} key={String(item._id)} />;
-  };
+  }
 
   const handleListBooks = useCallback(async () => {
     await listBooks();
@@ -32,12 +30,35 @@ function BooksPage() {
   const handleSearchBook = useCallback(async () => {
     const searchInput = inputRef.current;
     const query = searchInput?.value ?? '';
-    validateInput(searchInput);
     await searchBooks(query);
   }, []);
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
+  function BooksForm() {
+    return (
+      <Form
+        className={styles.form}
+        orientation={'row'}
+        handleSubmit={handleSearchBook}
+      >
+        <div className={styles.search}>
+          <Input
+            type={'text'}
+            placeholder={'Buscar ou listar livros'}
+            name={'pesquisa de livros'}
+            ref={inputRef}
+          />
+
+          <div className={styles.buttons}>
+            <Button type="submit" btnType="primary">
+              Pesquisar livros
+            </Button>
+            <Button type="button" btnType="primary" onClick={handleListBooks}>
+              Listar livros
+            </Button>
+          </div>
+        </div>
+      </Form>
+    );
   }
 
   return (
@@ -48,25 +69,7 @@ function BooksPage() {
         headingText={'SIB'}
       />
 
-      <form ref={formRef} onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.search}>
-          <Input
-            type={'text'}
-            placeholder={'Buscar ou listar livros'}
-            name={'pesquisa de livros'}
-            ref={inputRef}
-          />
-
-          <div className={styles.buttons}>
-            <Button type="submit" btnType="primary" onClick={handleSearchBook}>
-              Pesquisar livros
-            </Button>
-            <Button type="submit" btnType="primary" onClick={handleListBooks}>
-              Listar livros
-            </Button>
-          </div>
-        </div>
-      </form>
+      <BooksForm />
 
       <Table<Book>
         className={styles.table}

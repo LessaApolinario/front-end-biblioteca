@@ -3,50 +3,50 @@ import { createRef } from 'react';
 import { GiTreeBranch } from 'react-icons/gi';
 
 import Button from '../components/Button';
-import FlexWrapper from '../components/FlexWrapper';
+import Flex from '../components/Flex';
+import Form from '../components/Form';
 import Input from '../components/Input';
 import Label from '../components/Label';
+import LinkComponent from '../components/LinkComponent';
+
+import { useAuth } from '../../hooks/useAuth';
 
 import styles from '../styles/pages/LoginPage.module.scss';
 
-import { useFields } from '../../hooks/useFields';
-import { useAuth } from '../../hooks/useAuth';
-import LinkComponent from '../components/LinkComponent';
-
 function LoginPage() {
-  const { validateAllInputs } = useFields();
-  const { login } = useAuth();
+  const useAuthHook = useAuth();
   const usernameRef = createRef<HTMLInputElement>();
   const passwordRef = createRef<HTMLInputElement>();
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-
+  async function handleSubmit() {
     const usernameInput = usernameRef.current;
     const passwordInput = passwordRef.current;
     const username = usernameInput?.value ?? '';
     const password = passwordInput?.value ?? '';
 
-    validateAllInputs([usernameInput, passwordInput]);
-    await login({ username, password });
+    await useAuthHook.login({ username, password });
   }
 
   return (
     <div className={styles.container}>
       <GiTreeBranch />
 
-      <form className={styles.login} onSubmit={handleSubmit}>
+      <Form
+        className={styles.login}
+        orientation={'column'}
+        handleSubmit={handleSubmit}
+      >
         <h2>Fazer login</h2>
 
-        <FlexWrapper className={styles.username} orientation={'column'}>
+        <Flex className={styles.username} orientation={'column'}>
           <Label text={'Nome de usuário'} />
           <Input type={'text'} name={'nome de usuário'} ref={usernameRef} />
-        </FlexWrapper>
+        </Flex>
 
-        <FlexWrapper className={styles.password} orientation={'column'}>
+        <Flex className={styles.password} orientation={'column'}>
           <Label text={'Senha'} />
           <Input type={'password'} name={'senha'} ref={passwordRef} />
-        </FlexWrapper>
+        </Flex>
 
         <Button type="submit" btnType="secondary">
           Entrar
@@ -56,7 +56,7 @@ function LoginPage() {
           text={'Ainda não tem conta? Cadastre-se aqui'}
           to={'/register'}
         />
-      </form>
+      </Form>
     </div>
   );
 }

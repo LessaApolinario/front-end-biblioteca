@@ -1,31 +1,28 @@
 import { ReactNode, createRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../components/Button';
-import ReviewItem from '../components/ReviewItem';
-
-import styles from '../styles/pages/ReviewPage.module.scss';
-
-import Review from '../../core/domain/models/Review';
-
-import Label from '../components/Label';
-import Input from '../components/Input';
-import FlexWrapper from '../components/FlexWrapper';
-import TextArea from '../components/TextArea';
-import ItemsList from '../components/ItemsList';
-
 import { useReviews } from '../../hooks/useReviews';
-import { useFields } from '../../hooks/useFields';
 import { useAuth } from '../../hooks/useAuth';
 import { useNotifications } from '../../hooks/useNotifications';
 
-import ReviewBuilder from '../../core/domain/builders/ReviewBuilder';
-import OpenCloseButton from '../components/OpenCloseButton';
+import Review from '../../core/domain/models/Review';
+
+import Button from '../components/Button';
 import ButtonsHeader from '../components/ButtonsHeader';
+import Form from '../components/Form';
+import Flex from '../components/Flex';
+import Input from '../components/Input';
+import ItemsList from '../components/ItemsList';
+import Label from '../components/Label';
+import OpenCloseButton from '../components/OpenCloseButton';
+import ReviewBuilder from '../../core/domain/builders/ReviewBuilder';
+import ReviewItem from '../components/ReviewItem';
+import TextArea from '../components/TextArea';
+
+import styles from '../styles/pages/ReviewPage.module.scss';
 
 function ReviewPage() {
   const useAuthHook = useAuth();
-  const useFieldsHook = useFields();
   const useReviewsHook = useReviews();
   const useNotificationsHook = useNotifications();
   const [isVisible, setIsVisible] = useState(false);
@@ -62,37 +59,32 @@ function ReviewPage() {
     }
   }
 
-  const handleAddReview = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const bookInput = bookTitleRef.current;
-    const authorInput = authorNameRef.current;
-    const reviewTextarea = reviewTextareaRef.current;
-
-    useFieldsHook.validateAllInputs([bookInput, authorInput]);
-    useFieldsHook.validateTextArea(reviewTextarea);
-
+  async function handleAddReview() {
     await addReview();
-
     setIsVisible(false);
-  };
+  }
 
-  const renderForm = () => {
-    if (isVisible) {
+  const RenderAddReviewForm = () => {
+    if (!!isVisible) {
       return (
-        <form className={styles.form} onSubmit={handleAddReview}>
+        <Form
+          className={styles.form}
+          orientation={'column'}
+          handleSubmit={handleAddReview}
+        >
           <h3>Escreva sua resenha</h3>
 
-          <FlexWrapper className={styles.fullWidth} orientation={'column'}>
+          <Flex className={styles.fullWidth} orientation={'column'}>
             <Label text={'Livro'} />
             <Input type={'text'} name={'livro'} ref={bookTitleRef} />
-          </FlexWrapper>
+          </Flex>
 
-          <FlexWrapper className={styles.fullWidth} orientation={'column'}>
+          <Flex className={styles.fullWidth} orientation={'column'}>
             <Label text={'Autor'} />
             <Input type={'text'} name={'autor'} ref={authorNameRef} />
-          </FlexWrapper>
+          </Flex>
 
-          <FlexWrapper className={styles.review} orientation={'column'}>
+          <Flex className={styles.review} orientation={'column'}>
             <Label text={'Resenha'} />
             <TextArea
               name={'resenha'}
@@ -101,15 +93,32 @@ function ReviewPage() {
               rows={5}
               ref={reviewTextareaRef}
             ></TextArea>
-          </FlexWrapper>
+          </Flex>
 
           <Button type="submit" btnType="secondary">
             Escrever
           </Button>
-        </form>
+        </Form>
       );
     }
+
+    return null;
   };
+
+  function SearchReviewForm() {
+    return (
+      <Form
+        className={styles.search}
+        orientation={'row'}
+        handleSubmit={handleSearchReview}
+      >
+        <Input type={'text'} name={'pesquisa'} ref={searchRef} />
+        <Button type="submit" btnType="secondary">
+          Pesquisar
+        </Button>
+      </Form>
+    );
+  }
 
   const logout = async () => {
     await useAuthHook.logout();
@@ -126,12 +135,10 @@ function ReviewPage() {
     );
   }
 
-  const handleSearchReview = async () => {
-    const searchInput = searchRef?.current;
+  async function handleSearchReview() {
     const query = searchRef.current?.value ?? '';
-    useFieldsHook.validateInput(searchInput);
     await useReviewsHook.searchReview(query);
-  };
+  }
 
   const renderButtons = () => {
     if (useAuthHook.isAuthenticated) {
@@ -161,16 +168,11 @@ function ReviewPage() {
         onClick={() => setIsVisible(!isVisible)}
       />
 
-      <div className={styles.search}>
-        <Input type={'text'} name={'pesquisa'} ref={searchRef} />
-        <Button type="button" btnType="secondary" onClick={handleSearchReview}>
-          Pesquisar
-        </Button>
-      </div>
+      <SearchReviewForm />
 
       <h2>Resenhas</h2>
 
-      {renderForm()}
+      <RenderAddReviewForm />
 
       <ItemsList<Review>
         data={useReviewsHook.data}

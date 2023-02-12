@@ -1,6 +1,7 @@
 import { createRef, useRef } from 'react';
 
-import styles from '../styles/pages/CommentsPage.module.scss';
+import { useAuth } from '../../hooks/useAuth';
+import { useNotifications } from '../../hooks/useNotifications';
 
 import AuthenticationButtons from '../components/AuthenticationButtons';
 import Button from '../components/Button';
@@ -8,18 +9,16 @@ import ButtonsHeader from '../components/ButtonsHeader';
 import Comment from '../../core/domain/models/Comment';
 import Label from '../components/Label';
 import Input from '../components/Input';
-import FlexWrapper from '../components/FlexWrapper';
+import Flex from '../components/Flex';
 import TextArea from '../components/TextArea';
-
-import { useAuth } from '../../hooks/useAuth';
-import { useFields } from '../../hooks/useFields';
-import { useNotifications } from '../../hooks/useNotifications';
 
 import WebDIContainer from '../../dicontainer/web';
 
+import styles from '../styles/pages/CommentsPage.module.scss';
+import Form from '../components/Form';
+
 function CommentsPage() {
   const { isAuthenticated, logout } = useAuth();
-  const { validateAllInputs, validateTextArea } = useFields();
   const { notifySuccess, notifyError } = useNotifications();
   const formRef = useRef<HTMLFormElement>(null);
   const nameRef = createRef<HTMLInputElement>();
@@ -58,19 +57,10 @@ function CommentsPage() {
     }
   }
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const nameInput = nameRef.current;
-    const emailInput = emailRef.current;
-    const commentTextArea = commentRef.current;
-
-    validateAllInputs([nameInput, emailInput]);
-    validateTextArea(commentTextArea);
-
+  async function handleSubmit() {
     await createComment();
-
     clearFields();
-  };
+  }
 
   function renderButtons() {
     return (
@@ -85,9 +75,9 @@ function CommentsPage() {
     <div className={styles.container}>
       <ButtonsHeader headerType={'primary'} renderButtons={renderButtons} />
 
-      <FlexWrapper className={styles.flexWrapper} orientation={'column'}>
-        <FlexWrapper className={styles.presentation} orientation={'column'}>
-          <FlexWrapper className={styles.box} orientation={'column'}>
+      <Flex className={styles.wrapper} orientation={'column'}>
+        <Flex className={styles.presentation} orientation={'column'}>
+          <Flex className={styles.box} orientation={'column'}>
             <h2>Contato</h2>
             <h3>Olá, querido visitante</h3>
 
@@ -96,25 +86,24 @@ function CommentsPage() {
               melhorar o site, ou mande seu livro, poema, ou qualquer outra
               razão.
             </p>
-          </FlexWrapper>
+          </Flex>
 
-          <form
-            action="#"
+          <Form
             className={styles.form}
-            onSubmit={handleSubmit}
-            ref={formRef}
+            orientation={'column'}
+            handleSubmit={handleSubmit}
           >
-            <FlexWrapper className={styles.name} orientation={'column'}>
+            <Flex className={styles.name} orientation={'column'}>
               <Label text={'Seu nome'} />
               <Input type={'text'} name={'nome'} ref={nameRef} />
-            </FlexWrapper>
+            </Flex>
 
-            <FlexWrapper className={styles.email} orientation={'column'}>
+            <Flex className={styles.email} orientation={'column'}>
               <Label text={'Seu melhor email'} />
               <Input type={'email'} name={'email'} ref={emailRef} />
-            </FlexWrapper>
+            </Flex>
 
-            <FlexWrapper className={styles.comment} orientation={'column'}>
+            <Flex className={styles.comment} orientation={'column'}>
               <Label text={'Comentário'} />
               <TextArea
                 id={'commentTextArea'}
@@ -123,14 +112,14 @@ function CommentsPage() {
                 name={'comentário'}
                 ref={commentRef}
               ></TextArea>
-            </FlexWrapper>
+            </Flex>
 
             <Button type="submit" btnType="secondary">
               Enviar
             </Button>
-          </form>
-        </FlexWrapper>
-      </FlexWrapper>
+          </Form>
+        </Flex>
+      </Flex>
     </div>
   );
 }
