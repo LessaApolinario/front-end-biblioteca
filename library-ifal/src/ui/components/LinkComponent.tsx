@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import Text from './Text';
-import FlexWrapper from './FlexWrapper';
+import Flex from './Flex';
 
 import styles from '../styles/components/LinkComponent.module.scss';
 
@@ -26,10 +26,10 @@ function LinkComponent(props: LinkComponentProps) {
   const [title, subtitle] = handleLinkText();
 
   return (
-    <FlexWrapper className={styles.container} orientation={'row'}>
+    <Flex className={styles.container} orientation={'row'}>
       <Text className={'primary'} text={title} />
       <span onClick={() => navigate(props.to)}>{subtitle}</span>
-    </FlexWrapper>
+    </Flex>
   );
 }
 
