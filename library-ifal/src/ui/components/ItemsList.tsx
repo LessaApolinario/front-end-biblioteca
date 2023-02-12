@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import FlexWrapper from './FlexWrapper';
+import Flex from './Flex';
 
 import styles from '../styles/components/ItemsList.module.scss';
 
@@ -12,9 +12,9 @@ interface ItemsListProps<T> {
 
 function ItemsList<T>(props: ItemsListProps<T>) {
   return (
-    <FlexWrapper className={styles.container} orientation={props.orientation}>
+    <Flex className={styles.container} orientation={props.orientation}>
       {props.data?.map((item) => props.renderItem(item))}
-    </FlexWrapper>
+    </Flex>
   );
 }
 

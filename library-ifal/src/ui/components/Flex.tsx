@@ -1,18 +1,18 @@
 import { ReactNode } from 'react';
 
-import styles from '../styles/components/FlexWrapper.module.scss';
+import styles from '../styles/components/Flex.module.scss';
 
-interface FlexWrapperProps {
+interface FlexProps {
   className?: string;
   orientation: 'row' | 'column';
   children: ReactNode;
 }
 
-function FlexWrapper(props: FlexWrapperProps) {
+function Flex(props: FlexProps) {
   const className = `${styles.container} ${props.className} ${
     styles[props.orientation]
   }`;
   return <div className={className}>{props.children}</div>;
 }
 
-export default FlexWrapper;
+export default Flex;

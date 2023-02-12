@@ -3,20 +3,19 @@ import { createRef } from 'react';
 import { GiTreeBranch } from 'react-icons/gi';
 
 import Button from '../components/Button';
-import FlexWrapper from '../components/FlexWrapper';
+import Flex from '../components/Flex';
+import Form from '../components/Form';
 import Input from '../components/Input';
 import Label from '../components/Label';
+import LinkComponent from '../components/LinkComponent';
+
+import { useAuth } from '../../hooks/useAuth';
+
+import UserBuilder from '../../core/domain/builders/UserBuilder';
 
 import styles from '../styles/pages/RegisterPage.module.scss';
 
-import { useAuth } from '../../hooks/useAuth';
-import { useFields } from '../../hooks/useFields';
-
-import UserBuilder from '../../core/domain/builders/UserBuilder';
-import LinkComponent from '../components/LinkComponent';
-
 function RegisterPage() {
-  const { validateAllInputs, checkEqualFields } = useFields();
   const { register } = useAuth();
   const nameRef = createRef<HTMLInputElement>();
   const usernameRef = createRef<HTMLInputElement>();
@@ -32,78 +31,63 @@ function RegisterPage() {
       .build();
   }
 
-  const handleRegister = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const nameInput = nameRef.current;
-    const usernameInput = usernameRef.current;
-    const emailInput = emailRef.current;
-    const passwordInput = passwordRef.current;
-    const confirmPasswordInput = confirmPasswordRef.current;
-
-    validateAllInputs([
-      nameInput,
-      usernameInput,
-      emailInput,
-      passwordInput,
-      confirmPasswordInput,
-    ]);
-    checkEqualFields(passwordInput, confirmPasswordInput);
-
+  async function handleRegister() {
     const user = buildUser();
     await register(user);
-  };
+  }
 
   return (
     <div className={styles.container}>
       <GiTreeBranch />
 
-      <form className={styles.register} onSubmit={handleRegister}>
+      <Form
+        className={styles.register}
+        orientation={'column'}
+        handleSubmit={handleRegister}
+      >
         <h2>Cadastrar-se</h2>
 
-        <FlexWrapper className={styles.row} orientation={'row'}>
-          <FlexWrapper className={styles.name} orientation={'column'}>
+        <Flex className={styles.row} orientation={'row'}>
+          <Flex className={styles.name} orientation={'column'}>
             <Label text={'Seu nome'} />
             <Input type={'text'} name={'nome'} ref={nameRef} />
-          </FlexWrapper>
+          </Flex>
 
-          <FlexWrapper className={styles.username} orientation={'column'}>
+          <Flex className={styles.username} orientation={'column'}>
             <Label text={'Nome de usuário'} />
             <Input type={'text'} name={'nome de usuário'} ref={usernameRef} />
-          </FlexWrapper>
-        </FlexWrapper>
+          </Flex>
+        </Flex>
 
-        <FlexWrapper className={styles.row} orientation={'row'}>
-          <FlexWrapper className={styles.email} orientation={'column'}>
+        <Flex className={styles.row} orientation={'row'}>
+          <Flex className={styles.email} orientation={'column'}>
             <Label text={'Email'} />
             <Input type={'email'} name={'email'} ref={emailRef} />
-          </FlexWrapper>
+          </Flex>
 
-          <FlexWrapper className={styles.password} orientation={'column'}>
+          <Flex className={styles.password} orientation={'column'}>
             <Label text={'Senha'} />
             <Input type={'password'} name={'senha'} ref={passwordRef} />
-          </FlexWrapper>
-        </FlexWrapper>
+          </Flex>
+        </Flex>
 
-        <FlexWrapper className={styles.row} orientation={'row'}>
-          <FlexWrapper
-            className={styles.confirmPassword}
-            orientation={'column'}
-          >
+        <Flex className={styles.row} orientation={'row'}>
+          <Flex className={styles.confirmPassword} orientation={'column'}>
             <Label text={'Confirme sua senha'} />
             <Input
               type={'password'}
               name={'confirmação de senha'}
               ref={confirmPasswordRef}
             />
-          </FlexWrapper>
+          </Flex>
 
           <Button type="submit" btnType="secondary">
             Cadastrar
           </Button>
-        </FlexWrapper>
+        </Flex>
 
         <LinkComponent text={'Já tem conta? Entre aqui'} to={'/login'} />
-      </form>
+      </Form>
     </div>
   );
 }
