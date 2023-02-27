@@ -1,6 +1,6 @@
 import Review from '../../core/domain/models/Review';
 
-import checkInvalidAPIField from '../../core/utils/checkInvalidAPIField';
+import checkForInvalidString from '../../core/utils/checkForInvalidString';
 import formatDate from '../../core/utils/formatDate';
 
 import styles from '../styles/components/Review.module.scss';
@@ -14,9 +14,9 @@ function ReviewItem({ data, onClick }: ReviewItemProps) {
   return (
     <article className={styles.container}>
       <h3>
-        {checkInvalidAPIField(data.name)} sobre{' '}
-        {checkInvalidAPIField(data.title_book)} de{' '}
-        {checkInvalidAPIField(data.writer)}:
+        {checkForInvalidString(data.name)} sobre{' '}
+        {checkForInvalidString(data.title_book)} de{' '}
+        {checkForInvalidString(data.writer)}:
       </h3>
 
       <p
@@ -24,11 +24,11 @@ function ReviewItem({ data, onClick }: ReviewItemProps) {
         title="Clique para ver detalhes da resenha"
         onClick={onClick}
       >
-        {checkInvalidAPIField(data.review)}
+        {checkForInvalidString(data.review)}
       </p>
 
       <p className={styles.date}>
-        {formatDate(checkInvalidAPIField(data.created_at))}
+        {formatDate(checkForInvalidString(data.created_at))}
       </p>
     </article>
   );

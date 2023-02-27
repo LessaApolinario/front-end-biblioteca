@@ -1,11 +1,11 @@
 import Post from '../../core/domain/models/Post';
 
-import checkInvalidAPIField from '../../core/utils/checkInvalidAPIField';
+import Text from './Text';
+
+import checkForInvalidString from '../../core/utils/checkForInvalidString';
 import formatDate from '../../core/utils/formatDate';
 
 import styles from '../styles/components/PostComponent.module.scss';
-
-import Text from './Text';
 
 interface PostComponentProps {
   data: Post;
@@ -15,12 +15,12 @@ function PostComponent({ data }: PostComponentProps) {
   return (
     <article className={styles.container}>
       <h3>
-        {checkInvalidAPIField(data.user_name)}{' '}
+        {checkForInvalidString(data.user_name)}{' '}
         <span className={styles.date}>
-          {checkInvalidAPIField(formatDate(data.created_at))}
+          {checkForInvalidString(formatDate(data.created_at))}
         </span>
       </h3>
-      <h4 className={styles.postTitle}>{checkInvalidAPIField(data.title)}</h4>
+      <h4 className={styles.postTitle}>{checkForInvalidString(data.title)}</h4>
 
       <Text className={'primary'} text={data.content ?? ''} />
     </article>

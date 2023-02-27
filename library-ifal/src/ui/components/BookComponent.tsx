@@ -1,9 +1,10 @@
+import Book from '../../core/domain/models/Book';
+
 import Button from './Button';
 
-import styles from '../styles/components/BookComponent.module.scss';
+import checkForInvalidString from '../../core/utils/checkForInvalidString';
 
-import Book from '../../core/domain/models/Book';
-import checkInvalidAPIField from '../../core/utils/checkInvalidAPIField';
+import styles from '../styles/components/BookComponent.module.scss';
 
 interface BookComponentProps {
   props: Book;
@@ -11,20 +12,16 @@ interface BookComponentProps {
 
 function BookComponent({ props }: BookComponentProps) {
   function formatAuthorName(authorName?: string) {
-    if (!authorName) {
-      return '-';
-    }
-
     const [lastName, firstName] = authorName?.trim()?.split(',') ?? [];
     return firstName ? `${firstName} ${lastName}` : lastName;
   }
 
   return (
     <tr className={styles.container}>
-      <td>{checkInvalidAPIField(props.titulo)}</td>
-      <td>{checkInvalidAPIField(formatAuthorName(props.autor))}</td>
-      <td>{checkInvalidAPIField(props.edicao)}</td>
-      <td>{checkInvalidAPIField(props.ano)}</td>
+      <td>{checkForInvalidString(props.titulo)}</td>
+      <td>{formatAuthorName(checkForInvalidString(props.autor))}</td>
+      <td>{checkForInvalidString(props.edicao)}</td>
+      <td>{checkForInvalidString(props.ano)}</td>
       <td>
         <Button
           title="Informações sobre a localização dos livros"
@@ -32,7 +29,7 @@ function BookComponent({ props }: BookComponentProps) {
           btnType="primary"
           onClick={() => console.log('redirecionando')}
         >
-          {checkInvalidAPIField(props.localizacao)}
+          {checkForInvalidString(props.localizacao)}
         </Button>
       </td>
     </tr>
