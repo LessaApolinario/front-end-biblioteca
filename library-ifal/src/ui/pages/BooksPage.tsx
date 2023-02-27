@@ -33,7 +33,7 @@ function BooksPage() {
     await searchBooks(query);
   }, []);
 
-  function BooksForm() {
+  function RenderBooksForm() {
     return (
       <Form
         className={styles.form}
@@ -69,7 +69,7 @@ function BooksPage() {
         headingText={'SIB'}
       />
 
-      <BooksForm />
+      <RenderBooksForm />
 
       <Table<Book>
         className={styles.table}
