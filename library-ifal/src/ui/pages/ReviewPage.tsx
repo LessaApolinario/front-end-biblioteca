@@ -1,9 +1,8 @@
-import { ReactNode, createRef, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useReviews } from '../../hooks/useReviews';
 import { useAuth } from '../../hooks/useAuth';
-import { useNotifications } from '../../hooks/useNotifications';
 
 import Review from '../../core/domain/models/Review';
 
@@ -15,53 +14,25 @@ import Input from '../components/Input';
 import ItemsList from '../components/ItemsList';
 import Label from '../components/Label';
 import OpenCloseButton from '../components/OpenCloseButton';
-import ReviewBuilder from '../../core/domain/builders/ReviewBuilder';
 import ReviewItem from '../components/ReviewItem';
 import TextArea from '../components/TextArea';
 
 import styles from '../styles/pages/ReviewPage.module.scss';
 
 function ReviewPage() {
-  const useAuthHook = useAuth();
-  const useReviewsHook = useReviews();
-  const useNotificationsHook = useNotifications();
+  const { isAuthenticated, logout } = useAuth();
+  const { addReview, searchReview, data, refs } = useReviews();
+  const { bookTitleRef, authorNameRef, reviewTextareaRef, searchRef } = refs;
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
-  const bookTitleRef = createRef<HTMLInputElement>();
-  const authorNameRef = createRef<HTMLInputElement>();
-  const reviewTextareaRef = createRef<HTMLTextAreaElement>();
-  const searchRef = createRef<HTMLInputElement>();
-
-  function goBack() {
-    navigate(-1);
-  }
-
-  function buildReview() {
-    const user = useAuthHook.user;
-    const review = new ReviewBuilder()
-      .withUserID(user?.id)
-      .withUserName(user?.name)
-      .withTitleBook(bookTitleRef.current?.value)
-      .withWriter(authorNameRef.current?.value)
-      .withReview(reviewTextareaRef.current?.value)
-      .withAvailable(true)
-      .build();
-
-    return review;
-  }
-
-  async function addReview() {
-    try {
-      const review = buildReview();
-      await useReviewsHook.createReview(review);
-    } catch (error: any) {
-      useNotificationsHook.notifyError(error.message);
-    }
-  }
 
   async function handleAddReview() {
     await addReview();
     setIsVisible(false);
+  }
+
+  function goBack() {
+    navigate(-1);
   }
 
   const RenderAddReviewForm = () => {
@@ -102,15 +73,15 @@ function ReviewPage() {
       );
     }
 
-    return null;
+    return <></>;
   };
 
-  function SearchReviewForm() {
+  function RenderSearchReviewForm() {
     return (
       <Form
         className={styles.search}
         orientation={'row'}
-        handleSubmit={handleSearchReview}
+        handleSubmit={searchReview}
       >
         <Input type={'text'} name={'pesquisa'} ref={searchRef} />
         <Button type="submit" btnType="secondary">
@@ -120,8 +91,8 @@ function ReviewPage() {
     );
   }
 
-  const logout = async () => {
-    await useAuthHook.logout();
+  const handleLogout = async () => {
+    await logout();
     goBack();
   };
 
@@ -135,26 +106,21 @@ function ReviewPage() {
     );
   }
 
-  async function handleSearchReview() {
-    const query = searchRef.current?.value ?? '';
-    await useReviewsHook.searchReview(query);
-  }
-
-  const renderButtons = () => {
-    if (useAuthHook.isAuthenticated) {
+  function renderButtons() {
+    if (isAuthenticated) {
       return (
-        <Button type="button" btnType="secondary" onClick={logout}>
+        <Button type="button" btnType="secondary" onClick={handleLogout}>
           Sair
         </Button>
       );
-    } else {
-      return (
-        <Button type="button" btnType="secondary" onClick={goBack}>
-          Voltar
-        </Button>
-      );
     }
-  };
+
+    return (
+      <Button type="button" btnType="secondary" onClick={goBack}>
+        Voltar
+      </Button>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -168,14 +134,14 @@ function ReviewPage() {
         onClick={() => setIsVisible(!isVisible)}
       />
 
-      <SearchReviewForm />
+      <RenderSearchReviewForm />
 
       <h2>Resenhas</h2>
 
       <RenderAddReviewForm />
 
       <ItemsList<Review>
-        data={useReviewsHook.data}
+        data={data}
         orientation={'row'}
         renderItem={renderItem}
       />
