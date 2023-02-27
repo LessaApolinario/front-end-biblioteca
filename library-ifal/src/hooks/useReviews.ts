@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 
 import Review from '../core/domain/models/Review';
+
+import ReviewBuilder from '../core/domain/builders/ReviewBuilder';
 
 import { useAuth } from './useAuth';
 import { useNotifications } from './useNotifications';
@@ -8,11 +10,13 @@ import { useNotifications } from './useNotifications';
 import WebDIContainer from '../dicontainer/web';
 
 export function useReviews() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const { notifySuccess, notifyError } = useNotifications();
   const [data, setData] = useState<Review[]>();
-  const diContainer = new WebDIContainer();
-  const service = diContainer.getReviewService();
+  const bookTitleRef = createRef<HTMLInputElement>();
+  const authorNameRef = createRef<HTMLInputElement>();
+  const reviewTextareaRef = createRef<HTMLTextAreaElement>();
+  const searchRef = createRef<HTMLInputElement>();
 
   useEffect(() => {
     async function loadReviews() {
@@ -24,7 +28,9 @@ export function useReviews() {
 
   async function fetchReviews(): Promise<void> {
     try {
-      const reviews = await service.fetch();
+      const webDiContainer = new WebDIContainer();
+      const reviewService = webDiContainer.getReviewService();
+      const reviews = await reviewService.fetch();
       const isEmpty = !reviews?.length;
 
       if (!isEmpty) {
@@ -42,16 +48,44 @@ export function useReviews() {
     }
 
     try {
-      await service.create(review);
+      const webDiContainer = new WebDIContainer();
+      const reviewService = webDiContainer.getReviewService();
+      await reviewService.create(review);
       notifySuccess('Resenha criada com sucesso!');
     } catch (error) {
       notifyError('Erro ao adicionar resenha');
     }
   }
 
-  async function searchReview(query: string) {
+  function buildReview() {
+    return new ReviewBuilder()
+      .withUserID(user?.id)
+      .withUserName(user?.name)
+      .withTitleBook(bookTitleRef.current?.value)
+      .withWriter(authorNameRef.current?.value)
+      .withReview(reviewTextareaRef.current?.value)
+      .withAvailable(true)
+      .build();
+  }
+
+  async function addReview() {
     try {
-      const reviews = await service.search(query);
+      await createReview(buildReview());
+    } catch (error: any) {
+      notifyError(error.message);
+    }
+  }
+
+  async function searchReview() {
+    const query = searchRef.current?.value ?? '';
+    await search(query);
+  }
+
+  async function search(query: string) {
+    try {
+      const webDiContainer = new WebDIContainer();
+      const reviewService = webDiContainer.getReviewService();
+      const reviews = await reviewService.search(query);
       const isEmpty = !reviews.length;
 
       if (!isEmpty) {
@@ -64,9 +98,10 @@ export function useReviews() {
   }
 
   return {
-    data,
-    fetchReviews,
-    createReview,
+    addReview,
     searchReview,
+    fetchReviews,
+    data,
+    refs: { bookTitleRef, authorNameRef, reviewTextareaRef, searchRef },
   };
 }
