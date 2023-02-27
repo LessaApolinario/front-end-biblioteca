@@ -1,7 +1,5 @@
 import { createRef, useCallback, useState } from 'react';
 
-// TODO:: REFACTOR THIS HOOK PLEASE
-
 import Book from '../core/domain/models/Book';
 
 import { useNotifications } from './useNotifications';
