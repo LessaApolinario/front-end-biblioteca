@@ -1,4 +1,4 @@
-import { ReactNode, createRef, useCallback } from 'react';
+import { ReactNode } from 'react';
 
 import { useBooks } from '../../hooks/useBooks';
 
@@ -14,45 +14,33 @@ import Book from '../../core/domain/models/Book';
 import styles from '../styles/pages/BooksPage.module.scss';
 
 function BooksPage() {
-  const { books, listBooks, searchBooks } = useBooks();
-  const inputRef = createRef<HTMLInputElement>();
-
-  const columns = ['Título', 'Autor', 'Edição', 'Ano', 'Localização'];
+  const { books, listBooks, searchBooks, refs } = useBooks();
+  const { searchRef } = refs;
 
   function renderItem(item: Book): ReactNode {
     return <BookComponent props={item} key={String(item._id)} />;
   }
 
-  const handleListBooks = useCallback(async () => {
-    await listBooks();
-  }, []);
-
-  const handleSearchBook = useCallback(async () => {
-    const searchInput = inputRef.current;
-    const query = searchInput?.value ?? '';
-    await searchBooks(query);
-  }, []);
-
-  function BooksForm() {
+  function RenderBooksForm() {
     return (
       <Form
         className={styles.form}
         orientation={'row'}
-        handleSubmit={handleSearchBook}
+        handleSubmit={searchBooks}
       >
         <div className={styles.search}>
           <Input
             type={'text'}
             placeholder={'Buscar ou listar livros'}
             name={'pesquisa de livros'}
-            ref={inputRef}
+            ref={searchRef}
           />
 
           <div className={styles.buttons}>
             <Button type="submit" btnType="primary">
               Pesquisar livros
             </Button>
-            <Button type="button" btnType="primary" onClick={handleListBooks}>
+            <Button type="button" btnType="primary" onClick={listBooks}>
               Listar livros
             </Button>
           </div>
@@ -69,13 +57,13 @@ function BooksPage() {
         headingText={'SIB'}
       />
 
-      <BooksForm />
+      <RenderBooksForm />
 
       <Table<Book>
         className={styles.table}
         data={books}
         renderItem={renderItem}
-        columns={columns}
+        columns={['Título', 'Autor', 'Edição', 'Ano', 'Localização']}
       />
     </div>
   );

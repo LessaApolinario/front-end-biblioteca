@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { createRef, useCallback, useState } from 'react';
 
 import Book from '../core/domain/models/Book';
 
@@ -9,12 +9,17 @@ import WebDIContainer from '../dicontainer/web';
 export function useBooks() {
   const { notifySuccess, notifyError } = useNotifications();
   const [books, setBooks] = useState<Book[]>([]);
-  const diContainer = new WebDIContainer();
-  const service = diContainer.getBookService();
+  const searchRef = createRef<HTMLInputElement>();
 
-  async function listBooks(): Promise<void> {
+  const listBooks = useCallback(async () => {
+    await list();
+  }, []);
+
+  async function list(): Promise<void> {
     try {
-      const books = await service.fetch();
+      const webDiContainer = new WebDIContainer();
+      const bookService = webDiContainer.getBookService();
+      const books = await bookService.fetch();
       const isEmpty = !books?.length;
 
       if (books && !isEmpty) {
@@ -26,9 +31,17 @@ export function useBooks() {
     }
   }
 
-  async function searchBooks(query: string): Promise<void> {
+  const searchBooks = useCallback(async () => {
+    const searchInput = searchRef?.current;
+    const query = searchInput?.value ?? '';
+    await search(query);
+  }, []);
+
+  async function search(query: string): Promise<void> {
     try {
-      const books = await service.search(query);
+      const webDiContainer = new WebDIContainer();
+      const bookService = webDiContainer.getBookService();
+      const books = await bookService.search(query);
       const isEmpty = !books.length;
 
       if (!isEmpty) {
@@ -44,5 +57,6 @@ export function useBooks() {
     books,
     listBooks,
     searchBooks,
+    refs: { searchRef },
   };
 }
