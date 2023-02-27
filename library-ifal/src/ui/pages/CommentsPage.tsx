@@ -20,7 +20,6 @@ import Form from '../components/Form';
 function CommentsPage() {
   const { isAuthenticated, logout } = useAuth();
   const { notifySuccess, notifyError } = useNotifications();
-  const formRef = useRef<HTMLFormElement>(null);
   const nameRef = createRef<HTMLInputElement>();
   const emailRef = createRef<HTMLInputElement>();
   const commentRef = createRef<HTMLTextAreaElement>();
