@@ -1,5 +1,3 @@
-import { createRef } from 'react';
-
 import { GiTreeBranch } from 'react-icons/gi';
 
 import Button from '../components/Button';
@@ -14,18 +12,8 @@ import { useAuth } from '../../hooks/useAuth';
 import styles from '../styles/pages/LoginPage.module.scss';
 
 function LoginPage() {
-  const useAuthHook = useAuth();
-  const usernameRef = createRef<HTMLInputElement>();
-  const passwordRef = createRef<HTMLInputElement>();
-
-  async function handleSubmit() {
-    const usernameInput = usernameRef.current;
-    const passwordInput = passwordRef.current;
-    const username = usernameInput?.value ?? '';
-    const password = passwordInput?.value ?? '';
-
-    await useAuthHook.login({ username, password });
-  }
+  const { handleLogin, refs } = useAuth();
+  const { usernameRef, passwordRef } = refs;
 
   return (
     <div className={styles.container}>
@@ -34,7 +22,7 @@ function LoginPage() {
       <Form
         className={styles.login}
         orientation={'column'}
-        handleSubmit={handleSubmit}
+        handleSubmit={handleLogin}
       >
         <h2>Fazer login</h2>
 
