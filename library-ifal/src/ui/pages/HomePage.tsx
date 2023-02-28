@@ -10,7 +10,7 @@ import styles from '../styles/pages/HomePage.module.scss';
 function HomePage() {
   const { isAuthenticated, logout } = useAuth();
 
-  function renderButtons() {
+  function RenderButtons() {
     return (
       <AuthenticationButtons
         isAuthenticated={isAuthenticated}
@@ -21,7 +21,10 @@ function HomePage() {
 
   return (
     <main className={styles.container}>
-      <ButtonsHeader headerType={'primary'} renderButtons={renderButtons} />
+      <ButtonsHeader
+        headerType={'primary'}
+        renderButtons={() => <RenderButtons />}
+      />
 
       <section className={styles.content}>
         <h1>Bem-vindo</h1>
