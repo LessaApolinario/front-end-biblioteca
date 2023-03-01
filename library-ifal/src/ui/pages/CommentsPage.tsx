@@ -1,65 +1,21 @@
-import { createRef, useRef } from 'react';
-
 import { useAuth } from '../../hooks/useAuth';
-import { useNotifications } from '../../hooks/useNotifications';
+import { useComments } from '../../hooks/useComments';
 
 import AuthenticationButtons from '../components/AuthenticationButtons';
 import Button from '../components/Button';
 import ButtonsHeader from '../components/ButtonsHeader';
-import Comment from '../../core/domain/models/Comment';
 import Label from '../components/Label';
 import Input from '../components/Input';
 import Flex from '../components/Flex';
+import Form from '../components/Form';
 import TextArea from '../components/TextArea';
 
-import WebDIContainer from '../../dicontainer/web';
-
 import styles from '../styles/pages/CommentsPage.module.scss';
-import Form from '../components/Form';
 
 function CommentsPage() {
   const { isAuthenticated, logout } = useAuth();
-  const { notifySuccess, notifyError } = useNotifications();
-  const nameRef = createRef<HTMLInputElement>();
-  const emailRef = createRef<HTMLInputElement>();
-  const commentRef = createRef<HTMLTextAreaElement>();
-
-  async function createComment() {
-    const name = nameRef.current?.value;
-    const email = emailRef.current?.value;
-    const comment = commentRef.current?.value;
-
-    const newComment = new Comment();
-    newComment.name = name;
-    newComment.email = email;
-    newComment.comment = comment;
-
-    try {
-      const diContainer = new WebDIContainer();
-      const commentService = diContainer.getCommentService();
-      await commentService.create(newComment);
-      notifySuccess('Comentário criado com sucesso!');
-    } catch (error: any) {
-      notifyError('Falha ao criar comentário');
-    }
-  }
-
-  function clearFields() {
-    const nameInput = nameRef.current;
-    const emailInput = emailRef.current;
-    const commentTextArea = commentRef.current;
-
-    if (nameInput && emailInput && commentTextArea) {
-      nameInput.value = '';
-      emailInput.value = '';
-      commentTextArea.value = '';
-    }
-  }
-
-  async function handleSubmit() {
-    await createComment();
-    clearFields();
-  }
+  const { handleCreateComment, refs } = useComments();
+  const { nameRef, emailRef, commentRef } = refs;
 
   function renderButtons() {
     return (
@@ -90,7 +46,7 @@ function CommentsPage() {
           <Form
             className={styles.form}
             orientation={'column'}
-            handleSubmit={handleSubmit}
+            handleSubmit={handleCreateComment}
           >
             <Flex className={styles.name} orientation={'column'}>
               <Label text={'Seu nome'} />

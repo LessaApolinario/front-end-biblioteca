@@ -58,9 +58,8 @@ export function useReviews() {
   }
 
   function buildReview() {
-    return new ReviewBuilder()
+    return new ReviewBuilder(user?.name)
       .withUserID(user?.id)
-      .withUserName(user?.name)
       .withTitleBook(bookTitleRef.current?.value)
       .withWriter(authorNameRef.current?.value)
       .withReview(reviewTextareaRef.current?.value)

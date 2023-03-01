@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 
 import Post from '../core/domain/models/Post';
 
+import PostBuilder from '../core/domain/builders/PostBuilder';
+
+import WebDIContainer from '../dicontainer/web';
+
 import { useNotifications } from './useNotifications';
 import { useAuth } from './useAuth';
-import WebDIContainer from '../dicontainer/web';
 
 export function usePosts() {
   const [data, setData] = useState<Post[]>();
   const { notifySuccess, notifyError } = useNotifications();
-  const { isAuthenticated } = useAuth();
-  const diContainer = new WebDIContainer();
-  const service = diContainer.getPostService();
+  const { isAuthenticated, user } = useAuth();
+  const titleRef = createRef<HTMLInputElement>();
+  const contentRef = createRef<HTMLTextAreaElement>();
 
   useEffect(() => {
     async function loadPosts() {
@@ -23,12 +26,29 @@ export function usePosts() {
 
   async function fetchPosts() {
     try {
-      const posts = await service.fetch();
+      const webDiContainer = new WebDIContainer();
+      const postService = webDiContainer.getPostService();
+      const posts = await postService.fetch();
       setData(posts);
       notifySuccess('Posts listados com sucesso!');
     } catch (error) {
       notifyError('Erro ao listar posts');
     }
+  }
+
+  async function handleCreatePost() {
+    try {
+      await createPost(buildPost());
+    } catch (error: any) {
+      notifyError(error.message);
+    }
+  }
+
+  function buildPost() {
+    return new PostBuilder(user?.name)
+      .withTitle(titleRef.current?.value)
+      .withContent(contentRef.current?.value)
+      .build();
   }
 
   async function createPost(post: Post) {
@@ -37,7 +57,9 @@ export function usePosts() {
     }
 
     try {
-      await service.create(post);
+      const webDiContainer = new WebDIContainer();
+      const postService = webDiContainer.getPostService();
+      await postService.create(post);
       notifySuccess('Post criado com sucesso!');
     } catch (error) {
       notifyError('Erro ao criar post');
@@ -46,7 +68,8 @@ export function usePosts() {
 
   return {
     data,
-    createPost,
+    handleCreatePost,
     fetchPosts,
+    refs: { titleRef, contentRef },
   };
 }
