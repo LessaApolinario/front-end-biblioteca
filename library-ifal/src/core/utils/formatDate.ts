@@ -3,14 +3,14 @@ function formatDate(created_at?: string) {
     return '-';
   }
 
-  const { month, day, year, hours, minutes } = getFullDate();
+  const { month, day, year, hours, minutes } = getFullDate(created_at);
   const abbreviatedMonth = abbreviateMonth(month);
   return `${abbreviatedMonth} ${day} ${year} às ${hours}:${minutes}`;
 }
 
-function getFullDate() {
-  const { hours, minutes } = getHoursAndMinutes();
-  const { year, month, day } = getYearMonthAndDay();
+function getFullDate(created_at?: string) {
+  const { hours, minutes } = getHoursAndMinutes(created_at);
+  const { year, month, day } = getYearMonthAndDay(created_at);
 
   return {
     hours,
@@ -21,15 +21,15 @@ function getFullDate() {
   };
 }
 
-function getYearMonthAndDay() {
-  const date = getDate();
+function getYearMonthAndDay(created_at?: string) {
+  const date = getDate(created_at);
   const dateAsArray = date?.split('-') ?? [];
   const [year, month, day] = dateAsArray;
   return { year, month, day };
 }
 
-function getHoursAndMinutes() {
-  const time = getTime();
+function getHoursAndMinutes(created_at?: string) {
+  const time = getTime(created_at);
   const timeAsArray = time?.split(':') ?? [];
   const [hours, minutes] = timeAsArray;
   return { hours, minutes };
