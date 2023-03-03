@@ -95,6 +95,7 @@ function Form(props: FormProps) {
 
           if (!!passwordLengthError) {
             setError(passwordLengthError);
+            return true;
           }
         }
       }
