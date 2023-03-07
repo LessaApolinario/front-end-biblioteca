@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, createRef } from 'react';
 
 import { useBooks } from '../../hooks/useBooks';
 
@@ -14,8 +14,14 @@ import Book from '../../core/domain/models/Book';
 import styles from '../styles/pages/BooksPage.module.scss';
 
 function BooksPage() {
-  const { books, listBooks, searchBooks, refs } = useBooks();
-  const { searchRef } = refs;
+  const { fetchBooks, searchBooks, getBooks } = useBooks();
+  const { books } = getBooks();
+  const searchRef = createRef<HTMLInputElement>();
+
+  function handleSearchBooks() {
+    const query = searchRef?.current?.value ?? '';
+    searchBooks(query);
+  }
 
   function renderItem(item: Book): ReactNode {
     return <BookComponent props={item} key={String(item._id)} />;
@@ -26,7 +32,7 @@ function BooksPage() {
       <Form
         className={styles.form}
         orientation={'row'}
-        handleSubmit={searchBooks}
+        handleSubmit={handleSearchBooks}
       >
         <div className={styles.search}>
           <Input
@@ -40,7 +46,7 @@ function BooksPage() {
             <Button type="submit" btnType="primary">
               Pesquisar livros
             </Button>
-            <Button type="button" btnType="primary" onClick={listBooks}>
+            <Button type="button" btnType="primary" onClick={fetchBooks}>
               Listar livros
             </Button>
           </div>
