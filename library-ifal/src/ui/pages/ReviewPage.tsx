@@ -1,10 +1,13 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, createRef, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 
-import { useReviews } from '../../hooks/useReviews';
 import { useAuth } from '../../hooks/useAuth';
+import { useReviews } from '../../hooks/useReviews';
 
 import Review from '../../core/domain/models/Review';
+
+import ReviewBuilder from '../../core/domain/builders/ReviewBuilder';
 
 import Button from '../components/Button';
 import ButtonsHeader from '../components/ButtonsHeader';
@@ -15,20 +18,40 @@ import ItemsList from '../components/ItemsList';
 import Label from '../components/Label';
 import OpenCloseButton from '../components/OpenCloseButton';
 import ReviewItem from '../components/ReviewItem';
+import SearchForm from '../components/SearchForm';
 import TextArea from '../components/TextArea';
 
 import styles from '../styles/pages/ReviewPage.module.scss';
 
 function ReviewPage() {
-  const { isAuthenticated, logout } = useAuth();
-  const { addReview, searchReview, data, refs } = useReviews();
-  const { bookTitleRef, authorNameRef, reviewTextareaRef, searchRef } = refs;
   const [isVisible, setIsVisible] = useState(false);
+  const bookTitleRef = createRef<HTMLInputElement>();
+  const authorNameRef = createRef<HTMLInputElement>();
+  const reviewTextareaRef = createRef<HTMLTextAreaElement>();
+  const searchRef = createRef<HTMLInputElement>();
   const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
+  const { searchReview, createReview, getReviews } = useReviews();
+  const { reviews } = getReviews();
 
-  async function handleAddReview() {
-    await addReview();
+  async function handleSearchReview() {
+    const query = searchRef.current?.value ?? '';
+    await searchReview(query);
+  }
+
+  async function handleCreateReview() {
+    await createReview(buildReview());
     setIsVisible(false);
+  }
+
+  function buildReview() {
+    return new ReviewBuilder(user?.name)
+      .withUserID(user?.id)
+      .withTitleBook(bookTitleRef.current?.value)
+      .withWriter(authorNameRef.current?.value)
+      .withReview(reviewTextareaRef.current?.value)
+      .withAvailable(true)
+      .build();
   }
 
   function goBack() {
@@ -41,7 +64,7 @@ function ReviewPage() {
         <Form
           className={styles.form}
           orientation={'column'}
-          handleSubmit={handleAddReview}
+          handleSubmit={handleCreateReview}
         >
           <h3>Escreva sua resenha</h3>
 
@@ -76,21 +99,6 @@ function ReviewPage() {
     return <></>;
   };
 
-  function RenderSearchReviewForm() {
-    return (
-      <Form
-        className={styles.search}
-        orientation={'row'}
-        handleSubmit={searchReview}
-      >
-        <Input type={'text'} name={'pesquisa'} ref={searchRef} />
-        <Button type="submit" btnType="secondary">
-          Pesquisar
-        </Button>
-      </Form>
-    );
-  }
-
   const handleLogout = async () => {
     await logout();
     goBack();
@@ -122,6 +130,14 @@ function ReviewPage() {
     );
   }
 
+  function renderSearchFormButtons() {
+    return (
+      <Button type="submit" btnType="secondary">
+        Pesquisar
+      </Button>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <ButtonsHeader headerType={'secondary'} renderButtons={renderButtons} />
@@ -134,14 +150,19 @@ function ReviewPage() {
         onClick={() => setIsVisible(!isVisible)}
       />
 
-      <RenderSearchReviewForm />
+      <SearchForm
+        placeholder={'Buscar resenhas'}
+        searchRef={searchRef}
+        handleSubmit={handleSearchReview}
+        renderButtons={renderSearchFormButtons}
+      />
 
       <h2>Resenhas</h2>
 
       <RenderAddReviewForm />
 
       <ItemsList<Review>
-        data={data}
+        data={reviews}
         orientation={'row'}
         renderItem={renderItem}
       />
