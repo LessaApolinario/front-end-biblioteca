@@ -1,62 +1,25 @@
-import { createRef, useCallback, useState } from 'react';
+import { useCallback, useContext } from 'react';
 
-import Book from '../core/domain/models/Book';
-
-import { useNotifications } from './useNotifications';
-
-import WebDIContainer from '../dicontainer/web';
+import { BookCTX } from '../ui/contexts/BookCTX';
 
 export function useBooks() {
-  const { notifySuccess, notifyError } = useNotifications();
-  const [books, setBooks] = useState<Book[]>([]);
-  const searchRef = createRef<HTMLInputElement>();
+  const bookCTX = useContext(BookCTX);
 
-  const listBooks = useCallback(async () => {
-    await list();
+  const fetchBooks = useCallback(async () => {
+    await bookCTX.fetch();
   }, []);
 
-  async function list(): Promise<void> {
-    try {
-      const webDiContainer = new WebDIContainer();
-      const bookService = webDiContainer.getBookService();
-      const books = await bookService.fetch();
-      const isEmpty = !books?.length;
-
-      if (books && !isEmpty) {
-        setBooks(books);
-        notifySuccess('Livros listados com sucesso!');
-      }
-    } catch (error) {
-      notifyError('Erro ao listar livros');
-    }
-  }
-
-  const searchBooks = useCallback(async () => {
-    const searchInput = searchRef?.current;
-    const query = searchInput?.value ?? '';
-    await search(query);
+  const searchBooks = useCallback(async (query: string) => {
+    await bookCTX.search(query);
   }, []);
 
-  async function search(query: string): Promise<void> {
-    try {
-      const webDiContainer = new WebDIContainer();
-      const bookService = webDiContainer.getBookService();
-      const books = await bookService.search(query);
-      const isEmpty = !books.length;
-
-      if (!isEmpty) {
-        setBooks(books);
-        notifySuccess('Livros buscados com sucesso!');
-      }
-    } catch (error) {
-      notifyError('Erro ao buscar livros');
-    }
+  function getBooks() {
+    return { books: bookCTX.books };
   }
 
   return {
-    books,
-    listBooks,
+    getBooks,
+    fetchBooks,
     searchBooks,
-    refs: { searchRef },
   };
 }
