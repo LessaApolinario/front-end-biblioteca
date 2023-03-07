@@ -15,7 +15,7 @@ import { REGISTER_PAGE_ROUTE } from '../../core/constants';
 import styles from '../styles/components/Form.module.scss';
 
 interface FormProps {
-  className: string;
+  className?: string;
   orientation: 'row' | 'column';
   children: ReactNode;
   handleSubmit(): Promise<void> | void;
