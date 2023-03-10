@@ -153,6 +153,9 @@ function Form(props: FormProps) {
     const textFormFields = form.querySelectorAll(
       'input[type=text]'
     ) as NodeListOf<HTMLInputElement>;
+    const searchFormFields = form.querySelectorAll(
+      'input[type=search]'
+    ) as NodeListOf<HTMLInputElement>;
     const textareaFormFields = form.querySelectorAll(
       'textarea'
     ) as NodeListOf<HTMLTextAreaElement>;
@@ -165,6 +168,7 @@ function Form(props: FormProps) {
 
     const formFields = [
       ...textFormFields,
+      ...searchFormFields,
       ...textareaFormFields,
       ...passwordFormFields,
       emailFormField,
