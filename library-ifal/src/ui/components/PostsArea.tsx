@@ -1,5 +1,6 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, createRef, useState } from 'react';
 
+import { useAuth } from '../../hooks/useAuth';
 import { usePosts } from '../../hooks/usePosts';
 
 import Button from './Button';
@@ -14,13 +15,35 @@ import TextArea from './TextArea';
 
 import Post from '../../core/domain/models/Post';
 
+import PostBuilder from '../../core/domain/builders/PostBuilder';
+
 import styles from '../styles/components/PostsArea.module.scss';
 import createPostFormStyles from '../styles/components/CreatePostForm.module.scss';
+import { useNotifications } from '../../hooks/useNotifications';
 
 function PostsArea() {
-  const { data, handleCreatePost, refs } = usePosts();
-  const { titleRef, contentRef } = refs;
   const [isVisible, setIsVisible] = useState(false);
+  const titleRef = createRef<HTMLInputElement>();
+  const contentRef = createRef<HTMLTextAreaElement>();
+  const { user } = useAuth();
+  const { notifyError } = useNotifications();
+  const { createPost, getPosts } = usePosts();
+  const { posts } = getPosts();
+
+  async function handleCreatePost() {
+    try {
+      await createPost(buildPost());
+    } catch (error: any) {
+      notifyError(error.message);
+    }
+  }
+
+  function buildPost() {
+    return new PostBuilder(user?.name)
+      .withTitle(titleRef.current?.value)
+      .withContent(contentRef.current?.value)
+      .build();
+  }
 
   function renderItem(item: Post): ReactNode {
     return <PostComponent data={item} key={item.created_at} />;
@@ -63,7 +86,7 @@ function PostsArea() {
       );
     }
 
-    return null;
+    return <></>;
   }
 
   return (
@@ -82,7 +105,7 @@ function PostsArea() {
         <RenderPostsForm />
 
         <ItemsList<Post>
-          data={data}
+          data={posts}
           orientation={'column'}
           renderItem={renderItem}
         />
