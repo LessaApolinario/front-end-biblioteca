@@ -28,11 +28,74 @@ function AuthProvider({ children }: AuthProviderProps) {
     refreshSession(getUserFromLocalStorage(), getTokenFromLocalStorage());
   }, []);
 
+  async function login(credentials: AuthCredentialsDTO) {
+    if (!isValid(credentials)) {
+      return false;
+    }
+
+    const userService = getUserService();
+    const user = await userService.login(credentials);
+
+    if (!hasData(user)) {
+      return false;
+    }
+
+    refreshSession(user, user?.access_token ?? '');
+
+    createSession(user);
+
+    return true;
+  }
+
+  function createSession(user: User) {
+    setItem('user', user);
+    setItem('token', user?.access_token ?? '');
+    setItem('id', user?.id ?? '');
+  }
+
+  function hasData(user: User) {
+    return !user.access_token || !user.id;
+  }
+
+  function isValid(credentials: AuthCredentialsDTO) {
+    return !credentials.username || !credentials.password;
+  }
+
+  async function logout() {
+    const userService = getUserService();
+    await userService.logout(
+      getIdFromLocalStorage(),
+      getTokenFromLocalStorage()
+    );
+    userService.destroySession();
+    removeUserFromLocalStorage();
+  }
+
+  function removeUserFromLocalStorage() {
+    removeItem('user');
+    removeItem('id');
+    removeItem('token');
+    setUser(undefined);
+  }
+
+  function getIdFromLocalStorage() {
+    return getItem<string>('id') ?? '';
+  }
+
+  async function register(user: User) {
+    const userService = getUserService();
+    await userService.register(user);
+  }
+
   function refreshSession(user: User, token: string) {
-    const webDiContainer = new WebDIContainer();
-    const userService = webDiContainer.getUserService();
+    const userService = getUserService();
     setUser(user);
     userService.refreshSession(token);
+  }
+
+  function getUserService() {
+    const webDiContainer = new WebDIContainer();
+    return webDiContainer.getUserService();
   }
 
   function getUserFromLocalStorage() {
@@ -42,60 +105,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   function getTokenFromLocalStorage() {
     return getItem<string>('token') ?? '';
   }
-
-  async function login(credentials: AuthCredentialsDTO) {
-    if (!credentials.username || !credentials.password) {
-      return false;
-    }
-
-    const webDiContainer = new WebDIContainer();
-    const userService = webDiContainer.getUserService();
-
-    const data = await userService.login(credentials);
-    const { access_token, id } = data;
-
-    if (!access_token) {
-      return false;
-    }
-
-    if (!id) {
-      return false;
-    }
-
-    userService.refreshSession(access_token);
-
-    const newUser: User = data;
-    setUser(newUser);
-
-    setItem('user', newUser);
-    setItem('token', access_token);
-    setItem('id', id);
-
-    return true;
-  }
-
-  const logout = async () => {
-    const webDiContainer = new WebDIContainer();
-    const userService = webDiContainer.getUserService();
-
-    const storedId = getItem<string>('id') ?? '';
-    const storedToken = getItem<string>('token') ?? '';
-
-    await userService.logout(storedId, storedToken);
-    userService.destroySession();
-
-    removeItem('user');
-    removeItem('id');
-    removeItem('token');
-
-    setUser(undefined);
-  };
-
-  const register = async (user: User) => {
-    const webDiContainer = new WebDIContainer();
-    const userService = webDiContainer.getUserService();
-    await userService.register(user);
-  };
 
   return (
     <AuthCTX.Provider value={{ user, login, logout, register }}>
