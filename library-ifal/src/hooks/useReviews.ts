@@ -1,4 +1,4 @@
-import { createRef, useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 
 import { useNotifications } from './useNotifications';
 
