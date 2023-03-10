@@ -2,23 +2,24 @@
   $primary: #5b4b8a;
   $secondary: #fff;
 
-  width: 100%;
-
-  margin-bottom: 1.5rem;
-
+  display: flex;
   align-items: center;
   justify-content: center;
 
-  .searchArea {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  width: 100%;
 
+  .searchForm {
     width: 80%;
+
+    margin-bottom: 1.5rem;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
 
     > input {
       flex: 1;
-      margin-right: 1rem;
       padding: 1rem;
 
       &:focus {
@@ -33,14 +34,12 @@
     .buttons {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+
+      gap: 1rem;
 
       > button {
         padding: 1rem;
-      }
-
-      button:first-of-type {
-        margin-right: 1rem;
       }
     }
   }
