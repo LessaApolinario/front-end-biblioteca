@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { ReactNode, createContext, useState } from 'react';
 
 import { useAuth } from '../../hooks/useAuth';
 import { useNotifications } from '../../hooks/useNotifications';
@@ -26,14 +26,6 @@ function ReviewProvider({ children }: ReviewProviderProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const { notifyError, notifySuccess } = useNotifications();
   const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    async function loadReviews() {
-      await fetch();
-    }
-
-    loadReviews();
-  }, [reviews]);
 
   async function fetch() {
     try {
