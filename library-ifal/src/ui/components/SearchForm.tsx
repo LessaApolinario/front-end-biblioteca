@@ -3,7 +3,7 @@ import { ReactNode, RefObject } from 'react';
 import Form from './Form';
 import Input from './Input';
 
-import styles from '../styles/components/SearchArea.module.scss';
+import styles from '../styles/components/SearchForm.module.scss';
 
 interface SearchFormProps {
   placeholder: string;
@@ -14,21 +14,21 @@ interface SearchFormProps {
 
 function SearchForm(props: SearchFormProps) {
   return (
-    <Form
-      className={styles.container}
-      orientation={'row'}
-      handleSubmit={props.handleSubmit}
-    >
-      <section className={styles.searchArea}>
+    <section className={styles.container}>
+      <Form
+        className={styles.searchForm}
+        orientation={'row'}
+        handleSubmit={props.handleSubmit}
+      >
         <Input
-          type={'text'}
+          type={'search'}
           name={'pesquisa'}
           placeholder={props.placeholder}
           ref={props.searchRef}
         />
-        <section className={styles.buttons}>{props.renderButtons()}</section>
-      </section>
-    </Form>
+        <div className={styles.buttons}>{props.renderButtons()}</div>
+      </Form>
+    </section>
   );
 }
 
