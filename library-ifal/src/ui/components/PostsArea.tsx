@@ -1,6 +1,7 @@
 import { ReactNode, createRef, useState } from 'react';
 
 import { useAuth } from '../../hooks/useAuth';
+import { useNotifications } from '../../hooks/useNotifications';
 import { usePosts } from '../../hooks/usePosts';
 
 import Button from './Button';
@@ -19,7 +20,6 @@ import PostBuilder from '../../core/domain/builders/PostBuilder';
 
 import styles from '../styles/components/PostsArea.module.scss';
 import createPostFormStyles from '../styles/components/CreatePostForm.module.scss';
-import { useNotifications } from '../../hooks/useNotifications';
 
 function PostsArea() {
   const [isVisible, setIsVisible] = useState(false);
