@@ -11,6 +11,8 @@ import Input from '../components/Input';
 import Label from '../components/Label';
 import LinkComponent from '../components/LinkComponent';
 
+import getFieldFromRef from '../../core/utils/getFieldFromRef';
+
 import styles from '../styles/pages/LoginPage.module.scss';
 
 function LoginPage() {
@@ -19,17 +21,9 @@ function LoginPage() {
   const passwordRef = createRef<HTMLInputElement>();
 
   async function handleLogin() {
-    const { username } = getUsernameFromRef();
-    const { password } = getPasswordFromRef();
+    const { field: username } = getFieldFromRef(usernameRef);
+    const { field: password } = getFieldFromRef(passwordRef);
     await login({ username, password });
-  }
-
-  function getUsernameFromRef() {
-    return { username: usernameRef.current?.value ?? '' };
-  }
-
-  function getPasswordFromRef() {
-    return { password: passwordRef.current?.value ?? '' };
   }
 
   return (
