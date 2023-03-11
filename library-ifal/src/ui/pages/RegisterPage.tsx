@@ -1,4 +1,10 @@
+import { createRef } from 'react';
+
+import { useAuth } from '../../hooks/useAuth';
+
 import { GiTreeBranch } from 'react-icons/gi';
+
+import UserBuilder from '../../core/domain/builders/UserBuilder';
 
 import Button from '../components/Button';
 import Flex from '../components/Flex';
@@ -7,14 +13,27 @@ import Input from '../components/Input';
 import Label from '../components/Label';
 import LinkComponent from '../components/LinkComponent';
 
-import { useAuth } from '../../hooks/useAuth';
-
 import styles from '../styles/pages/RegisterPage.module.scss';
 
 function RegisterPage() {
-  const { handleRegister, refs } = useAuth();
-  const { nameRef, usernameRef, emailRef, passwordRef, confirmPasswordRef } =
-    refs;
+  const nameRef = createRef<HTMLInputElement>();
+  const usernameRef = createRef<HTMLInputElement>();
+  const emailRef = createRef<HTMLInputElement>();
+  const passwordRef = createRef<HTMLInputElement>();
+  const confirmPasswordRef = createRef<HTMLInputElement>();
+  const { register } = useAuth();
+
+  async function handleRegister() {
+    await register(buildUser());
+  }
+
+  function buildUser() {
+    return new UserBuilder(nameRef.current?.value)
+      .withUsername(usernameRef.current?.value)
+      .withEmail(emailRef.current?.value)
+      .withPassword(passwordRef.current?.value)
+      .build();
+  }
 
   return (
     <div className={styles.container}>
