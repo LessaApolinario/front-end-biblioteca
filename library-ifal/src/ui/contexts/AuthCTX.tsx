@@ -29,7 +29,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   async function login(credentials: AuthCredentialsDTO) {
-    if (!isValid(credentials)) {
+    if (isInvalid(credentials)) {
       return false;
     }
 
@@ -57,7 +57,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     return !user.access_token || !user.id;
   }
 
-  function isValid(credentials: AuthCredentialsDTO) {
+  function isInvalid(credentials: AuthCredentialsDTO) {
     return !credentials.username || !credentials.password;
   }
 
