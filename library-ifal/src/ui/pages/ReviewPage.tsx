@@ -21,6 +21,8 @@ import ReviewItem from '../components/ReviewItem';
 import SearchForm from '../components/SearchForm';
 import TextArea from '../components/TextArea';
 
+import getFieldFromRef from '../../core/utils/getFieldFromRef';
+
 import styles from '../styles/pages/ReviewPage.module.scss';
 
 function ReviewPage() {
@@ -36,7 +38,7 @@ function ReviewPage() {
   const { reviews } = getReviews();
 
   async function handleSearchReview() {
-    const query = searchRef.current?.value ?? '';
+    const { field: query } = getFieldFromRef(searchRef);
     await searchReview(query);
   }
 

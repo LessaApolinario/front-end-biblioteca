@@ -10,6 +10,8 @@ import Table from '../components/Table';
 
 import Book from '../../core/domain/models/Book';
 
+import getFieldFromRef from '../../core/utils/getFieldFromRef';
+
 import styles from '../styles/pages/BooksPage.module.scss';
 
 function BooksPage() {
@@ -18,7 +20,7 @@ function BooksPage() {
   const searchRef = createRef<HTMLInputElement>();
 
   function handleSearchBooks() {
-    const query = searchRef?.current?.value ?? '';
+    const { field: query } = getFieldFromRef(searchRef);
     searchBooks(query);
   }
 
