@@ -1,42 +1,26 @@
-import { createRef, useContext, useState } from 'react';
-
-import User from '../core/domain/models/User';
-
-import UserBuilder from '../core/domain/builders/UserBuilder';
-
-import { AuthCTX } from '../ui/contexts/AuthCTX';
-
-import AuthCredentialsDTO from '../core/domain/types/AuthCredentialsDTO';
+import { useCallback, useContext, useState } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
 import { useNotifications } from './useNotifications';
 
+import { AuthCTX } from '../ui/contexts/AuthCTX';
+
+import User from '../core/domain/models/User';
+
+import AuthCredentialsDTO from '../core/domain/types/AuthCredentialsDTO';
+
 export function useAuth() {
-  const { notifySuccess, notifyError } = useNotifications();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const nameRef = createRef<HTMLInputElement>();
-  const usernameRef = createRef<HTMLInputElement>();
-  const emailRef = createRef<HTMLInputElement>();
-  const passwordRef = createRef<HTMLInputElement>();
-  const confirmPasswordRef = createRef<HTMLInputElement>();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const authCTX = useContext(AuthCTX);
-  const user = authCTX.user;
   const navigate = useNavigate();
+  const { notifySuccess, notifyError } = useNotifications();
 
-  async function handleRegister() {
-    await register(buildUser());
-  }
+  const register = useCallback(async (user: User) => {
+    await tryToRegister(user);
+  }, []);
 
-  function buildUser() {
-    return new UserBuilder(nameRef.current?.value)
-      .withUsername(usernameRef.current?.value)
-      .withEmail(emailRef.current?.value)
-      .withPassword(passwordRef.current?.value)
-      .build();
-  }
-
-  async function register(user: User) {
+  async function tryToRegister(user: User) {
     try {
       await authCTX.register(user);
       notifySuccess('Usuário registrado com sucesso!');
@@ -46,16 +30,14 @@ export function useAuth() {
     }
   }
 
-  async function handleLogin() {
-    const usernameInput = usernameRef.current;
-    const passwordInput = passwordRef.current;
-    const username = usernameInput?.value ?? '';
-    const password = passwordInput?.value ?? '';
+  const login = useCallback(
+    async ({ username, password }: AuthCredentialsDTO) => {
+      await tryToLogin({ username, password });
+    },
+    []
+  );
 
-    await login({ username, password });
-  }
-
-  async function login({ username, password }: AuthCredentialsDTO) {
+  async function tryToLogin({ username, password }: AuthCredentialsDTO) {
     try {
       const success = await authCTX.login({ username, password });
 
@@ -69,7 +51,11 @@ export function useAuth() {
     }
   }
 
-  async function logout() {
+  const logout = useCallback(async () => {
+    await tryToLogout();
+  }, []);
+
+  async function tryToLogout() {
     try {
       authCTX.logout();
       setIsAuthenticated(false);
@@ -80,12 +66,15 @@ export function useAuth() {
     }
   }
 
+  function getUser() {
+    return { user: authCTX.user };
+  }
+
   return {
     isAuthenticated,
-    handleRegister,
-    handleLogin,
+    register,
+    login,
     logout,
-    user,
-    refs: { nameRef, usernameRef, emailRef, passwordRef, confirmPasswordRef },
+    getUser,
   };
 }
