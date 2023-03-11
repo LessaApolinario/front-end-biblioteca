@@ -30,7 +30,8 @@ function ReviewPage() {
   const reviewTextareaRef = createRef<HTMLTextAreaElement>();
   const searchRef = createRef<HTMLInputElement>();
   const navigate = useNavigate();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, getUser, logout } = useAuth();
+  const { user } = getUser();
   const { searchReview, createReview, getReviews } = useReviews();
   const { reviews } = getReviews();
 

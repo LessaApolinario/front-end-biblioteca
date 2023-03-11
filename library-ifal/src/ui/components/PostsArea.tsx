@@ -25,7 +25,8 @@ function PostsArea() {
   const [isVisible, setIsVisible] = useState(false);
   const titleRef = createRef<HTMLInputElement>();
   const contentRef = createRef<HTMLTextAreaElement>();
-  const { user } = useAuth();
+  const { getUser } = useAuth();
+  const { user } = getUser();
   const { notifyError } = useNotifications();
   const { createPost, getPosts } = usePosts();
   const { posts } = getPosts();
