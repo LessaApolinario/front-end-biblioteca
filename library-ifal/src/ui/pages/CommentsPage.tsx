@@ -1,3 +1,5 @@
+import { createRef } from 'react';
+
 import { useAuth } from '../../hooks/useAuth';
 import { useComments } from '../../hooks/useComments';
 
@@ -10,12 +12,40 @@ import Flex from '../components/Flex';
 import Form from '../components/Form';
 import TextArea from '../components/TextArea';
 
+import CommentBuilder from '../../core/domain/builders/CommentBuilder';
+
 import styles from '../styles/pages/CommentsPage.module.scss';
 
 function CommentsPage() {
+  const nameRef = createRef<HTMLInputElement>();
+  const emailRef = createRef<HTMLInputElement>();
+  const commentRef = createRef<HTMLTextAreaElement>();
   const { isAuthenticated, logout } = useAuth();
-  const { handleCreateComment, refs } = useComments();
-  const { nameRef, emailRef, commentRef } = refs;
+  const { createComment } = useComments();
+
+  async function handleCreateComment() {
+    await createComment(buildComment());
+    clearFields();
+  }
+
+  function buildComment() {
+    return new CommentBuilder(nameRef.current?.value)
+      .withEmail(emailRef.current?.value)
+      .withComment(commentRef.current?.value)
+      .build();
+  }
+
+  function clearFields() {
+    const nameInput = nameRef.current;
+    const emailInput = emailRef.current;
+    const commentTextArea = commentRef.current;
+
+    if (nameInput && emailInput && commentTextArea) {
+      nameInput.value = '';
+      emailInput.value = '';
+      commentTextArea.value = '';
+    }
+  }
 
   function renderButtons() {
     return (
