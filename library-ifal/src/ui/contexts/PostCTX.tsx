@@ -1,11 +1,13 @@
 import { ReactNode, createContext, useState } from 'react';
 
+import { useAuth } from '../../hooks/useAuth';
+import { useNotifications } from '../../hooks/useNotifications';
+
 import Post from '../../core/domain/models/Post';
 
 import WebDIContainer from '../../dicontainer/web';
+
 import isEmpty from '../../core/utils/isEmpty';
-import { useNotifications } from '../../hooks/useNotifications';
-import { useAuth } from '../../hooks/useAuth';
 
 interface PostCTXProps {
   posts?: Post[];
@@ -26,17 +28,26 @@ function PostProvider({ children }: PostProviderProps) {
 
   async function fetch() {
     try {
-      const webDiContainer = new WebDIContainer();
-      const postService = webDiContainer.getPostService();
-      const posts = await postService.fetch();
-
-      if (!isEmpty(posts)) {
-        setPosts(posts);
-        notifySuccess('Posts listados com sucesso!');
-      }
+      await tryToFetchPosts();
     } catch (error) {
-      notifyError('Erro ao listar posts');
+      logError('Erro ao listar posts');
     }
+  }
+
+  async function tryToFetchPosts() {
+    changeStateAndLogSuccessIfDataExists(await fetchPosts());
+  }
+
+  function changeStateAndLogSuccessIfDataExists(posts: Post[]) {
+    if (!isEmpty(posts)) {
+      setPosts(posts);
+      logSuccess('Posts listados com sucesso!');
+    }
+  }
+
+  async function fetchPosts() {
+    const postService = getPostService();
+    return await postService.fetch();
   }
 
   async function create(post: Post) {
@@ -45,13 +56,33 @@ function PostProvider({ children }: PostProviderProps) {
     }
 
     try {
-      const webDiContainer = new WebDIContainer();
-      const postService = webDiContainer.getPostService();
-      await postService.create(post);
-      notifySuccess('Post criado com sucesso!');
+      await tryToCreatePost(post);
     } catch (error) {
-      notifyError('Erro ao criar post');
+      logError('Erro ao criar post');
     }
+  }
+
+  async function tryToCreatePost(post: Post) {
+    await createPost(post);
+    logSuccess('Post criado com sucesso!');
+  }
+
+  async function createPost(post: Post) {
+    const postService = getPostService();
+    await postService.create(post);
+  }
+
+  function getPostService() {
+    const webDiContainer = new WebDIContainer();
+    return webDiContainer.getPostService();
+  }
+
+  function logSuccess(message: string) {
+    notifySuccess(message);
+  }
+
+  function logError(error: string) {
+    notifyError(error);
   }
 
   return (
