@@ -109,7 +109,7 @@ export function useForm(ref: RefObject<Form>) {
   }
 
   function arePasswords(firstField: Field, secondField: Field) {
-    return hasPasswordType(firstField) || hasPasswordType(secondField);
+    return hasPasswordType(firstField) && hasPasswordType(secondField);
   }
 
   function areEquals(firstField: Field, secondField: Field) {
