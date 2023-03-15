@@ -1,1 +1,2 @@
-export const REGISTER_PAGE_ROUTE = '/register';
+export const FIRST_PASSWORD_POSITION = 3;
+export const SECOND_PASSWORD_POSITION = 4;
