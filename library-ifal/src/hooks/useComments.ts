@@ -1,9 +1,12 @@
+import { useCallback } from 'react';
+
 import { useNotifications } from './useNotifications';
 
 import Comment from '../core/domain/models/Comment';
 
+import logWithCallback from '../core/utils/logWithCallback';
+
 import WebDIContainer from '../dicontainer/web';
-import { useCallback } from 'react';
 
 export function useComments() {
   const { notifySuccess, notifyError } = useNotifications();
@@ -16,22 +19,14 @@ export function useComments() {
     try {
       await tryToCreateComment(comment);
     } catch (error) {
-      logError('Falha ao criar comentário');
+      logWithCallback('Falha ao criar comentário', notifyError);
     }
   }
 
   async function tryToCreateComment(comment: Comment) {
     const commentService = getCommentService();
     await commentService.create(comment);
-    logSuccess('Comentário criado com sucesso!');
-  }
-
-  function logSuccess(message: string) {
-    notifySuccess(message);
-  }
-
-  function logError(error: string) {
-    notifyError(error);
+    logWithCallback('Comentário criado com sucesso!', notifySuccess);
   }
 
   function getCommentService() {
