@@ -77,9 +77,9 @@ export function useForm(ref: RefObject<Form>) {
     }
   }
 
-  function getPasswordsError(firstPassword: Field, secondField: Field) {
-    if (arePasswords(firstPassword, secondField)) {
-      return checkEqualPasswords(firstPassword, secondField);
+  function getPasswordsError(firstPassword: Field, secondPassword: Field) {
+    if (arePasswords(firstPassword, secondPassword)) {
+      return checkEqualPasswords(firstPassword, secondPassword);
     }
   }
 
@@ -108,8 +108,8 @@ export function useForm(ref: RefObject<Form>) {
     }
   }
 
-  function arePasswords(firstField: Field, secondField: Field) {
-    return hasPasswordType(firstField) && hasPasswordType(secondField);
+  function arePasswords(firstPassword: Field, secondPassword: Field) {
+    return hasPasswordType(firstPassword) && hasPasswordType(secondPassword);
   }
 
   function areEquals(firstField: Field, secondField: Field) {
