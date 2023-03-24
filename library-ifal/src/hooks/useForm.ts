@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useState } from 'react';
 
 import { useNotifications } from './useNotifications';
 
@@ -30,9 +30,7 @@ export function useForm(ref: RefObject<Form>) {
     }
   }, [error]);
 
-  function validateForm() {
-    return findFormErrors(getForm());
-  }
+  const validateForm = useCallback(() => findFormErrors(getForm()), []);
 
   function findFormErrors(form: Form) {
     return findErrors([

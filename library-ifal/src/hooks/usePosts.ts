@@ -9,43 +9,33 @@ export function usePosts() {
 
   useEffect(() => {
     async function loadPosts() {
-      await fetchPosts();
+      await fetch();
     }
 
     loadPosts();
   }, [postCTX.posts]);
 
-  const fetchPosts = useCallback(async () => {
+  const fetch = useCallback(() => fetchPosts(), [fetchPosts]);
+
+  async function fetchPosts() {
     await postCTX.fetch();
-  }, []);
-
-  const createPost = useCallback(async (post: Post) => {
-    await postCTX.create(post);
-  }, []);
-
-  function getPosts() {
-    return {
-      posts: postCTX.posts,
-    };
   }
 
-  // async function handleCreatePost() {
-  //   try {
-  //     await createPost(buildPost());
-  //   } catch (error: any) {
-  //     notifyError(error.message);
-  //   }
-  // }
+  const create = useCallback((post: Post) => createPost(post), [createPost]);
 
-  // function buildPost() {
-  //   return new PostBuilder(user?.name)
-  //     .withTitle(titleRef.current?.value)
-  //     .withContent(contentRef.current?.value)
-  //     .build();
-  // }
+  async function createPost(post: Post) {
+    await postCTX.create(post);
+  }
+
+  const getPosts = useCallback(
+    () => ({
+      posts: postCTX.posts,
+    }),
+    [postCTX.posts]
+  );
 
   return {
-    createPost,
+    create,
     getPosts,
   };
 }

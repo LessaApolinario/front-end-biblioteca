@@ -11,11 +11,14 @@ import WebDIContainer from '../dicontainer/web';
 export function useComments() {
   const { notifySuccess, notifyError } = useNotifications();
 
-  const createComment = useCallback(async (comment: Comment) => {
-    await create(comment);
-  }, []);
+  const create = useCallback(
+    (comment: Comment) => {
+      createComment(comment);
+    },
+    [createComment]
+  );
 
-  async function create(comment: Comment) {
+  async function createComment(comment: Comment) {
     try {
       await tryToCreateComment(comment);
     } catch (error) {
@@ -35,6 +38,6 @@ export function useComments() {
   }
 
   return {
-    createComment,
+    create,
   };
 }

@@ -11,37 +11,49 @@ export function useReviews() {
   const reviewCTX = useContext(ReviewCTX);
 
   useEffect(() => {
-    async function loadReviews() {
-      await fetchReviews();
+    function loadReviews() {
+      fetch();
     }
 
     loadReviews();
   }, [reviewCTX.reviews]);
 
-  const searchReview = useCallback(async (query: string) => {
+  const search = useCallback(
+    (query: string) => searchReviews(query),
+    [searchReviews]
+  );
+
+  async function searchReviews(query: string) {
     await reviewCTX.search(query);
-  }, []);
+  }
 
-  const fetchReviews = useCallback(async () => {
+  const fetch = useCallback(() => fetchReviews(), [fetchReviews]);
+
+  async function fetchReviews() {
     await reviewCTX.fetch();
-  }, []);
+  }
 
-  const createReview = useCallback(async (review: Review) => {
+  const create = useCallback(
+    (review: Review) => createReview(review),
+    [createReview]
+  );
+
+  async function createReview(review: Review) {
     try {
       await reviewCTX.create(review);
     } catch (error: any) {
       notifyError(error.message);
     }
-  }, []);
-
-  function getReviews() {
-    return { reviews: reviewCTX.reviews };
   }
 
+  const getReviews = useCallback(
+    () => ({ reviews: reviewCTX.reviews }),
+    [reviewCTX.reviews]
+  );
+
   return {
-    fetchReviews,
-    searchReview,
-    createReview,
+    search,
+    create,
     getReviews,
   };
 }

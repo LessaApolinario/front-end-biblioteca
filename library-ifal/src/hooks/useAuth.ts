@@ -16,9 +16,10 @@ export function useAuth() {
   const navigate = useNavigate();
   const { notifySuccess, notifyError } = useNotifications();
 
-  const register = useCallback(async (user: User) => {
-    await tryToRegister(user);
-  }, []);
+  const register = useCallback(
+    (user: User) => tryToRegister(user),
+    [tryToRegister]
+  );
 
   async function tryToRegister(user: User) {
     try {
@@ -31,10 +32,9 @@ export function useAuth() {
   }
 
   const login = useCallback(
-    async ({ username, password }: AuthCredentialsDTO) => {
-      await tryToLogin({ username, password });
-    },
-    []
+    ({ username, password }: AuthCredentialsDTO) =>
+      tryToLogin({ username, password }),
+    [tryToLogin]
   );
 
   async function tryToLogin({ username, password }: AuthCredentialsDTO) {
@@ -51,9 +51,7 @@ export function useAuth() {
     }
   }
 
-  const logout = useCallback(async () => {
-    await tryToLogout();
-  }, []);
+  const logout = useCallback(() => tryToLogout(), [tryToLogout]);
 
   async function tryToLogout() {
     try {
@@ -66,9 +64,12 @@ export function useAuth() {
     }
   }
 
-  function getUser() {
-    return { user: authCTX.user };
-  }
+  const getUser = useCallback(
+    () => ({
+      user: authCTX.user,
+    }),
+    [authCTX.user]
+  );
 
   return {
     isAuthenticated,

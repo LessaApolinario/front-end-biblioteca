@@ -1,24 +1,28 @@
-import { ToastPosition, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { useCallback } from 'react';
+import { ToastPosition, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const position: ToastPosition = toast.POSITION.TOP_RIGHT
+const position: ToastPosition = toast.POSITION.TOP_RIGHT;
 
 export function useNotifications() {
-  function notifySuccess(message: string) {
-    toast.success(message, { position })
-  }
+  const notifySuccess = useCallback(
+    (message: string) => toast.success(message, { position }),
+    [toast.success]
+  );
 
-  function notifyInfo(message: string) {
-    toast.info(message, { position })
-  }
+  const notifyInfo = useCallback(
+    (message: string) => toast.info(message, { position }),
+    [toast.info]
+  );
 
-  function notifyError(message: string) {
-    toast.error(message, { position })
-  }
+  const notifyError = useCallback(
+    (message: string) => toast.error(message, { position }),
+    [toast.error]
+  );
 
   return {
     notifySuccess,
     notifyInfo,
-    notifyError
-  }
+    notifyError,
+  };
 }
