@@ -1,3 +1,7 @@
+import { createRef } from 'react';
+
+import { useAuth } from '../../hooks/useAuth';
+
 import { GiTreeBranch } from 'react-icons/gi';
 
 import Button from '../components/Button';
@@ -7,13 +11,20 @@ import Input from '../components/Input';
 import Label from '../components/Label';
 import LinkComponent from '../components/LinkComponent';
 
-import { useAuth } from '../../hooks/useAuth';
+import getFieldFromRef from '../../core/utils/getFieldFromRef';
 
 import styles from '../styles/pages/LoginPage.module.scss';
 
 function LoginPage() {
-  const { handleLogin, refs } = useAuth();
-  const { usernameRef, passwordRef } = refs;
+  const { login } = useAuth();
+  const usernameRef = createRef<HTMLInputElement>();
+  const passwordRef = createRef<HTMLInputElement>();
+
+  async function handleLogin() {
+    const { field: username } = getFieldFromRef(usernameRef);
+    const { field: password } = getFieldFromRef(passwordRef);
+    await login({ username, password });
+  }
 
   return (
     <div className={styles.container}>

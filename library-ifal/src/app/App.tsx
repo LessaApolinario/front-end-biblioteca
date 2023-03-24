@@ -3,6 +3,9 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 import AuthProvider from '../ui/contexts/AuthCTX';
+import BookProvider from '../ui/contexts/BookCTX';
+import PostProvider from '../ui/contexts/PostCTX';
+import ReviewProvider from '../ui/contexts/ReviewCTX';
 
 import BooksPage from '../ui/pages/BooksPage';
 import CommentsPage from '../ui/pages/CommentsPage';
@@ -20,20 +23,29 @@ function App() {
   return (
     <div className={styles.container}>
       <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/books" element={<BooksPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/reviews" element={<ReviewPage />} />
-            <Route path="/reviews/review/:id" element={<ReviewDetailsPage />} />
-            <Route path="/contact" element={<CommentsPage />} />
-            <Route path="/hints" element={<HintsPage />} />
-            <Route path="/" element={<Navigate replace to="/home" />} />
-            <Route path="/*" element={<Error404Page />} />
-          </Routes>
-        </AuthProvider>
+        <BookProvider>
+          <PostProvider>
+            <ReviewProvider>
+              <AuthProvider>
+                <Routes>
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/books" element={<BooksPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/reviews" element={<ReviewPage />} />
+                  <Route
+                    path="/reviews/review/:id"
+                    element={<ReviewDetailsPage />}
+                  />
+                  <Route path="/contact" element={<CommentsPage />} />
+                  <Route path="/hints" element={<HintsPage />} />
+                  <Route path="/" element={<Navigate replace to="/home" />} />
+                  <Route path="/*" element={<Error404Page />} />
+                </Routes>
+              </AuthProvider>
+            </ReviewProvider>
+          </PostProvider>
+        </BookProvider>
       </BrowserRouter>
       <ToastContainer />
     </div>

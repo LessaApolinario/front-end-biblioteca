@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from '../../hooks/useRouter';
 
 import Text from './Text';
 import Flex from './Flex';
@@ -11,7 +11,9 @@ interface LinkComponentProps {
 }
 
 function LinkComponent(props: LinkComponentProps) {
-  const navigate = useNavigate();
+  const { goto } = useRouter();
+
+  const redirectToPage = () => goto(props.to);
 
   function handleLinkText(): string[] {
     const words = props.text.split(' ');
@@ -28,7 +30,7 @@ function LinkComponent(props: LinkComponentProps) {
   return (
     <Flex className={styles.container} orientation={'row'}>
       <Text className={'primary'} text={title} />
-      <span onClick={() => navigate(props.to)}>{subtitle}</span>
+      <span onClick={redirectToPage}>{subtitle}</span>
     </Flex>
   );
 }

@@ -1,0 +1,46 @@
+.container {
+  $primary: #5b4b8a;
+  $secondary: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  .searchForm {
+    width: 80%;
+
+    margin-bottom: 1.5rem;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    > input {
+      flex: 1;
+      padding: 1rem;
+
+      &:focus {
+        outline-color: $primary;
+      }
+
+      &::placeholder {
+        color: $primary;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 1rem;
+
+      > button {
+        padding: 1rem;
+      }
+    }
+  }
+}

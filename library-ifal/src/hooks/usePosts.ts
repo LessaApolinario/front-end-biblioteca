@@ -1,75 +1,41 @@
-import { createRef, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
+
+import { PostCTX } from '../ui/contexts/PostCTX';
 
 import Post from '../core/domain/models/Post';
 
-import PostBuilder from '../core/domain/builders/PostBuilder';
-
-import WebDIContainer from '../dicontainer/web';
-
-import { useNotifications } from './useNotifications';
-import { useAuth } from './useAuth';
-
 export function usePosts() {
-  const [data, setData] = useState<Post[]>();
-  const { notifySuccess, notifyError } = useNotifications();
-  const { isAuthenticated, user } = useAuth();
-  const titleRef = createRef<HTMLInputElement>();
-  const contentRef = createRef<HTMLTextAreaElement>();
+  const postCTX = useContext(PostCTX);
 
   useEffect(() => {
     async function loadPosts() {
-      await fetchPosts();
+      await fetch();
     }
 
     loadPosts();
-  }, [data]);
+  }, [postCTX.posts]);
+
+  const fetch = useCallback(() => fetchPosts(), [fetchPosts]);
 
   async function fetchPosts() {
-    try {
-      const webDiContainer = new WebDIContainer();
-      const postService = webDiContainer.getPostService();
-      const posts = await postService.fetch();
-      setData(posts);
-      notifySuccess('Posts listados com sucesso!');
-    } catch (error) {
-      notifyError('Erro ao listar posts');
-    }
+    await postCTX.fetch();
   }
 
-  async function handleCreatePost() {
-    try {
-      await createPost(buildPost());
-    } catch (error: any) {
-      notifyError(error.message);
-    }
-  }
-
-  function buildPost() {
-    return new PostBuilder(user?.name)
-      .withTitle(titleRef.current?.value)
-      .withContent(contentRef.current?.value)
-      .build();
-  }
+  const create = useCallback((post: Post) => createPost(post), [createPost]);
 
   async function createPost(post: Post) {
-    if (!isAuthenticated) {
-      throw new Error('Aviso: é preciso estar logado para criar posts.');
-    }
-
-    try {
-      const webDiContainer = new WebDIContainer();
-      const postService = webDiContainer.getPostService();
-      await postService.create(post);
-      notifySuccess('Post criado com sucesso!');
-    } catch (error) {
-      notifyError('Erro ao criar post');
-    }
+    await postCTX.create(post);
   }
 
+  const getPosts = useCallback(
+    () => ({
+      posts: postCTX.posts,
+    }),
+    [postCTX.posts]
+  );
+
   return {
-    data,
-    handleCreatePost,
-    fetchPosts,
-    refs: { titleRef, contentRef },
+    create,
+    getPosts,
   };
 }

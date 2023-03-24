@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
+import { useRouter } from '../../hooks/useRouter';
 import Button from '../components/Button';
 import ButtonsHeader from '../components/ButtonsHeader';
 import Hint from '../components/Hint';
@@ -7,11 +6,15 @@ import Hint from '../components/Hint';
 import styles from '../styles/pages/HintsPage.module.scss';
 
 function HintsPage() {
-  const navigate = useNavigate();
+  const { redirectToPreviousPage } = useRouter();
 
   function renderButtons() {
     return (
-      <Button type="button" btnType="secondary" onClick={() => navigate(-1)}>
+      <Button
+        type="button"
+        btnType="secondary"
+        onClick={redirectToPreviousPage}
+      >
         Voltar
       </Button>
     );

@@ -1,58 +1,43 @@
-import { createRef } from 'react';
+import { useCallback } from 'react';
 
 import { useNotifications } from './useNotifications';
 
-import CommentBuilder from '../core/domain/builders/CommentBuilder';
+import Comment from '../core/domain/models/Comment';
+
+import logWithCallback from '../core/utils/logWithCallback';
 
 import WebDIContainer from '../dicontainer/web';
 
 export function useComments() {
   const { notifySuccess, notifyError } = useNotifications();
-  const nameRef = createRef<HTMLInputElement>();
-  const emailRef = createRef<HTMLInputElement>();
-  const commentRef = createRef<HTMLTextAreaElement>();
 
-  async function handleCreateComment() {
-    await create();
-    clearFields();
-  }
+  const create = useCallback(
+    (comment: Comment) => {
+      createComment(comment);
+    },
+    [createComment]
+  );
 
-  async function create() {
+  async function createComment(comment: Comment) {
     try {
-      const diContainer = new WebDIContainer();
-      const commentService = diContainer.getCommentService();
-      await commentService.create(buildComment());
-      notifySuccess('Comentário criado com sucesso!');
-    } catch (error: any) {
-      notifyError('Falha ao criar comentário');
+      await tryToCreateComment(comment);
+    } catch (error) {
+      logWithCallback('Falha ao criar comentário', notifyError);
     }
   }
 
-  function buildComment() {
-    return new CommentBuilder(nameRef.current?.value)
-      .withEmail(emailRef.current?.value)
-      .withComment(commentRef.current?.value)
-      .build();
+  async function tryToCreateComment(comment: Comment) {
+    const commentService = getCommentService();
+    await commentService.create(comment);
+    logWithCallback('Comentário criado com sucesso!', notifySuccess);
   }
 
-  function clearFields() {
-    const nameInput = nameRef.current;
-    const emailInput = emailRef.current;
-    const commentTextArea = commentRef.current;
-
-    if (nameInput && emailInput && commentTextArea) {
-      nameInput.value = '';
-      emailInput.value = '';
-      commentTextArea.value = '';
-    }
+  function getCommentService() {
+    const webDiContainer = new WebDIContainer();
+    return webDiContainer.getCommentService();
   }
 
   return {
-    handleCreateComment,
-    refs: {
-      nameRef,
-      emailRef,
-      commentRef,
-    },
+    create,
   };
 }

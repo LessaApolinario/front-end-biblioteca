@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 interface TableProps<T> {
   className?: string;
-  data: T[];
+  data?: T[];
   renderItem: (item: T) => ReactNode;
   columns: string[];
   onClick?(): void;
@@ -18,7 +18,7 @@ function Table<T>(props: TableProps<T>) {
           ))}
         </tr>
       </thead>
-      <tbody>{props.data.map((item) => props.renderItem(item))}</tbody>
+      <tbody>{props?.data?.map((item) => props.renderItem(item))}</tbody>
     </table>
   );
 }

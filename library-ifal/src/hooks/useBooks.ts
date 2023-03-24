@@ -1,62 +1,30 @@
-import { createRef, useCallback, useState } from 'react';
+import { useCallback, useContext } from 'react';
 
-import Book from '../core/domain/models/Book';
-
-import { useNotifications } from './useNotifications';
-
-import WebDIContainer from '../dicontainer/web';
+import { BookCTX } from '../ui/contexts/BookCTX';
 
 export function useBooks() {
-  const { notifySuccess, notifyError } = useNotifications();
-  const [books, setBooks] = useState<Book[]>([]);
-  const searchRef = createRef<HTMLInputElement>();
+  const bookCTX = useContext(BookCTX);
 
-  const listBooks = useCallback(async () => {
-    await list();
-  }, []);
+  const fetch = useCallback(() => fetchBooks(), [fetchBooks]);
 
-  async function list(): Promise<void> {
-    try {
-      const webDiContainer = new WebDIContainer();
-      const bookService = webDiContainer.getBookService();
-      const books = await bookService.fetch();
-      const isEmpty = !books?.length;
-
-      if (books && !isEmpty) {
-        setBooks(books);
-        notifySuccess('Livros listados com sucesso!');
-      }
-    } catch (error) {
-      notifyError('Erro ao listar livros');
-    }
+  async function fetchBooks() {
+    await bookCTX.fetch();
   }
 
-  const searchBooks = useCallback(async () => {
-    const searchInput = searchRef?.current;
-    const query = searchInput?.value ?? '';
-    await search(query);
-  }, []);
+  const search = useCallback((query: string) => SearchBooks(query), []);
 
-  async function search(query: string): Promise<void> {
-    try {
-      const webDiContainer = new WebDIContainer();
-      const bookService = webDiContainer.getBookService();
-      const books = await bookService.search(query);
-      const isEmpty = !books.length;
-
-      if (!isEmpty) {
-        setBooks(books);
-        notifySuccess('Livros buscados com sucesso!');
-      }
-    } catch (error) {
-      notifyError('Erro ao buscar livros');
-    }
+  async function SearchBooks(query: string) {
+    await bookCTX.search(query);
   }
+
+  const getBooks = useCallback(
+    () => ({ books: bookCTX.books }),
+    [bookCTX.books]
+  );
 
   return {
-    books,
-    listBooks,
-    searchBooks,
-    refs: { searchRef },
+    getBooks,
+    fetch,
+    search,
   };
 }
