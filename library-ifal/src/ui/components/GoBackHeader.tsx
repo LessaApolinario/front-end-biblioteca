@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from '../../hooks/useRouter';
 
 import Button from './Button';
 
@@ -11,17 +11,17 @@ interface GoBackHeaderProps {
 }
 
 function GoBackHeader(props: GoBackHeaderProps) {
-  const navigate = useNavigate();
+  const { redirectToPreviousPage } = useRouter();
   const className = `${styles.container} ${styles[props.headerType]}`;
-
-  function goBack() {
-    navigate(-1);
-  }
 
   return (
     <header className={className}>
       <nav className={styles.navbar}>
-        <Button type={'button'} btnType={props.btnType} onClick={goBack}>
+        <Button
+          type={'button'}
+          btnType={props.btnType}
+          onClick={redirectToPreviousPage}
+        >
           Voltar
         </Button>
 

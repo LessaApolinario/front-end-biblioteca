@@ -1,9 +1,8 @@
 import { ReactNode, createRef, useState } from 'react';
 
-import { useNavigate } from 'react-router-dom';
-
 import { useAuth } from '../../hooks/useAuth';
 import { useReviews } from '../../hooks/useReviews';
+import { useRouter } from '../../hooks/useRouter';
 
 import Review from '../../core/domain/models/Review';
 
@@ -31,7 +30,7 @@ function ReviewPage() {
   const authorNameRef = createRef<HTMLInputElement>();
   const reviewTextareaRef = createRef<HTMLTextAreaElement>();
   const searchRef = createRef<HTMLInputElement>();
-  const navigate = useNavigate();
+  const { redirectToDetailsPage, redirectToPreviousPage } = useRouter();
   const { isAuthenticated, getUser, logout } = useAuth();
   const { user } = getUser();
   const { search, create, getReviews } = useReviews();
@@ -55,10 +54,6 @@ function ReviewPage() {
       .withReview(reviewTextareaRef.current?.value)
       .withAvailable(true)
       .build();
-  }
-
-  function goBack() {
-    navigate(-1);
   }
 
   const RenderAddReviewForm = () => {
@@ -104,16 +99,19 @@ function ReviewPage() {
 
   const handleLogout = async () => {
     await logout();
-    goBack();
+    redirectToPreviousPage();
   };
 
-  const redirectToReviewsDetails = (item: Review) => {
-    navigate(`/reviews/review/${item._id}`, { state: item });
+  const redirectToReviewsDetailsPage = (item: Review) => {
+    redirectToDetailsPage<Review>(`/reviews/review/${item._id}`, item);
   };
 
   function renderItem(item: Review): ReactNode {
     return (
-      <ReviewItem data={item} onClick={() => redirectToReviewsDetails(item)} />
+      <ReviewItem
+        data={item}
+        onClick={() => redirectToReviewsDetailsPage(item)}
+      />
     );
   }
 
@@ -127,7 +125,11 @@ function ReviewPage() {
     }
 
     return (
-      <Button type="button" btnType="secondary" onClick={goBack}>
+      <Button
+        type="button"
+        btnType="secondary"
+        onClick={redirectToPreviousPage}
+      >
         Voltar
       </Button>
     );
