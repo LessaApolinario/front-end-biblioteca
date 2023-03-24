@@ -34,16 +34,16 @@ function ReviewPage() {
   const navigate = useNavigate();
   const { isAuthenticated, getUser, logout } = useAuth();
   const { user } = getUser();
-  const { searchReview, createReview, getReviews } = useReviews();
+  const { search, create, getReviews } = useReviews();
   const { reviews } = getReviews();
 
   async function handleSearchReview() {
     const { field: query } = getFieldFromRef(searchRef);
-    await searchReview(query);
+    await search(query);
   }
 
   async function handleCreateReview() {
-    await createReview(buildReview());
+    await create(buildReview());
     setIsVisible(false);
   }
 

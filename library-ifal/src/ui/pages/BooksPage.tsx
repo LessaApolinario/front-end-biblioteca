@@ -15,13 +15,13 @@ import getFieldFromRef from '../../core/utils/getFieldFromRef';
 import styles from '../styles/pages/BooksPage.module.scss';
 
 function BooksPage() {
-  const { fetchBooks, searchBooks, getBooks } = useBooks();
+  const { fetch, search, getBooks } = useBooks();
   const { books } = getBooks();
   const searchRef = createRef<HTMLInputElement>();
 
   function handleSearchBooks() {
     const { field: query } = getFieldFromRef(searchRef);
-    searchBooks(query);
+    search(query);
   }
 
   function renderItem(item: Book): ReactNode {
@@ -34,7 +34,7 @@ function BooksPage() {
         <Button type="submit" btnType="primary">
           Pesquisar livros
         </Button>
-        <Button type="button" btnType="primary" onClick={fetchBooks}>
+        <Button type="button" btnType="primary" onClick={fetch}>
           Listar livros
         </Button>
       </>

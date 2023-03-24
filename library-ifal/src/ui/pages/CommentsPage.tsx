@@ -21,10 +21,10 @@ function CommentsPage() {
   const emailRef = createRef<HTMLInputElement>();
   const commentRef = createRef<HTMLTextAreaElement>();
   const { isAuthenticated, logout } = useAuth();
-  const { createComment } = useComments();
+  const { create } = useComments();
 
-  async function handleCreateComment() {
-    await createComment(buildComment());
+  function handleCreateComment() {
+    create(buildComment());
     clearFields();
   }
 

@@ -28,12 +28,12 @@ function PostsArea() {
   const { getUser } = useAuth();
   const { user } = getUser();
   const { notifyError } = useNotifications();
-  const { createPost, getPosts } = usePosts();
+  const { create, getPosts } = usePosts();
   const { posts } = getPosts();
 
   async function handleCreatePost() {
     try {
-      await createPost(buildPost());
+      await create(buildPost());
     } catch (error: any) {
       notifyError(error.message);
     }
