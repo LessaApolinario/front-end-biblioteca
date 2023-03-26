@@ -11,9 +11,9 @@ export function useBooks() {
     await bookCTX.fetch();
   }
 
-  const search = useCallback((query: string) => SearchBooks(query), []);
+  const search = useCallback((query: string) => searchBooks(query), []);
 
-  async function SearchBooks(query: string) {
+  async function searchBooks(query: string) {
     await bookCTX.search(query);
   }
 
