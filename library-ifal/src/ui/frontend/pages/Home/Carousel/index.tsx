@@ -46,7 +46,9 @@ function Carousel() {
     <div className={styles.container}>
       <div className={styles.images}>
         {carouselCardData.map(({ to, src, text }) => {
-          return <CarouselCard to={to} src={src} text={text} />;
+          return (
+            <CarouselCard key={`${src + text}`} to={to} src={src} text={text} />
+          );
         })}
       </div>
     </div>

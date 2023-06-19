@@ -1,6 +1,6 @@
-import PostsArea from '../../../components/PostsArea';
 import { Carousel } from './Carousel';
 import { MainHeader } from './MainHeader';
+import { PostsSection } from './PostsSection';
 import styles from './styles.module.scss';
 
 export default function Home() {
@@ -10,7 +10,7 @@ export default function Home() {
       <main className={styles.grid}>
         <h1>Bem-vindo</h1>
         <Carousel />
-        <PostsArea />
+        <PostsSection />
       </main>
     </div>
   );

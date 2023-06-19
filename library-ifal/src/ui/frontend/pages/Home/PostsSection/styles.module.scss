@@ -1,0 +1,23 @@
+@import '../../../styles/variables/colors/index.scss';
+
+.container {
+  width: 100%;
+  padding: 1rem 1.5rem;
+
+  > h3 {
+    margin: 1rem 0;
+    font-size: 3.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  > .posts {
+    width: 100%;
+
+    > *:not(:last-child) {
+      margin-bottom: 1.25rem;
+    }
+  }
+}
