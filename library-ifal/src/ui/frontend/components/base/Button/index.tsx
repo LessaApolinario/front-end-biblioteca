@@ -7,7 +7,7 @@ interface Props {
   className?: string;
 }
 
-type ButtonColors = 'normal' | 'purple' | 'white';
+type ButtonColors = 'normal' | 'yellow' | 'black';
 
 function Button({
   children,

@@ -1,0 +1,23 @@
+@import '../../styles/variables/colors/index.scss';
+
+.container {
+  width: 100%;
+  color: $primary;
+  background-color: $secondary;
+
+  .icon {
+    fill: $secondary;
+  }
+
+  .grid {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 0fr 1fr 1fr;
+    gap: 0.8rem;
+    place-items: center;
+
+    > h1 {
+      font-size: 4rem;
+    }
+  }
+}

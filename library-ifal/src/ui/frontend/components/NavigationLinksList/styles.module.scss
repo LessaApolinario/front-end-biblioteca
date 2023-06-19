@@ -1,0 +1,28 @@
+@import '../../styles/variables/colors/index.scss';
+
+.container {
+  > ul {
+    list-style: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    li {
+      font-weight: bold;
+      font-size: 1.05rem;
+
+      color: $secondary;
+      padding: 0.5rem 1rem;
+
+      cursor: pointer;
+
+      border: 1px solid transparent;
+
+      &:hover {
+        border-top-color: $secondary;
+        border-bottom-color: $secondary;
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@
   border-radius: 0.25rem;
   cursor: pointer;
 
-  &.white {
+  &.black {
     color: $primary;
     background-color: $secondary;
     border-color: $primary;
@@ -19,7 +19,7 @@
     }
   }
 
-  &.purple {
+  &.yellow {
     color: $secondary;
     background-color: $primary;
     border-color: $secondary;

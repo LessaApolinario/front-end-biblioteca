@@ -1,0 +1,35 @@
+@import '../../../styles/variables/colors/index.scss';
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    background-color: $secondary;
+    width: 0.25rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: 0 0 3px $primary;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 0.8rem;
+    background-color: $primary;
+  }
+
+  .images {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    user-select: none;
+
+    padding: 0.8rem 0rem;
+  }
+}

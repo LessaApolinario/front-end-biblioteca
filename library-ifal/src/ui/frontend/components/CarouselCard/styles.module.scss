@@ -1,0 +1,24 @@
+.container {
+  flex: none;
+
+  width: 183px;
+
+  cursor: pointer;
+
+  img {
+    object-fit: cover;
+
+    width: 100%;
+
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+  }
+
+  &:not(:last-child) {
+    margin-right: 1.5rem;
+  }
+}
