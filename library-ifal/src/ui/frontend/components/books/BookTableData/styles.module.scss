@@ -1,0 +1,16 @@
+@import '../../../styles/variables/colors/index.scss';
+
+.container {
+  color: $primary;
+  border: 1px solid $primary;
+  border-radius: 3px;
+  padding: 1rem;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  place-items: center;
+
+  tr td {
+    text-align: center;
+  }
+}

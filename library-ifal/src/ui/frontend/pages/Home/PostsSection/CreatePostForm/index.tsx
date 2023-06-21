@@ -64,7 +64,9 @@ function CreatePostForm({ isVisible }: Props) {
         ></TextArea>
       </Flex>
 
-      <Button color="yellow">Publicar post</Button>
+      <Button type="submit" color="black">
+        Publicar post
+      </Button>
     </Form>
   );
 }
