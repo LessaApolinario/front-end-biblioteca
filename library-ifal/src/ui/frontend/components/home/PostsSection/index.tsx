@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { OpenCloseButton } from '../../../components/OpenCloseButton';
+import { OpenCloseButton } from '../../OpenCloseButton';
 import { CreatePostForm } from './CreatePostForm';
 import { ListPosts } from './ListPosts';
 import styles from './styles.module.scss';

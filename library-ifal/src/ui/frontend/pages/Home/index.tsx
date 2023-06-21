@@ -1,6 +1,6 @@
-import { Carousel } from './Carousel';
-import { MainHeader } from './MainHeader';
-import { PostsSection } from './PostsSection';
+import { Carousel } from '../../components/home/Carousel';
+import { MainHeader } from '../../components/home/MainHeader';
+import { PostsSection } from '../../components/home/PostsSection';
 import styles from './styles.module.scss';
 
 export default function Home() {

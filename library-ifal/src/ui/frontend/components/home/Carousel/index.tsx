@@ -8,7 +8,7 @@ import _1984 from '../../../../../assets/img/_1984.jpg';
 import funcoes from '../../../../../assets/img/funcoes.jpg';
 import padroesdeprojeto from '../../../../../assets/img/padroesdeprojeto.jpg';
 
-import CarouselCard from '../../../components/CarouselCard';
+import CarouselCard from '../../CarouselCard';
 import styles from './styles.module.scss';
 
 interface CarouselCardProps {

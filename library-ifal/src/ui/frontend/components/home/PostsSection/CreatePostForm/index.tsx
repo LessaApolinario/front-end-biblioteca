@@ -8,7 +8,7 @@ import Form from '../../../../../components/Form';
 import Input from '../../../../../components/Input';
 import Label from '../../../../../components/Label';
 import TextArea from '../../../../../components/TextArea';
-import { Button } from '../../../../components/base/Button';
+import { Button } from '../../../base/Button';
 import styles from './styles.module.scss';
 
 interface Props {
