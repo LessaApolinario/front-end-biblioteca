@@ -3,6 +3,7 @@ import getFieldFromRef from '../../../../../core/utils/getFieldFromRef';
 import { useReviews } from '../../../../../hooks/useReviews';
 import SearchForm from '../../../../components/SearchForm';
 import { Button } from '../../base/Button';
+import styles from './styles.module.scss';
 
 function SearchReviews() {
   const { search } = useReviews();
@@ -23,6 +24,7 @@ function SearchReviews() {
 
   return (
     <SearchForm
+      className={styles.container}
       placeholder="Buscar resenhas"
       searchRef={searchRef}
       handleSubmit={handleSearchReviews}

@@ -10,11 +10,14 @@ interface SearchFormProps {
   searchRef: RefObject<HTMLInputElement>;
   handleSubmit(): void | Promise<void>;
   renderButtons(): ReactNode;
+  className?: string;
 }
 
 function SearchForm(props: SearchFormProps) {
+  const searchFormClassName = `${styles.container} ${props.className ?? ''}`;
+
   return (
-    <section className={styles.container}>
+    <section className={searchFormClassName}>
       <Form
         className={styles.searchForm}
         orientation={'row'}

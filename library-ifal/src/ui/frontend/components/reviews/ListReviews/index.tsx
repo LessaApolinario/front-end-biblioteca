@@ -11,9 +11,20 @@ function ListReviews() {
     return <ReviewCard props={review} key={review._id} />;
   }
 
+  const r: Review[] = [
+    Review.fromJSON({
+      id: 'çakljhgjsfkldff',
+      name: 'Lessa',
+      title_book: 'Math',
+      writer: 'Stewart',
+      review: 'Muito bom de verdade.',
+      created_at: new Date(),
+    }),
+  ];
+
   return (
     <div className={styles.container}>
-      {reviews?.map((review) => renderItem(review))}
+      {r?.map((review) => renderItem(review))}
     </div>
   );
 }
