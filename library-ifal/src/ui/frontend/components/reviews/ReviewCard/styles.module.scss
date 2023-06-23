@@ -1,0 +1,26 @@
+@import '../../../styles/variables/colors/index.scss';
+
+.container {
+  min-width: 25rem;
+  padding: 1rem;
+
+  color: $primary;
+  border: 1px solid $primary;
+  border-radius: 0.25rem;
+
+  > :not(:last-child) {
+    margin-bottom: 0.8rem;
+  }
+
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  > .review {
+    // white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+}

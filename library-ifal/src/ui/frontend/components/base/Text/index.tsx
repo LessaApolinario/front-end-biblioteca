@@ -10,7 +10,7 @@ type TextSizes = 'small' | 'medium' | 'large';
 
 function Text({ children, size, className }: PropsWithChildren<Props>) {
   const textClassName = `${styles.container} ${styles[size]} ${
-    styles[className ?? '']
+    className ?? ''
   }`;
   return <p className={textClassName}>{children}</p>;
 }

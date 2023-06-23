@@ -1,5 +1,5 @@
 import { Carousel } from '../../components/home/Carousel';
-import { MainHeader } from '../../components/home/MainHeader';
+import { MainHeader } from '../../components/MainHeader';
 import { PostsSection } from '../../components/home/PostsSection';
 import styles from './styles.module.scss';
 

@@ -1,0 +1,17 @@
+@mixin center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin rowWithGap {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@mixin spaceBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
