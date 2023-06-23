@@ -1,0 +1,15 @@
+@import '../../../styles/variables/colors/index.scss';
+@import '../../../styles/variables/mixins/index.scss';
+
+.container {
+  @include spaceBetween;
+
+  .user,
+  .time {
+    @include rowWithGap;
+
+    > svg:hover {
+      opacity: 0.9;
+    }
+  }
+}

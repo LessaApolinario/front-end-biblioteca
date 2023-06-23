@@ -1,7 +1,7 @@
 import { Leaf } from '@phosphor-icons/react';
-import { AuthenticationButtons } from '../../../components/AuthenticationButtons';
-import { NavigationLinksList } from '../../../components/NavigationLinksList';
-import { Header } from '../../../components/base/Header';
+import { AuthenticationButtons } from '../AuthenticationButtons';
+import { NavigationLinksList } from '../NavigationLinksList';
+import { Header } from '../base/Header';
 
 function MainHeader() {
   return (

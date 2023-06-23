@@ -16,56 +16,7 @@ function ListBooks() {
   return (
     <Table<Book>
       className={styles.container}
-      data={[
-        Book.fromJSON({
-          _id: 'alkdhgiluakgflkasgbfçk',
-          autor: 'Lessa',
-          titulo: 'Math easy',
-          edicao: '7 ed.',
-          ano: '2003',
-          localizacao: 'ax23-90',
-        }),
-        Book.fromJSON({
-          _id: 'asdasdasdasdasasdasdasddasdasd',
-          autor: 'Lessa',
-          titulo: 'Math easy',
-          edicao: '7 ed.',
-          ano: '2003',
-          localizacao: 'ax23-90',
-        }),
-        Book.fromJSON({
-          _id: 'alkdhgiluakgflasdasdasdkasgbfçk',
-          autor: 'Lessa',
-          titulo: 'Math easy',
-          edicao: '7 ed.',
-          ano: '2003',
-          localizacao: 'ax23-90',
-        }),
-        Book.fromJSON({
-          _id: 'alkdhgiluakgflasdasdasdkasgbfçk',
-          autor: 'Lessa',
-          titulo: 'Math easy',
-          edicao: '7 ed.',
-          ano: '2003',
-          localizacao: 'ax23-90',
-        }),
-        Book.fromJSON({
-          _id: 'alkdhgiluakgflkaasdasdasdsgbfçk',
-          autor: 'Lessa',
-          titulo: 'Math easy',
-          edicao: '7 ed.',
-          ano: '2003',
-          localizacao: 'ax23-90',
-        }),
-        Book.fromJSON({
-          _id: 'asfdasfdasdfsdsdfgsdgsd',
-          autor: 'Lessa',
-          titulo: 'Math easy',
-          edicao: '7 ed.',
-          ano: '2003',
-          localizacao: 'ax23-90',
-        }),
-      ]}
+      data={books}
       renderItem={renderItem}
       columns={['Título', 'Autor', 'Edição', 'Ano', 'Localização']}
     />

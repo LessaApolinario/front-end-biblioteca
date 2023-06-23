@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 function PostsSection() {
   const [isVisible, setIsVisible] = useState(false);
 
-  function toggleIsVisible() {
+  function toggleCreatePostsFormVisibility() {
     setIsVisible(!isVisible);
   }
 
@@ -19,7 +19,7 @@ function PostsSection() {
         <OpenCloseButton
           isVisible={isVisible}
           dataTitle={'Adicionar post'}
-          toggle={toggleIsVisible}
+          toggle={toggleCreatePostsFormVisibility}
         />
         <CreatePostForm isVisible={isVisible} />
         <ListPosts />
