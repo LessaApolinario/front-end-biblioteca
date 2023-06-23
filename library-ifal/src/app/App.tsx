@@ -18,6 +18,9 @@ import ReviewPage from '../ui/pages/ReviewPage';
 import ReviewDetailsPage from '../ui/pages/ReviewDetailsPage';
 
 import styles from './styles.module.scss';
+import Home from '../ui/frontend/pages/Home';
+import Books from '../ui/frontend/pages/Books';
+import Reviews from '../ui/frontend/pages/Reviews';
 
 function App() {
   return (
@@ -41,6 +44,9 @@ function App() {
                   <Route path="/hints" element={<HintsPage />} />
                   <Route path="/" element={<Navigate replace to="/home" />} />
                   <Route path="/*" element={<Error404Page />} />
+                  <Route path="/test" element={<Home />} />
+                  <Route path="/books_test" element={<Books />} />
+                  <Route path="/reviews_test" element={<Reviews />} />
                 </Routes>
               </AuthProvider>
             </ReviewProvider>
