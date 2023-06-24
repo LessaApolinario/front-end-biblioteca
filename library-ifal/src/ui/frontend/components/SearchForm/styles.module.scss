@@ -1,0 +1,7 @@
+@import '../../styles/variables/mixins/index.scss';
+
+.container {
+  width: 80%;
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+}

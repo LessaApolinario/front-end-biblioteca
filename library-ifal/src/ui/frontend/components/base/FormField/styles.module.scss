@@ -1,0 +1,27 @@
+@import '../../../styles/variables/colors/index.scss';
+
+.container {
+  min-width: 6rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid $primary;
+  border-radius: 0.25rem;
+
+  color: $primary;
+  background-color: $secondary;
+
+  &:focus {
+    color: $primary;
+    background-color: $secondary;
+    outline: solid $tertiary 3px;
+  }
+
+  &::placeholder {
+    color: $primary;
+    opacity: 0.8;
+  }
+
+  &::selection {
+    color: $secondary;
+    background-color: $primary;
+  }
+}

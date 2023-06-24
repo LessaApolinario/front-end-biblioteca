@@ -1,4 +1,5 @@
 @import '../../styles/variables/colors/index.scss';
+@import '../../styles/variables/mixins/index.scss';
 
 .container {
   width: 100%;
@@ -8,4 +9,8 @@
   display: grid;
   grid-template-rows: 0fr 0fr 1fr;
   gap: 0.8rem;
+
+  .searchForm {
+    @include center;
+  }
 }
