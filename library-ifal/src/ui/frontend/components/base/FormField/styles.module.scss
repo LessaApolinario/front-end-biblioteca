@@ -12,7 +12,7 @@
   &:focus {
     color: $primary;
     background-color: $secondary;
-    outline: solid $tertiary 3px;
+    outline: solid $tertiary 1px;
   }
 
   &::placeholder {

@@ -1,35 +1,38 @@
 import { createRef } from 'react';
-import getFieldFromRef from '../../../../../core/utils/getFieldFromRef';
+
 import { useReviews } from '../../../../../hooks/useReviews';
-import SearchForm from '../../../../components/SearchForm';
+import Form from '../../../../components/Form';
 import { Button } from '../../base/Button';
+import FormField, { FormFieldHandlers } from '../../base/FormField';
+
 import styles from './styles.module.scss';
 
 function SearchReviews() {
   const { search } = useReviews();
-  const searchRef = createRef<HTMLInputElement>();
+  const searchRef = createRef<FormFieldHandlers>();
 
   function handleSearchReviews() {
-    const { field: query } = getFieldFromRef(searchRef);
+    const query = searchRef.current?.getValue() ?? '';
     search(query);
   }
 
-  function renderButtons() {
-    return (
+  return (
+    <Form
+      className={styles.container}
+      orientation="row"
+      handleSubmit={handleSearchReviews}
+    >
+      <FormField
+        type="search"
+        name="pesquisa"
+        placeholder="Buscar resenhas"
+        ref={searchRef}
+      />
+
       <Button type="submit" color="black">
         Pesquisar
       </Button>
-    );
-  }
-
-  return (
-    <SearchForm
-      className={styles.container}
-      placeholder="Buscar resenhas"
-      searchRef={searchRef}
-      handleSubmit={handleSearchReviews}
-      renderButtons={renderButtons}
-    />
+    </Form>
   );
 }
 
