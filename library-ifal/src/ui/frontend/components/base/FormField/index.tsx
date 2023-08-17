@@ -8,7 +8,7 @@ import {
 } from 'react';
 import styles from './styles.module.scss';
 
-export interface FormFieldHandle {
+export interface FormFieldHandlers {
   getValue: () => string;
 }
 
@@ -20,7 +20,7 @@ interface Props
   className?: string;
 }
 
-const FormField: ForwardRefRenderFunction<FormFieldHandle, Props> = (
+const FormField: ForwardRefRenderFunction<FormFieldHandlers, Props> = (
   props,
   forwardedRef
 ) => {

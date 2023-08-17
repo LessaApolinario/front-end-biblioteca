@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import Form from '../../../components/Form';
 import { Button } from '../base/Button';
-import FormField, { FormFieldHandle } from '../base/FormField';
+import FormField, { FormFieldHandlers } from '../base/FormField';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 function SearchForm({ search, className }: Props) {
   const searchFormClassName = `${styles.container} ${className ?? ''}`;
-  const searchRef = useRef<FormFieldHandle>(null);
+  const searchRef = useRef<FormFieldHandlers>(null);
 
   function handleSubmit() {
     const query = searchRef.current?.getValue() ?? '';
