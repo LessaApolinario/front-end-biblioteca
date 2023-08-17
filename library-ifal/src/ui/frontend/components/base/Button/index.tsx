@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import styles from './styles.module.scss';
 
 interface Props {
-  type: ButtonTypes;
+  type?: ButtonTypes;
   color: ButtonColors;
   onClick?(): void;
   className?: string;
@@ -22,7 +22,11 @@ function Button({
     styles[className ?? '']
   }`;
   return (
-    <button type={type} className={buttonClassName} onClick={onClick}>
+    <button
+      type={type || 'button'}
+      className={buttonClassName}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
